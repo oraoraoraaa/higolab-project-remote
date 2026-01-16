@@ -124,13 +124,13 @@ def mine_php_packages():
     output_file = os.path.join(output_dir, OUTPUT_FILENAME)
     
     print("Fetching detailed information for each package...")
-    print("Using parallel processing with 50 workers for faster execution...")
+    print("Using parallel processing with 40 workers for faster execution...")
     
     # Use parallel processing to speed up API calls
     results = {}
     lock = threading.Lock()
     
-    with ThreadPoolExecutor(max_workers=50) as executor:
+    with ThreadPoolExecutor(max_workers=40) as executor:
         # Submit all tasks
         future_to_package = {
             executor.submit(fetch_package_info, package_name.strip()): (idx, package_name.strip())

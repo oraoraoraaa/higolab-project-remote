@@ -317,7 +317,7 @@ def mine_go_packages(output_dir=None, output_filename=None):
     output_file = os.path.join(output_dir, output_filename)
     
     print("Fetching detailed information for each module...")
-    print("Using parallel processing with 100 workers for faster execution...")
+    print("Using parallel processing with 40 workers for faster execution...")
     print("This will take several hours due to the large number of modules (~2M)...")
     
     # Use parallel processing with many workers for speed
@@ -336,7 +336,7 @@ def mine_go_packages(output_dir=None, output_filename=None):
         finally:
             worker_session.close()
     
-    with ThreadPoolExecutor(max_workers=100) as executor:
+    with ThreadPoolExecutor(max_workers=40) as executor:
         # Submit all tasks
         future_to_module = {
             executor.submit(fetch_module_wrapper, (idx, module)): (idx, module)
