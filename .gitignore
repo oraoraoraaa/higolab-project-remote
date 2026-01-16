@@ -141,8 +141,8 @@ css-crush
 raceway
 
 # Large Dataset (synced with cloud)
-Resource/Dataset
-.dataset_sync_config
+#Resource/Dataset
+#.dataset_sync_config
 
 ## Crates.io
 Code/Script/Crates-Miner/crates-db
