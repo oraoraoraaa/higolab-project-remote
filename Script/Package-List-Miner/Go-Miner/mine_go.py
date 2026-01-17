@@ -396,6 +396,8 @@ def save_results_incrementally(output_file, results, write_header=False):
                 homepage_url,
                 repo_url,
             ])
+        f.flush()  # Ensure data is written to disk
+        os.fsync(f.fileno())  # Force write to disk
 
 def mine_go_packages(output_dir=None, output_filename=None):
     """Mines Go packages to get the whole list from the Go module index."""
@@ -514,10 +516,16 @@ def mine_go_packages(output_dir=None, output_filename=None):
                     
                     processed_count += 1
             
-            # Save batch results
+            # Save batch results to CSV immediately
             if new_results:
+                print(f"  Saving {len(new_results)} modules to CSV...")
                 save_results_incrementally(output_file, new_results, write_header)
-                print(f"  Saved {len(new_results)} modules from this batch")
+                # Verify the save by checking file exists and size
+                if os.path.exists(output_file):
+                    file_size = os.path.getsize(output_file)
+                    print(f"  ✓ Saved to {output_file} (size: {file_size:,} bytes)")
+                else:
+                    print(f"  ✗ Warning: Output file not found after save!")
                 write_header = False  # Don't write header again
             
             # Move to next batch
