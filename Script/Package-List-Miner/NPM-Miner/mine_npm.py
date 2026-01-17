@@ -223,45 +223,45 @@ def mine_npm_packages():
             
             # Continue with pagination using startkey
             while len(rows) >= limit:
-            batch_count += 1
-            last_key = rows[-1]['id']
-            
-            # Use startkey with the last key we got
-            params = {
-                'limit': limit,
-                'startkey': json.dumps(last_key)
-            }
-            
-            print(f"  Fetching batch {batch_count} starting from '{last_key[:50]}...'")
-            response = fetch_with_retry(base_url, params=params, timeout=300)
-            response.raise_for_status()
-            data = response.json()
-            
-            rows = data.get('rows', [])
-            if not rows:
-                break
-            
-            new_count = 0
-            for row in rows:
-                pkg_id = row['id']
-                # Skip first item if it matches our startkey (it's a duplicate)
-                if pkg_id == last_key:
-                    continue
-                if not pkg_id.startswith('_design/') and pkg_id not in package_names_set:
-                    package_names.append(pkg_id)
-                    package_names_set.add(pkg_id)
-                    new_count += 1
-            
-            print(f"  Got {new_count} new packages")
-            print(f"  Total unique packages collected: {len(package_names):,} / {total_rows:,}")
-            
-            # Save checkpoint every batch
-            save_package_names_checkpoint(package_names, last_key, total_rows)
-            
-            # If we didn't get any new packages, stop
-            if new_count == 0:
-                print("  No new packages found, stopping pagination")
-                break
+                batch_count += 1
+                last_key = rows[-1]['id']
+                
+                # Use startkey with the last key we got
+                params = {
+                    'limit': limit,
+                    'startkey': json.dumps(last_key)
+                }
+                
+                print(f"  Fetching batch {batch_count} starting from '{last_key[:50]}...'")
+                response = fetch_with_retry(base_url, params=params, timeout=300)
+                response.raise_for_status()
+                data = response.json()
+                
+                rows = data.get('rows', [])
+                if not rows:
+                    break
+                
+                new_count = 0
+                for row in rows:
+                    pkg_id = row['id']
+                    # Skip first item if it matches our startkey (it's a duplicate)
+                    if pkg_id == last_key:
+                        continue
+                    if not pkg_id.startswith('_design/') and pkg_id not in package_names_set:
+                        package_names.append(pkg_id)
+                        package_names_set.add(pkg_id)
+                        new_count += 1
+                
+                print(f"  Got {new_count} new packages")
+                print(f"  Total unique packages collected: {len(package_names):,} / {total_rows:,}")
+                
+                # Save checkpoint every batch
+                save_package_names_checkpoint(package_names, last_key, total_rows)
+                
+                # If we didn't get any new packages, stop
+                if new_count == 0:
+                    print("  No new packages found, stopping pagination")
+                    break
         
         print(f"Found {len(package_names)} npm packages in total")
         
