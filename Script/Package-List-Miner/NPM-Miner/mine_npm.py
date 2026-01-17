@@ -16,6 +16,11 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 OUTPUT_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', '..', 'Resource', 'Dataset', 'Package-List'))
 OUTPUT_FILENAME = "NPM.csv"
 
+# Checkpoint files
+CHECKPOINT_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '.checkpoint'))
+PACKAGE_NAMES_CHECKPOINT = os.path.join(CHECKPOINT_DIR, "package_names.json")
+PROGRESS_CHECKPOINT = os.path.join(CHECKPOINT_DIR, "progress.json")
+
 # ============================================================================
 
 def fetch_with_retry(url, params=None, timeout=300, max_retries=5, backoff_factor=2):
@@ -36,7 +41,18 @@ def fetch_with_retry(url, params=None, timeout=300, max_retries=5, backoff_facto
         try:
             response = requests.get(url, params=params, timeout=timeout, stream=False)
             
-            # For 4xx errors (client errors like 404), don't retry - just return the response
+            # For 429 (rate limit), wait longer before retrying
+            if response.status_code == 429:
+                if attempt < max_retries - 1:
+                    wait_time = 60  # Wait 1 minute for rate limits
+                    print(f"  Rate limited (attempt {attempt + 1}/{max_retries})")
+                    print(f"  Waiting {wait_time} seconds...")
+                    time.sleep(wait_time)
+                    continue
+                else:
+                    return response
+            
+            # For other 4xx errors (client errors like 404), don't retry - just return the response
             # The caller can check the status code
             if 400 <= response.status_code < 500:
                 return response
@@ -46,15 +62,17 @@ def fetch_with_retry(url, params=None, timeout=300, max_retries=5, backoff_facto
             return response
         except (requests.exceptions.ChunkedEncodingError, 
                 requests.exceptions.ConnectionError,
-                requests.exceptions.Timeout) as e:
+                requests.exceptions.Timeout,
+                requests.exceptions.SSLError) as e:
             if attempt < max_retries - 1:
                 wait_time = backoff_factor ** attempt
-                print(f"  Connection error (attempt {attempt + 1}/{max_retries}): {e}")
+                print(f"  Connection error (attempt {attempt + 1}/{max_retries}): {str(e)[:100]}")
                 print(f"  Retrying in {wait_time} seconds...")
                 time.sleep(wait_time)
             else:
-                print(f"  Failed after {max_retries} attempts: {e}")
-                raise
+                print(f"  Failed after {max_retries} attempts: {str(e)[:100]}")
+                # Return None instead of raising to allow processing to continue
+                return None
         except requests.exceptions.HTTPError as e:
             # Server errors (5xx) - retry
             if attempt < max_retries - 1:
@@ -64,11 +82,74 @@ def fetch_with_retry(url, params=None, timeout=300, max_retries=5, backoff_facto
                 time.sleep(wait_time)
             else:
                 print(f"  Failed after {max_retries} attempts: {e}")
-                raise
+                # Return None instead of raising to allow processing to continue
+                return None
         except requests.exceptions.RequestException as e:
-            print(f"  Request error: {e}")
-            raise
+            print(f"  Request error: {str(e)[:100]}")
+            # Return None instead of raising to allow processing to continue
+            return None
     return None
+
+def save_package_names_checkpoint(package_names, last_key, total_rows):
+    """Save package names checkpoint to disk."""
+    os.makedirs(CHECKPOINT_DIR, exist_ok=True)
+    checkpoint_data = {
+        'package_names': package_names,
+        'last_key': last_key,
+        'total_rows': total_rows,
+        'timestamp': time.time()
+    }
+    with open(PACKAGE_NAMES_CHECKPOINT, 'w', encoding='utf-8') as f:
+        json.dump(checkpoint_data, f)
+    print(f"  Checkpoint saved: {len(package_names):,} packages")
+
+def load_package_names_checkpoint():
+    """Load package names checkpoint from disk."""
+    if os.path.exists(PACKAGE_NAMES_CHECKPOINT):
+        try:
+            with open(PACKAGE_NAMES_CHECKPOINT, 'r', encoding='utf-8') as f:
+                data = json.load(f)
+                print(f"Found checkpoint with {len(data['package_names']):,} packages")
+                print(f"Last key: {data.get('last_key', 'N/A')}")
+                return data['package_names'], data.get('last_key'), data.get('total_rows', 0)
+        except (json.JSONDecodeError, KeyError) as e:
+            print(f"Warning: Failed to load checkpoint: {e}")
+            return None, None, 0
+    return None, None, 0
+
+def load_processed_packages(output_file):
+    """Load already processed packages from the CSV file."""
+    processed = {}
+    if os.path.exists(output_file):
+        try:
+            with open(output_file, 'r', encoding='utf-8') as f:
+                reader = csv.DictReader(f)
+                for row in reader:
+                    idx = int(row['ID'])
+                    processed[idx] = (row['Name'], row['Homepage URL'], row['Repository URL'])
+            print(f"Found {len(processed)} already processed packages")
+        except (csv.Error, KeyError, ValueError) as e:
+            print(f"Warning: Failed to load existing CSV: {e}")
+            return {}
+    return processed
+
+def save_results_incrementally(output_file, results, write_header=False):
+    """Save results to CSV incrementally."""
+    mode = 'w' if write_header else 'a'
+    with open(output_file, mode, newline='', encoding='utf-8') as f:
+        writer = csv.writer(f)
+        if write_header:
+            writer.writerow(["ID", "Platform", "Name", "Homepage URL", "Repository URL"])
+        
+        for idx in sorted(results.keys()):
+            package_name, homepage_url, repo_url = results[idx]
+            writer.writerow([
+                idx,
+                "NPM",
+                package_name,
+                homepage_url,
+                repo_url,
+            ])
 
 def mine_npm_packages():
     """Mines npm registry to get the whole list of npm packages."""
@@ -76,42 +157,72 @@ def mine_npm_packages():
     print("Fetching npm package list from registry...")
     print("This will download the complete package database with pagination")
     
+    # Try to load checkpoint
+    print("Checking for existing checkpoint...")
+    checkpoint_names, checkpoint_last_key, checkpoint_total = load_package_names_checkpoint()
+    
     # npm provides an all-docs endpoint that returns all package names
     # Use startkey parameter for pagination (CouchDB-style)
     base_url = "https://replicate.npmjs.com/_all_docs"
     
-    package_names = []
-    package_names_set = set()  # Use set to track duplicates
+    # Initialize with checkpoint data if available
+    if checkpoint_names:
+        print(f"Resuming from checkpoint with {len(checkpoint_names):,} packages")
+        package_names = checkpoint_names
+        package_names_set = set(checkpoint_names)
+        startkey = checkpoint_last_key
+        total_rows = checkpoint_total
+        batch_count = len(checkpoint_names) // 10000
+        
+        # If we have a complete list, skip batch fetching
+        if len(package_names) >= total_rows * 0.99:  # Allow 1% margin
+            print("Package name collection appears complete, skipping to detail fetching...")
+        else:
+            print(f"Will resume from key: {startkey}")
+    else:
+        package_names = []
+        package_names_set = set()  # Use set to track duplicates
+        startkey = None
+        batch_count = 0
+        total_rows = 0
+    
     limit = 10000  # Maximum allowed by the API
-    startkey = None
-    batch_count = 0
     
     try:
-        print("Downloading package names from npm registry (paginated)...")
-        print("Note: Due to API limitations, we'll fetch the first batch and estimate total count")
-        
-        # Fetch first batch
-        batch_count = 1
-        print(f"  Fetching batch {batch_count}...")
-        response = fetch_with_retry(base_url, params={'limit': limit}, timeout=300)
-        response.raise_for_status()
-        data = response.json()
-        
-        rows = data.get('rows', [])
-        total_rows = data.get('total_rows', 0)
-        
-        print(f"  Total packages in registry: {total_rows:,}")
-        
-        for row in rows:
-            pkg_id = row['id']
-            if not pkg_id.startswith('_design/'):
-                package_names.append(pkg_id)
-                package_names_set.add(pkg_id)
-        
-        print(f"  Got {len(package_names)} packages from first batch")
-        
-        # Continue with pagination using startkey
-        while len(rows) >= limit:
+        # Only fetch batches if we don't have a complete checkpoint
+        if not checkpoint_names or len(package_names) < total_rows * 0.99:
+            print("Downloading package names from npm registry (paginated)...")
+            print("Note: Progress is saved after each batch for recovery")
+            
+            # Fetch first batch if not resuming
+            if not checkpoint_names:
+                batch_count = 1
+                print(f"  Fetching batch {batch_count}...")
+                response = fetch_with_retry(base_url, params={'limit': limit}, timeout=300)
+                response.raise_for_status()
+                data = response.json()
+                
+                rows = data.get('rows', [])
+                total_rows = data.get('total_rows', 0)
+                
+                print(f"  Total packages in registry: {total_rows:,}")
+                
+                for row in rows:
+                    pkg_id = row['id']
+                    if not pkg_id.startswith('_design/'):
+                        package_names.append(pkg_id)
+                        package_names_set.add(pkg_id)
+                
+                print(f"  Got {len(package_names)} packages from first batch")
+                
+                # Save initial checkpoint
+                save_package_names_checkpoint(package_names, package_names[-1] if package_names else None, total_rows)
+            else:
+                # When resuming, we need to fetch to get the current state
+                rows = [{'id': startkey}] * limit  # Dummy to enter the loop
+            
+            # Continue with pagination using startkey
+            while len(rows) >= limit:
             batch_count += 1
             last_key = rows[-1]['id']
             
@@ -144,14 +255,21 @@ def mine_npm_packages():
             print(f"  Got {new_count} new packages")
             print(f"  Total unique packages collected: {len(package_names):,} / {total_rows:,}")
             
+            # Save checkpoint every batch
+            save_package_names_checkpoint(package_names, last_key, total_rows)
+            
             # If we didn't get any new packages, stop
             if new_count == 0:
                 print("  No new packages found, stopping pagination")
                 break
         
         print(f"Found {len(package_names)} npm packages in total")
+        
+        # Save final checkpoint
+        save_package_names_checkpoint(package_names, package_names[-1] if package_names else None, total_rows)
     except requests.exceptions.RequestException as e:
         print(f"Error downloading npm package names: {e}")
+        print("Progress has been saved. You can resume by running the script again.")
         return
     
     # Create the path to the output file
@@ -160,8 +278,25 @@ def mine_npm_packages():
         os.makedirs(output_dir)
     output_file = os.path.join(output_dir, OUTPUT_FILENAME)
     
-    print("Fetching detailed information for each package...")
-    print("Using parallel processing with 40 workers for faster execution...")
+    # Load already processed packages
+    print("Checking for existing results...")
+    processed_results = load_processed_packages(output_file)
+    
+    # Determine which packages still need processing
+    packages_to_process = []
+    for idx, package_name in enumerate(package_names, start=1):
+        if idx not in processed_results:
+            packages_to_process.append((idx, package_name))
+    
+    if not packages_to_process:
+        print("All packages already processed!")
+        print(f"Results are in {output_file}")
+        return
+    
+    print(f"Fetching detailed information for {len(packages_to_process):,} packages...")
+    print(f"Already processed: {len(processed_results):,} packages")
+    print("Using parallel processing with 20 workers to avoid overwhelming the registry...")
+    print("Progress is saved every 1000 packages for recovery")
     
     def fetch_package_info(package_name):
         """Fetch information for a single npm package."""
@@ -171,7 +306,10 @@ def mine_npm_packages():
         repo_url = "nan"
         
         try:
-            response = fetch_with_retry(package_info_url, timeout=10, max_retries=3, backoff_factor=1.5)
+            # Add small delay to avoid overwhelming the server
+            time.sleep(0.05)  # 50ms delay between requests
+            
+            response = fetch_with_retry(package_info_url, timeout=15, max_retries=5, backoff_factor=2)
             if response and response.status_code == 200:
                 package_info = response.json()
                 
@@ -203,42 +341,70 @@ def mine_npm_packages():
         return package_name, homepage_url, repo_url
     
     # Use parallel processing to speed up API calls
-    results = {}
+    new_results = {}
+    checkpoint_interval = 1000
+    processed_count = 0
     
-    with ThreadPoolExecutor(max_workers=40) as executor:
-        # Submit all tasks
-        future_to_package = {
-            executor.submit(fetch_package_info, package_name): (idx, package_name)
-            for idx, package_name in enumerate(package_names, start=1)
-        }
+    # If starting fresh, write header; otherwise append
+    write_header = len(processed_results) == 0
+    
+    try:
+        with ThreadPoolExecutor(max_workers=20) as executor:
+            # Submit all tasks for packages that need processing
+            future_to_package = {
+                executor.submit(fetch_package_info, package_name): (idx, package_name)
+                for idx, package_name in packages_to_process
+            }
+            
+            # Process completed tasks with progress bar
+            for future in tqdm(as_completed(future_to_package), total=len(future_to_package), desc="Processing packages"):
+                idx, original_name = future_to_package[future]
+                try:
+                    package_name, homepage_url, repo_url = future.result()
+                    new_results[idx] = (package_name, homepage_url, repo_url)
+                except Exception as e:
+                    # If something went wrong, store with nan values
+                    new_results[idx] = (original_name, "nan", "nan")
+                
+                processed_count += 1
+                
+                # Save checkpoint every 1000 packages
+                if processed_count % checkpoint_interval == 0:
+                    save_results_incrementally(output_file, new_results, write_header)
+                    print(f"\n  Checkpoint: Saved {processed_count} packages")
+                    new_results = {}  # Clear after saving
+                    write_header = False  # Don't write header again
         
-        # Process completed tasks with progress bar
-        for future in tqdm(as_completed(future_to_package), total=len(future_to_package), desc="Processing packages"):
-            idx, original_name = future_to_package[future]
-            try:
-                package_name, homepage_url, repo_url = future.result()
-                results[idx] = (package_name, homepage_url, repo_url)
-            except Exception as e:
-                # If something went wrong, store with nan values
-                results[idx] = (original_name, "nan", "nan")
-    
-    # Write results to CSV in order
-    print("Writing results to CSV...")
-    with open(output_file, "w", newline="", encoding="utf-8") as f:
-        writer = csv.writer(f)
-        writer.writerow(["ID", "Platform", "Name", "Homepage URL", "Repository URL"])
+        # Save any remaining results
+        if new_results:
+            save_results_incrementally(output_file, new_results, write_header)
         
-        for idx in sorted(results.keys()):
-            package_name, homepage_url, repo_url = results[idx]
-            writer.writerow([
-                idx,
-                "NPM",
-                package_name,
-                homepage_url,
-                repo_url,
-            ])
-    
-    print(f"Successfully saved {len(package_names)} npm packages to {output_file}")
+        print("\nAll processing complete!")
+        print(f"Total packages in output: {len(package_names):,}")
+        print(f"Successfully saved to {output_file}")
+        
+        # Clean up checkpoint files
+        print("Cleaning up checkpoint files...")
+        if os.path.exists(PACKAGE_NAMES_CHECKPOINT):
+            os.remove(PACKAGE_NAMES_CHECKPOINT)
+        print("Done!")
+        
+    except KeyboardInterrupt:
+        print("\n\nInterrupted by user!")
+        # Save current progress
+        if new_results:
+            save_results_incrementally(output_file, new_results, write_header)
+            print(f"Saved {len(new_results)} packages before interruption")
+        print("Progress has been saved. Run the script again to resume.")
+        raise
+    except Exception as e:
+        print(f"\n\nError during processing: {e}")
+        # Save current progress
+        if new_results:
+            save_results_incrementally(output_file, new_results, write_header)
+            print(f"Saved {len(new_results)} packages before error")
+        print("Progress has been saved. Run the script again to resume.")
+        raise
 
 if __name__ == "__main__":
     mine_npm_packages()
