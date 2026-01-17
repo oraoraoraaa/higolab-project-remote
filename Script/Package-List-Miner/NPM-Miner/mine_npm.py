@@ -2,6 +2,7 @@ import requests
 import csv
 import os
 import json
+import time
 from tqdm import tqdm
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
@@ -16,6 +17,41 @@ OUTPUT_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..',
 OUTPUT_FILENAME = "NPM.csv"
 
 # ============================================================================
+
+def fetch_with_retry(url, params=None, timeout=300, max_retries=5, backoff_factor=2):
+    """
+    Fetch URL with exponential backoff retry logic.
+    
+    Args:
+        url: The URL to fetch
+        params: Query parameters
+        timeout: Request timeout in seconds
+        max_retries: Maximum number of retry attempts
+        backoff_factor: Factor for exponential backoff
+    
+    Returns:
+        Response object if successful, None otherwise
+    """
+    for attempt in range(max_retries):
+        try:
+            response = requests.get(url, params=params, timeout=timeout, stream=False)
+            response.raise_for_status()
+            return response
+        except (requests.exceptions.ChunkedEncodingError, 
+                requests.exceptions.ConnectionError,
+                requests.exceptions.Timeout) as e:
+            if attempt < max_retries - 1:
+                wait_time = backoff_factor ** attempt
+                print(f"  Connection error (attempt {attempt + 1}/{max_retries}): {e}")
+                print(f"  Retrying in {wait_time} seconds...")
+                time.sleep(wait_time)
+            else:
+                print(f"  Failed after {max_retries} attempts: {e}")
+                raise
+        except requests.exceptions.RequestException as e:
+            print(f"  Request error: {e}")
+            raise
+    return None
 
 def mine_npm_packages():
     """Mines npm registry to get the whole list of npm packages."""
@@ -40,7 +76,7 @@ def mine_npm_packages():
         # Fetch first batch
         batch_count = 1
         print(f"  Fetching batch {batch_count}...")
-        response = requests.get(base_url, params={'limit': limit}, timeout=300)
+        response = fetch_with_retry(base_url, params={'limit': limit}, timeout=300)
         response.raise_for_status()
         data = response.json()
         
@@ -69,7 +105,7 @@ def mine_npm_packages():
             }
             
             print(f"  Fetching batch {batch_count} starting from '{last_key[:50]}...'")
-            response = requests.get(base_url, params=params, timeout=300)
+            response = fetch_with_retry(base_url, params=params, timeout=300)
             response.raise_for_status()
             data = response.json()
             
@@ -118,8 +154,8 @@ def mine_npm_packages():
         repo_url = "nan"
         
         try:
-            response = requests.get(package_info_url, timeout=10)
-            if response.status_code == 200:
+            response = fetch_with_retry(package_info_url, timeout=10, max_retries=3, backoff_factor=1.5)
+            if response and response.status_code == 200:
                 package_info = response.json()
                 
                 # Get homepage URL
