@@ -35,6 +35,13 @@ def fetch_with_retry(url, params=None, timeout=300, max_retries=5, backoff_facto
     for attempt in range(max_retries):
         try:
             response = requests.get(url, params=params, timeout=timeout, stream=False)
+            
+            # For 4xx errors (client errors like 404), don't retry - just return the response
+            # The caller can check the status code
+            if 400 <= response.status_code < 500:
+                return response
+            
+            # For 5xx errors (server errors), raise and retry
             response.raise_for_status()
             return response
         except (requests.exceptions.ChunkedEncodingError, 
@@ -43,6 +50,16 @@ def fetch_with_retry(url, params=None, timeout=300, max_retries=5, backoff_facto
             if attempt < max_retries - 1:
                 wait_time = backoff_factor ** attempt
                 print(f"  Connection error (attempt {attempt + 1}/{max_retries}): {e}")
+                print(f"  Retrying in {wait_time} seconds...")
+                time.sleep(wait_time)
+            else:
+                print(f"  Failed after {max_retries} attempts: {e}")
+                raise
+        except requests.exceptions.HTTPError as e:
+            # Server errors (5xx) - retry
+            if attempt < max_retries - 1:
+                wait_time = backoff_factor ** attempt
+                print(f"  Server error (attempt {attempt + 1}/{max_retries}): {e}")
                 print(f"  Retrying in {wait_time} seconds...")
                 time.sleep(wait_time)
             else:
