@@ -448,7 +448,7 @@ def mine_go_packages(output_dir=None, output_filename=None):
     
     print(f"Total modules to process: {total_to_process:,}")
     print(f"Already processed: {len(processed_results):,} modules")
-    print("Using parallel processing with 20 workers to avoid overwhelming the server...")
+    print("Using parallel processing with 40 workers to avoid overwhelming the server...")
     print("Processing in batches of 1000 modules to conserve memory...")
     print("This will take several hours due to the large number of modules...")
     
@@ -497,7 +497,7 @@ def mine_go_packages(output_dir=None, output_filename=None):
             
             new_results = {}
             
-            with ThreadPoolExecutor(max_workers=20) as executor:
+            with ThreadPoolExecutor(max_workers=40) as executor:
                 # Submit all tasks for modules in this batch
                 future_to_module = {
                     executor.submit(fetch_module_wrapper, (idx, module_path)): (idx, module_path)
