@@ -1,0 +1,2 @@
+Maven_ID,Maven_Name,Maven_Homepage,Maven_Repo,NPM_ID,NPM_Name,NPM_Homepage,NPM_Repo,PHP_ID,PHP_Name,PHP_Homepage,PHP_Repo,Ruby_ID,Ruby_Name,Ruby_Homepage,Ruby_Repo
+251620,org.apache.avro:avro-toplevel,https://avro.apache.org,scm:git:https://github.com/apache/avro,1406310,avro-js-ohos,https://github.com/apache/avro#readme,git+https://github.com/apache/avro.git,23509,apache/avro,,https://github.com/apache/avro,11755,avro,https://avro.apache.org/,https://github.com/apache/avro
