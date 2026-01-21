@@ -34,15 +34,14 @@ SCRIPT_DIR = Path(__file__).parent
 DATASET_DIR = SCRIPT_DIR / "../../Resource/Dataset/"
 DEFAULT_INPUT_DIR = DATASET_DIR / "Directory-Structure-Miner"
 DEFAULT_OUTPUT_DIR = DATASET_DIR / "Metric-Miner-Github"
-DEFAULT_OUTPUT_FILE = "github_metrics.csv"
-CHECKPOINT_DIR = SCRIPT_DIR / ".checkpoint"
+DEFAULT_OUTPUT_FILE = "github_metrics.json"
 LOG_FILE = SCRIPT_DIR / "processing.log"
 
 # ============================================================================
 # PARALLEL PROCESSING CONFIGURATION
 # ============================================================================
 
-MAX_WORKERS = 10  # Number of concurrent threads for API calls
+MAX_WORKERS = 20  # Number of concurrent threads for API calls
 MAX_RETRIES = 3   # Maximum number of retry attempts for network errors
 RETRY_DELAY = 2   # Initial delay in seconds before retry (exponential backoff)
 
@@ -290,46 +289,31 @@ class TokenManager:
 
 
 # ============================================================================
-# CHECKPOINT MANAGEMENT (inspired by mine_npm.py)
+# CHECKPOINT MANAGEMENT
 # ============================================================================
 
-def get_checkpoint_file(txt_filename: str) -> Path:
-    """Get checkpoint file path for a specific txt file."""
-    CHECKPOINT_DIR.mkdir(parents=True, exist_ok=True)
-    return CHECKPOINT_DIR / f"{txt_filename.replace('.txt', '')}_checkpoint.json"
-
-
-def save_checkpoint(txt_filename: str, processed_packages: Dict[str, Dict], last_index: int):
-    """Save checkpoint to disk."""
-    checkpoint_file = get_checkpoint_file(txt_filename)
-    checkpoint_data = {
+def save_progress(output_path: Path, processed_packages: Dict[str, Dict], last_index: int):
+    """Save progress directly to output JSON file."""
+    progress_data = {
         'last_index': last_index,
-        'processed_count': len(processed_packages),
+        'processed_count': len([v for v in processed_packages.values() if v is not None]),
         'timestamp': time.time(),
         'packages': processed_packages
     }
-    with open(checkpoint_file, 'w', encoding='utf-8') as f:
-        json.dump(checkpoint_data, f, indent=2)
+    with open(output_path, 'w', encoding='utf-8') as f:
+        json.dump(progress_data, f, indent=2)
 
 
-def load_checkpoint(txt_filename: str) -> Tuple[Dict[str, Dict], int]:
-    """Load checkpoint from disk. Returns (processed_packages, last_index)."""
-    checkpoint_file = get_checkpoint_file(txt_filename)
-    if checkpoint_file.exists():
+def load_progress(output_path: Path) -> Tuple[Dict[str, Dict], int]:
+    """Load progress from output JSON file. Returns (processed_packages, last_index)."""
+    if output_path.exists():
         try:
-            with open(checkpoint_file, 'r', encoding='utf-8') as f:
+            with open(output_path, 'r', encoding='utf-8') as f:
                 data = json.load(f)
                 return data.get('packages', {}), data.get('last_index', 0)
         except (json.JSONDecodeError, KeyError) as e:
-            safe_print(f"Warning: Failed to load checkpoint: {e}")
+            safe_print(f"Warning: Failed to load progress: {e}")
     return {}, 0
-
-
-def clear_checkpoint(txt_filename: str):
-    """Remove checkpoint file after successful completion."""
-    checkpoint_file = get_checkpoint_file(txt_filename)
-    if checkpoint_file.exists():
-        checkpoint_file.unlink()
 
 
 # ============================================================================
@@ -869,6 +853,7 @@ def process_packages_parallel(
     all_packages: List[Dict],
     miner: GitHubMetricsMiner,
     processed_packages: Dict,
+    output_path: Path,
     max_workers: int = MAX_WORKERS,
 ) -> Dict[str, Dict]:
     """
@@ -878,6 +863,7 @@ def process_packages_parallel(
         all_packages: List of all packages to process
         miner: GitHubMetricsMiner instance
         processed_packages: Dictionary of already processed packages
+        output_path: Path to output JSON file for saving progress
         max_workers: Number of parallel workers
         
     Returns:
@@ -899,7 +885,7 @@ def process_packages_parallel(
 
     # Process packages in parallel with progress bar
     results_lock = Lock()
-    checkpoint_interval = 100  # Save checkpoint every N packages
+    save_interval = 10  # Save progress every 10 packages
     processed_count = 0
 
     with tqdm(total=len(packages_to_process), desc=f"Mining repositories", unit="repo") as pbar:
@@ -926,9 +912,9 @@ def process_packages_parallel(
                         
                         processed_count += 1
                         
-                        # Save checkpoint periodically
-                        if processed_count % checkpoint_interval == 0:
-                            save_checkpoint("global", processed_packages, idx)
+                        # Save progress periodically
+                        if processed_count % save_interval == 0:
+                            save_progress(output_path, processed_packages, idx)
                 
                 except Exception as e:
                     with results_lock:
@@ -936,59 +922,23 @@ def process_packages_parallel(
                 
                 pbar.update(1)
 
-    # Save final checkpoint
-    save_checkpoint("global", processed_packages, len(all_packages) - 1)
+    # Save final progress
+    save_progress(output_path, processed_packages, len(all_packages) - 1)
     
     return processed_packages
 
 
-def write_final_csv(output_path: str, all_packages: List[Dict], processed_packages: Dict) -> int:
+def count_successful_packages(processed_packages: Dict) -> int:
     """
-    Write final results to a single CSV file.
+    Count successfully mined packages.
     
     Args:
-        output_path: Path to output CSV file
-        all_packages: List of all packages (for ordering and ensuring all are included)
         processed_packages: Dictionary of processed results
         
     Returns:
         Number of successfully mined packages
     """
-    fieldnames = [
-        "owner_repo",
-        "repo_url",
-        "ecosystems",
-        "stars",
-        "forks",
-        "commits",
-        "active_pull_requests",
-        "closed_pull_requests",
-        "all_pull_requests",
-        "contributors",
-        "active_issues",
-        "closed_issues",
-        "all_issues",
-        "dependencies",
-        "dependents",
-        "top_language",
-        "language_proportions",
-    ]
-    
-    successful_count = 0
-    
-    with open(output_path, "w", encoding="utf-8", newline="") as f:
-        writer = csv.DictWriter(f, fieldnames=fieldnames)
-        writer.writeheader()
-        
-        for pkg in all_packages:
-            pkg_key = f"{pkg['owner_repo']}|{pkg['repo_url']}"
-            result = processed_packages.get(pkg_key)
-            
-            if result:
-                writer.writerow(result)
-                successful_count += 1
-    
-    return successful_count
+    return len([v for v in processed_packages.values() if v is not None])
 
 
 # ============================================================================
@@ -1013,7 +963,7 @@ def main():
     parser.add_argument(
         "--output-file",
         default=DEFAULT_OUTPUT_FILE,
-        help=f"Output CSV filename (default: {DEFAULT_OUTPUT_FILE})",
+        help=f"Output JSON filename (default: {DEFAULT_OUTPUT_FILE})",
     )
     parser.add_argument(
         "--token",
@@ -1199,10 +1149,12 @@ def main():
         if len(files_by_count[count]) > 5:
             print(f"    ... and {len(files_by_count[count]) - 5} more")
 
-    # Load checkpoint if exists
-    processed_packages, _ = load_checkpoint("global")
+    # Load progress if exists
+    output_path = output_dir / args.output_file
+    processed_packages, _ = load_progress(output_path)
     if processed_packages:
-        safe_print(f"\nResuming from checkpoint: {len(processed_packages)} packages already processed")
+        successful = count_successful_packages(processed_packages)
+        safe_print(f"\nResuming from previous progress: {successful}/{len(processed_packages)} packages successfully processed")
 
     # Collect all packages from all files
     safe_print(f"\n{'=' * 80}")
@@ -1261,18 +1213,11 @@ def main():
             all_packages,
             miner,
             processed_packages,
+            output_path,
             max_workers=args.workers,
         )
         
-        # Write final CSV
-        safe_print(f"\n{'=' * 80}")
-        safe_print("Writing results to CSV...")
-        safe_print(f"{'=' * 80}")
-        
-        successful_count = write_final_csv(str(output_path), all_packages, processed_packages)
-        
-        # Clear checkpoint after successful completion
-        clear_checkpoint("global")
+        successful_count = count_successful_packages(processed_packages)
         
         safe_print(f"\n✓ Results saved to {output_path}")
         safe_print(f"  Successfully mined: {successful_count}/{len(all_packages)} repositories")
