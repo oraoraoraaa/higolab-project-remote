@@ -1,0 +1,135 @@
+================================================================================
+Error Log for Maven_Ruby
+================================================================================
+Total Errors: 8
+Generated: 2026-01-21 02:15:51
+================================================================================
+
+Error #1
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-21T00:20:34.557167
+Repository: https://github.com/takari/ruby-maven-libs
+Ecosystems: Maven, Ruby
+Error Type: NOT_FOUND
+Error Message: Repository not found: takari/ruby-maven-libs
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #2
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-21T00:20:45.895809
+Repository: https://github.com/sonatype/polyglot-maven
+Ecosystems: Maven
+Error Type: NOT_FOUND
+Error Message: Repository not found: sonatype/polyglot-maven
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #3
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-21T00:20:46.130293
+Repository: http://github.com/sonatype/polyglot-maven/tree/maven-gem
+Ecosystems: Ruby
+Error Type: NOT_FOUND
+Error Message: Repository not found: sonatype/polyglot-maven
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #4
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-21T00:20:46.132706
+Repository: git@github.com:realityforge/swung_weave.git
+Ecosystems: Maven, Ruby
+Error Type: PARSE_ERROR
+Error Message: Could not parse GitHub URL: git@github.com:realityforge/swung_weave.git
+
+Possible Reason:
+  Ensure the URL follows the format: https://github.com/owner/repo or git@github.com:owner/repo.git
+
+Suggested Solution:
+  Ensure the URL follows the format: https://github.com/owner/repo or git@github.com:owner/repo.git
+
+================================================================================
+
+Error #5
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-21T00:21:11.117137
+Repository: git@github.com:datawire/mdk.git
+Ecosystems: Maven, Ruby
+Error Type: PARSE_ERROR
+Error Message: Could not parse GitHub URL: git@github.com:datawire/mdk.git
+
+Possible Reason:
+  Ensure the URL follows the format: https://github.com/owner/repo or git@github.com:owner/repo.git
+
+Suggested Solution:
+  Ensure the URL follows the format: https://github.com/owner/repo or git@github.com:owner/repo.git
+
+================================================================================
+
+Error #6
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-21T00:21:19.069885
+Repository: git@github.com:RaiMan/SikuliX-2014.git
+Ecosystems: Maven, Ruby
+Error Type: PARSE_ERROR
+Error Message: Could not parse GitHub URL: git@github.com:RaiMan/SikuliX-2014.git
+
+Possible Reason:
+  Ensure the URL follows the format: https://github.com/owner/repo or git@github.com:owner/repo.git
+
+Suggested Solution:
+  Ensure the URL follows the format: https://github.com/owner/repo or git@github.com:owner/repo.git
+
+================================================================================
+
+Error #7
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-21T00:21:23.879986
+Repository: https://github.com/groupon/Message-Bus
+Ecosystems: Maven, Ruby
+Error Type: NOT_FOUND
+Error Message: Repository not found: groupon/Message-Bus
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #8
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-21T00:21:23.882490
+Repository: https://sirius-platform.googlecode.com/svn/tags/sirius.client.core-2013.4.1.0
+Ecosystems: Maven, Ruby
+Error Type: PARSE_ERROR
+Error Message: Could not parse GitHub URL: https://sirius-platform.googlecode.com/svn/tags/sirius.client.core-2013.4.1.0
+
+Possible Reason:
+  Ensure the URL follows the format: https://github.com/owner/repo or git@github.com:owner/repo.git
+
+Suggested Solution:
+  Ensure the URL follows the format: https://github.com/owner/repo or git@github.com:owner/repo.git
+
+================================================================================
+

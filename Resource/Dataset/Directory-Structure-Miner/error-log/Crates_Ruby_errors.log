@@ -1,0 +1,87 @@
+================================================================================
+Error Log for Crates_Ruby
+================================================================================
+Total Errors: 5
+Generated: 2026-01-21 02:15:51
+================================================================================
+
+Error #1
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-20T15:11:14.647357
+Repository: https://github.com/neonlaw/codebase
+Ecosystems: Crates, Ruby
+Error Type: NOT_FOUND
+Error Message: Repository not found: neonlaw/codebase
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #2
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-20T15:11:21.229013
+Repository: https://github.com/jmse-json/jmse
+Ecosystems: Crates
+Error Type: NOT_FOUND
+Error Message: Repository not found: jmse-json/jmse
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #3
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-20T15:11:21.467762
+Repository: https://github.com/jmse-json/jmse/tree/master/ruby/
+Ecosystems: Ruby
+Error Type: NOT_FOUND
+Error Message: Repository not found: jmse-json/jmse
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #4
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-20T15:11:22.957907
+Repository: https://github.com/seuros/mothership
+Ecosystems: Crates, Ruby
+Error Type: NOT_FOUND
+Error Message: Repository not found: seuros/mothership
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #5
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-20T15:11:33.902781
+Repository: https://github.com/seuros/warpdrive
+Ecosystems: Crates, Ruby
+Error Type: NOT_FOUND
+Error Message: Repository not found: seuros/warpdrive
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+

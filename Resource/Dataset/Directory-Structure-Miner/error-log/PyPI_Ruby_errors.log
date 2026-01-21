@@ -1,0 +1,151 @@
+================================================================================
+Error Log for PyPI_Ruby
+================================================================================
+Total Errors: 9
+Generated: 2026-01-21 02:15:51
+================================================================================
+
+Error #1
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-21T01:05:50.276055
+Repository: http://github.com/echohead/cornfig
+Ecosystems: PyPI
+Error Type: NOT_FOUND
+Error Message: Repository not found: echohead/cornfig
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #2
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-21T01:05:50.504504
+Repository: https://github.com/echohead/cornfig
+Ecosystems: Ruby
+Error Type: NOT_FOUND
+Error Message: Repository not found: echohead/cornfig
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #3
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-21T01:05:55.560245
+Repository: https://github.com/orklann/gesture
+Ecosystems: PyPI, Ruby
+Error Type: NOT_FOUND
+Error Message: Repository not found: orklann/gesture
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #4
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-21T01:05:56.338872
+Repository: https://github.com/stackmachine/greeter
+Ecosystems: PyPI, Ruby
+Error Type: NOT_FOUND
+Error Message: Repository not found: stackmachine/greeter
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #5
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-21T01:05:58.882408
+Repository: https://github.com/soimort/hit
+Ecosystems: PyPI, Ruby
+Error Type: NOT_FOUND
+Error Message: Repository not found: soimort/hit
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #6
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-21T01:06:04.859379
+Repository: https://github.com/ 你的用户名/TkinterTabMore
+Ecosystems: PyPI
+Error Type: NOT_FOUND
+Error Message: Repository not found:  你的用户名/TkinterTabMore
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #7
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-21T01:06:05.041054
+Repository: http://github.com/#{github_username}/#{project_name}
+Ecosystems: Ruby
+Error Type: NOT_FOUND
+Error Message: Repository not found: #{github_username}/
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #8
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-21T01:06:05.923317
+Repository: https://github.com/tesote/nats-work
+Ecosystems: PyPI, Ruby
+Error Type: NOT_FOUND
+Error Message: Repository not found: tesote/nats-work
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #9
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-21T01:06:32.763704
+Repository: https://github.com/adamcaudill/yawast
+Ecosystems: PyPI, Ruby
+Error Type: NOT_FOUND
+Error Message: Repository not found: adamcaudill/yawast
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+

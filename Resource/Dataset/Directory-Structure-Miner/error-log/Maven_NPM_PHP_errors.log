@@ -1,0 +1,87 @@
+================================================================================
+Error Log for Maven_NPM_PHP
+================================================================================
+Total Errors: 5
+Generated: 2026-01-21 02:15:51
+================================================================================
+
+Error #1
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-21T02:01:38.849479
+Repository: https://github.com/pdfmake/pdfmake
+Ecosystems: Maven, PHP
+Error Type: NOT_FOUND
+Error Message: Repository not found: pdfmake/pdfmake
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #2
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-21T02:01:39.075902
+Repository: git://github.com/pdfmake/pdfmake.git
+Ecosystems: NPM
+Error Type: NOT_FOUND
+Error Message: Repository not found: pdfmake/pdfmake
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #3
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-21T02:01:49.890033
+Repository: https://github.com/hipay/hipay-fullservice-sdk-js
+Ecosystems: Maven, PHP
+Error Type: NOT_FOUND
+Error Message: Repository not found: hipay/hipay-fullservice-sdk-js
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #4
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-21T02:01:50.110084
+Repository: git+https://github.com/hipay/hipay-fullservice-sdk-js.git
+Ecosystems: NPM
+Error Type: NOT_FOUND
+Error Message: Repository not found: hipay/hipay-fullservice-sdk-js
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #5
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-21T02:03:12.964573
+Repository: http://www.nuiton.org/repositories/browse/nuiton-js/nuiton-js-html5shiv/tags/nuiton-js-html5shiv-3.7.2-1
+Ecosystems: Maven, NPM, PHP
+Error Type: PARSE_ERROR
+Error Message: Could not parse GitHub URL: http://www.nuiton.org/repositories/browse/nuiton-js/nuiton-js-html5shiv/tags/nuiton-js-html5shiv-3.7.2-1
+
+Possible Reason:
+  Ensure the URL follows the format: https://github.com/owner/repo or git@github.com:owner/repo.git
+
+Suggested Solution:
+  Ensure the URL follows the format: https://github.com/owner/repo or git@github.com:owner/repo.git
+
+================================================================================
+

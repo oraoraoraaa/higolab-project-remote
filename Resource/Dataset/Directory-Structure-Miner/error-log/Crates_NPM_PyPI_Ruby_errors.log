@@ -1,0 +1,135 @@
+================================================================================
+Error Log for Crates_NPM_PyPI_Ruby
+================================================================================
+Total Errors: 8
+Generated: 2026-01-21 02:15:51
+================================================================================
+
+Error #1
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-21T02:09:06.353328
+Repository: https://github.com/example/example
+Ecosystems: Crates, Ruby
+Error Type: NOT_FOUND
+Error Message: Repository not found: example/example
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #2
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-21T02:09:06.584777
+Repository: github.com/example/example
+Ecosystems: NPM
+Error Type: NOT_FOUND
+Error Message: Repository not found: example/example
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #3
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-21T02:09:06.802450
+Repository: http://github.com/example/example
+Ecosystems: PyPI
+Error Type: NOT_FOUND
+Error Message: Repository not found: example/example
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #4
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-21T02:09:07.666183
+Repository: https://github.com/miscreant/keyuri
+Ecosystems: Crates, PyPI
+Error Type: NOT_FOUND
+Error Message: Repository not found: miscreant/keyuri
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #5
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-21T02:09:07.911279
+Repository: git+https://github.com/miscreant/keyuri.git
+Ecosystems: NPM
+Error Type: NOT_FOUND
+Error Message: Repository not found: miscreant/keyuri
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #6
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-21T02:09:08.179598
+Repository: https://github.com/miscreant/keyuri/
+Ecosystems: Ruby
+Error Type: NOT_FOUND
+Error Message: Repository not found: miscreant/keyuri
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #7
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-21T02:09:10.927717
+Repository: https://github.com/asimov-modules/asimov-nexus-module
+Ecosystems: Crates, PyPI, Ruby
+Error Type: NOT_FOUND
+Error Message: Repository not found: asimov-modules/asimov-nexus-module
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #8
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-21T02:09:11.185324
+Repository: git+https://github.com/asimov-modules/asimov-nexus-module.git
+Ecosystems: NPM
+Error Type: NOT_FOUND
+Error Message: Repository not found: asimov-modules/asimov-nexus-module
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+

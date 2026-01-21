@@ -1,0 +1,887 @@
+================================================================================
+Error Log for Crates_PyPI
+================================================================================
+Total Errors: 55
+Generated: 2026-01-21 02:15:51
+================================================================================
+
+Error #1
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-20T14:59:44.562077
+Repository: https://github.com/paradigmxyz/lbl
+Ecosystems: Crates, PyPI
+Error Type: NOT_FOUND
+Error Message: Repository not found: paradigmxyz/lbl
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #2
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-20T14:59:48.753558
+Repository: https://github.com/NaluScientific/naluacq
+Ecosystems: Crates, PyPI
+Error Type: NOT_FOUND
+Error Message: Repository not found: NaluScientific/naluacq
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #3
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-20T15:00:28.965387
+Repository: https://github.com/ulagbulag/connected-data-lake
+Ecosystems: Crates, PyPI
+Error Type: NOT_FOUND
+Error Message: Repository not found: ulagbulag/connected-data-lake
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #4
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-20T15:01:05.044377
+Repository: https://github.com/lbugdb/lbug
+Ecosystems: Crates, PyPI
+Error Type: NOT_FOUND
+Error Message: Repository not found: lbugdb/lbug
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #5
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-20T15:01:06.751604
+Repository: https://github.com/Hennzau/arrow-message
+Ecosystems: Crates, PyPI
+Error Type: NOT_FOUND
+Error Message: Repository not found: Hennzau/arrow-message
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #6
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-20T15:01:12.655093
+Repository: https://github.com/Chinilla/chinillaclvm_tools_rs
+Ecosystems: Crates, PyPI
+Error Type: NOT_FOUND
+Error Message: Repository not found: Chinilla/chinillaclvm_tools_rs
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #7
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-20T15:01:29.194951
+Repository: https://github.com/ascpkg/asc/tree/main/asc_bin
+Ecosystems: Crates, PyPI
+Error Type: NOT_FOUND
+Error Message: Repository not found: ascpkg/asc
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #8
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-20T15:01:31.631868
+Repository: https://github.com/al8n/pyo3-io
+Ecosystems: Crates
+Error Type: NOT_FOUND
+Error Message: Repository not found: al8n/pyo3-io
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #9
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-20T15:01:32.029779
+Repository: http://github.com/al8n/pyo3-io
+Ecosystems: PyPI
+Error Type: NOT_FOUND
+Error Message: Repository not found: al8n/pyo3-io
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #10
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-20T15:01:44.499732
+Repository: https://github.com/kerryeon/mp
+Ecosystems: Crates, PyPI
+Error Type: NOT_FOUND
+Error Message: Repository not found: kerryeon/mp
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #11
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-20T15:02:11.159763
+Repository: https://github.com/hivellm/compression-prompt
+Ecosystems: Crates, PyPI
+Error Type: NOT_FOUND
+Error Message: Repository not found: hivellm/compression-prompt
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #12
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-20T15:02:23.518960
+Repository: https://github.com/Chinilla/chinilla_rs/chinilla-clvm-utils
+Ecosystems: Crates
+Error Type: NOT_FOUND
+Error Message: Repository not found: Chinilla/chinilla_rs
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #13
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-20T15:02:23.774632
+Repository: https://github.com/Chinilla/chinilla_rs/
+Ecosystems: PyPI
+Error Type: NOT_FOUND
+Error Message: Repository not found: Chinilla/chinilla_rs
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #14
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-20T15:02:30.558674
+Repository: https://github.com/lightonai/next-plaid
+Ecosystems: Crates, PyPI
+Error Type: NOT_FOUND
+Error Message: Repository not found: lightonai/next-plaid
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #15
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-20T15:02:30.865479
+Repository: https://github.com/rate-technology/rillrate-py
+Ecosystems: Crates, PyPI
+Error Type: NOT_FOUND
+Error Message: Repository not found: rate-technology/rillrate-py
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #16
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-20T15:02:44.633725
+Repository: https://github.com/tellaro/tellaro-query-language
+Ecosystems: Crates, PyPI
+Error Type: NOT_FOUND
+Error Message: Repository not found: tellaro/tellaro-query-language
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #17
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-20T15:02:53.979878
+Repository: https://github.com/seaplane-io/seaplane/tree/main/crates/container-image-ref
+Ecosystems: Crates
+Error Type: NOT_FOUND
+Error Message: Repository not found: seaplane-io/seaplane
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #18
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-20T15:02:54.244110
+Repository: https://github.com/seaplane-io/seaplane/tree/main/seaplane-sdk/python
+Ecosystems: PyPI
+Error Type: NOT_FOUND
+Error Message: Repository not found: seaplane-io/seaplane
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #19
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-20T15:02:54.707214
+Repository: https://github.com/packetdb/packetdb
+Ecosystems: Crates, PyPI
+Error Type: NOT_FOUND
+Error Message: Repository not found: packetdb/packetdb
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #20
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-20T15:02:59.409708
+Repository: https://github.com/CasperLabs/CasperLabs/tree/master/execution-engine/mint
+Ecosystems: Crates
+Error Type: NOT_FOUND
+Error Message: Repository not found: CasperLabs/CasperLabs
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #21
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-20T15:02:59.707282
+Repository: https://github.com/CasperLabs/CasperLabs/tree/dev/integration-testing/client/CasperLabsClient
+Ecosystems: PyPI
+Error Type: NOT_FOUND
+Error Message: Repository not found: CasperLabs/CasperLabs
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #22
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-20T15:03:06.531128
+Repository: https://github.com/itt-ustutt/dualnum
+Ecosystems: Crates, PyPI
+Error Type: NOT_FOUND
+Error Message: Repository not found: itt-ustutt/dualnum
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #23
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-20T15:03:08.493802
+Repository: https://github.com/iteralabs/molina
+Ecosystems: Crates, PyPI
+Error Type: NOT_FOUND
+Error Message: Repository not found: iteralabs/molina
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #24
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-20T15:03:22.431047
+Repository: https://github.com/pybevy/pybevy
+Ecosystems: Crates, PyPI
+Error Type: NOT_FOUND
+Error Message: Repository not found: pybevy/pybevy
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #25
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-20T15:03:47.197294
+Repository: https://github.com/HQSquantumsimulations/qoqo_qiskit
+Ecosystems: Crates, PyPI
+Error Type: NOT_FOUND
+Error Message: Repository not found: HQSquantumsimulations/qoqo_qiskit
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #26
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-20T15:04:11.901116
+Repository: https://github.com/ra0x3/pyrs
+Ecosystems: Crates
+Error Type: NOT_FOUND
+Error Message: Repository not found: ra0x3/pyrs
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #27
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-20T15:04:12.166054
+Repository: https://www.github.com/ra0x3/pyrs
+Ecosystems: PyPI
+Error Type: NOT_FOUND
+Error Message: Repository not found: ra0x3/pyrs
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #28
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-20T15:04:22.313888
+Repository: https://github.com/lipicoder/rapidash
+Ecosystems: Crates, PyPI
+Error Type: NOT_FOUND
+Error Message: Repository not found: lipicoder/rapidash
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #29
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-20T15:04:29.121795
+Repository: https://github.com/TyberiusPrime/mbf_gtf
+Ecosystems: Crates, PyPI
+Error Type: NOT_FOUND
+Error Message: Repository not found: TyberiusPrime/mbf_gtf
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #30
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-20T15:04:38.880083
+Repository: https://github.com/Wlanguage/python-core/
+Ecosystems: Crates, PyPI
+Error Type: NOT_FOUND
+Error Message: Repository not found: Wlanguage/python-core
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #31
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-20T15:04:42.264372
+Repository: https://github.com/yourusername/crab-jwt
+Ecosystems: Crates, PyPI
+Error Type: NOT_FOUND
+Error Message: Repository not found: yourusername/crab-jwt
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #32
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-20T15:04:43.320397
+Repository: https://github.com/open-aviation/jetsim
+Ecosystems: Crates, PyPI
+Error Type: NOT_FOUND
+Error Message: Repository not found: open-aviation/jetsim
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #33
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-20T15:05:23.120497
+Repository: https://github.com/Aareon/dance
+Ecosystems: Crates, PyPI
+Error Type: NOT_FOUND
+Error Message: Repository not found: Aareon/dance
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #34
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-20T15:05:25.813848
+Repository: https://github.com/leostera/solarchive.org
+Ecosystems: Crates, PyPI
+Error Type: NOT_FOUND
+Error Message: Repository not found: leostera/solarchive.org
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #35
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-20T15:06:05.682074
+Repository: https://github.com/asuta274/loladb
+Ecosystems: Crates, PyPI
+Error Type: NOT_FOUND
+Error Message: Repository not found: asuta274/loladb
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #36
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-20T15:06:11.957431
+Repository: https://github.com/paradigmxyz/jtool
+Ecosystems: Crates, PyPI
+Error Type: NOT_FOUND
+Error Message: Repository not found: paradigmxyz/jtool
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #37
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-20T15:06:14.259599
+Repository: https://github.com/ofluffydev/metronome-rs
+Ecosystems: Crates, PyPI
+Error Type: NOT_FOUND
+Error Message: Repository not found: ofluffydev/metronome-rs
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #38
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-20T15:06:25.945728
+Repository: https://github.com/gimpey-com/sol-gateway
+Ecosystems: Crates, PyPI
+Error Type: NOT_FOUND
+Error Message: Repository not found: gimpey-com/sol-gateway
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #39
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-20T15:07:07.561979
+Repository: https://github.com/guangyuhe/simple_smtp_sender
+Ecosystems: Crates, PyPI
+Error Type: NOT_FOUND
+Error Message: Repository not found: guangyuhe/simple_smtp_sender
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #40
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-20T15:07:13.795978
+Repository: https://github.com/nougat-dev/zopf
+Ecosystems: Crates, PyPI
+Error Type: NOT_FOUND
+Error Message: Repository not found: nougat-dev/zopf
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #41
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-20T15:07:29.712957
+Repository: https://github.com/yourusername/feather-db
+Ecosystems: Crates, PyPI
+Error Type: NOT_FOUND
+Error Message: Repository not found: yourusername/feather-db
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #42
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-20T15:09:18.020334
+Repository: https://github.com/Tillbeemelmanns/ros2_tui
+Ecosystems: Crates, PyPI
+Error Type: NOT_FOUND
+Error Message: Repository not found: Tillbeemelmanns/ros2_tui
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #43
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-20T15:09:30.532803
+Repository: https://github.com/vexshield/vexshield
+Ecosystems: Crates, PyPI
+Error Type: NOT_FOUND
+Error Message: Repository not found: vexshield/vexshield
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #44
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-20T15:09:35.808102
+Repository: https://github.com/HQSquantumsimulations/qoqo_quest
+Ecosystems: Crates, PyPI
+Error Type: NOT_FOUND
+Error Message: Repository not found: HQSquantumsimulations/qoqo_quest
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #45
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-20T15:09:43.311549
+Repository: https://github.com/hessra/hessra-sdk.rs
+Ecosystems: Crates
+Error Type: NOT_FOUND
+Error Message: Repository not found: hessra/hessra-sdk.rs
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #46
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-20T15:09:43.549030
+Repository: https://github.com/hessra/hessra-sdk.rs/tree/main/hessra-py
+Ecosystems: PyPI
+Error Type: NOT_FOUND
+Error Message: Repository not found: hessra/hessra-sdk.rs
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #47
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-20T15:09:46.085969
+Repository: https://github.com/psila-ai/basalt-protocol
+Ecosystems: Crates, PyPI
+Error Type: NOT_FOUND
+Error Message: Repository not found: psila-ai/basalt-protocol
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #48
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-20T15:09:53.303361
+Repository: https://github.com/asimov-modules/asimov-nearai-module
+Ecosystems: Crates
+Error Type: NOT_FOUND
+Error Message: Repository not found: asimov-modules/asimov-nearai-module
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #49
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-20T15:09:53.611176
+Repository: https://github.com/asimov-modules/asimov-nearai-module.git
+Ecosystems: PyPI
+Error Type: NOT_FOUND
+Error Message: Repository not found: asimov-modules/asimov-nearai-module
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #50
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-20T15:09:56.663850
+Repository: https://github.com/lipish/llm-link
+Ecosystems: Crates, PyPI
+Error Type: NOT_FOUND
+Error Message: Repository not found: lipish/llm-link
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #51
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-20T15:10:04.075220
+Repository: https://github.com/devxpod/oauth42
+Ecosystems: Crates, PyPI
+Error Type: NOT_FOUND
+Error Message: Repository not found: devxpod/oauth42
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #52
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-20T15:10:29.397849
+Repository: https://github.com/wjwillemse/selmr
+Ecosystems: Crates, PyPI
+Error Type: NOT_FOUND
+Error Message: Repository not found: wjwillemse/selmr
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #53
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-20T15:10:40.846676
+Repository: https://github.com/automate-capture/hat
+Ecosystems: Crates, PyPI
+Error Type: NOT_FOUND
+Error Message: Repository not found: automate-capture/hat
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #54
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-20T15:10:47.218497
+Repository: https://github.com/ekoDB/ekodb
+Ecosystems: Crates, PyPI
+Error Type: NOT_FOUND
+Error Message: Repository not found: ekoDB/ekodb
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #55
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-20T15:10:49.926144
+Repository: https://github.com/holg/l3d-rs
+Ecosystems: Crates, PyPI
+Error Type: NOT_FOUND
+Error Message: Repository not found: holg/l3d-rs
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+

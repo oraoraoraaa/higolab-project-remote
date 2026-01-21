@@ -1,0 +1,39 @@
+================================================================================
+Error Log for Go_Maven_PHP
+================================================================================
+Total Errors: 2
+Generated: 2026-01-21 02:15:51
+================================================================================
+
+Error #1
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-21T01:51:58.587003
+Repository: https://github.com/xsokev/dojo-bootstrap
+Ecosystems: Go
+Error Type: NOT_FOUND
+Error Message: Repository not found: xsokev/dojo-bootstrap
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #2
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-21T01:51:58.815408
+Repository: https://github.com/xsokev/Dojo-Bootstrap
+Ecosystems: Maven, PHP
+Error Type: NOT_FOUND
+Error Message: Repository not found: xsokev/Dojo-Bootstrap
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+

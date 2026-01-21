@@ -1,0 +1,71 @@
+================================================================================
+Error Log for NPM_PHP_PyPI
+================================================================================
+Total Errors: 4
+Generated: 2026-01-21 02:15:51
+================================================================================
+
+Error #1
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-21T02:06:54.174065
+Repository: git+https://github.com/ridi/cms-sdk.git
+Ecosystems: NPM
+Error Type: NOT_FOUND
+Error Message: Repository not found: ridi/cms-sdk
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #2
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-21T02:06:54.541063
+Repository: https://github.com/ridi/cms-sdk
+Ecosystems: PHP, PyPI
+Error Type: NOT_FOUND
+Error Message: Repository not found: ridi/cms-sdk
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #3
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-21T02:07:01.663577
+Repository: git+https://github.com/mgks/shaml.git
+Ecosystems: NPM
+Error Type: NOT_FOUND
+Error Message: Repository not found: mgks/shaml
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #4
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-21T02:07:01.917797
+Repository: https://github.com/mgks/shaml
+Ecosystems: PHP, PyPI
+Error Type: NOT_FOUND
+Error Message: Repository not found: mgks/shaml
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+

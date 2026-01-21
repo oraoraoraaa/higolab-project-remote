@@ -1,0 +1,23 @@
+================================================================================
+Error Log for Maven_NPM_PHP_PyPI
+================================================================================
+Total Errors: 1
+Generated: 2026-01-21 02:15:51
+================================================================================
+
+Error #1
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-21T02:14:27.901544
+Repository: http://www.nuiton.org/repositories/browse/nuiton-js/nuiton-js-html5shiv/tags/nuiton-js-html5shiv-3.7.2-1
+Ecosystems: Maven, NPM, PHP, PyPI
+Error Type: PARSE_ERROR
+Error Message: Could not parse GitHub URL: http://www.nuiton.org/repositories/browse/nuiton-js/nuiton-js-html5shiv/tags/nuiton-js-html5shiv-3.7.2-1
+
+Possible Reason:
+  Ensure the URL follows the format: https://github.com/owner/repo or git@github.com:owner/repo.git
+
+Suggested Solution:
+  Ensure the URL follows the format: https://github.com/owner/repo or git@github.com:owner/repo.git
+
+================================================================================
+

@@ -1,0 +1,743 @@
+================================================================================
+Error Log for Maven_NPM_PyPI
+================================================================================
+Total Errors: 46
+Generated: 2026-01-21 02:15:51
+================================================================================
+
+Error #1
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-21T02:03:50.530824
+Repository: http://www.nuiton.org/repositories/browse/nuiton-js/nuiton-js-html5shiv/tags/nuiton-js-html5shiv-3.7.2-1
+Ecosystems: Maven, NPM, PyPI
+Error Type: PARSE_ERROR
+Error Message: Could not parse GitHub URL: http://www.nuiton.org/repositories/browse/nuiton-js/nuiton-js-html5shiv/tags/nuiton-js-html5shiv-3.7.2-1
+
+Possible Reason:
+  Ensure the URL follows the format: https://github.com/owner/repo or git@github.com:owner/repo.git
+
+Suggested Solution:
+  Ensure the URL follows the format: https://github.com/owner/repo or git@github.com:owner/repo.git
+
+================================================================================
+
+Error #2
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-21T02:03:53.659501
+Repository: ${project.url}
+Ecosystems: Maven, NPM, PyPI
+Error Type: PARSE_ERROR
+Error Message: Could not parse GitHub URL: ${project.url}
+
+Possible Reason:
+  Ensure the URL follows the format: https://github.com/owner/repo or git@github.com:owner/repo.git
+
+Suggested Solution:
+  Ensure the URL follows the format: https://github.com/owner/repo or git@github.com:owner/repo.git
+
+================================================================================
+
+Error #3
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-21T02:04:01.928619
+Repository: git@github.com:osgeo/gdal.git
+Ecosystems: Maven, NPM, PyPI
+Error Type: PARSE_ERROR
+Error Message: Could not parse GitHub URL: git@github.com:osgeo/gdal.git
+
+Possible Reason:
+  Ensure the URL follows the format: https://github.com/owner/repo or git@github.com:owner/repo.git
+
+Suggested Solution:
+  Ensure the URL follows the format: https://github.com/owner/repo or git@github.com:owner/repo.git
+
+================================================================================
+
+Error #4
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-21T02:04:04.375045
+Repository: git@github.com:DataSystemsLab/GeoSpark.git
+Ecosystems: Maven, NPM, PyPI
+Error Type: PARSE_ERROR
+Error Message: Could not parse GitHub URL: git@github.com:DataSystemsLab/GeoSpark.git
+
+Possible Reason:
+  Ensure the URL follows the format: https://github.com/owner/repo or git@github.com:owner/repo.git
+
+Suggested Solution:
+  Ensure the URL follows the format: https://github.com/owner/repo or git@github.com:owner/repo.git
+
+================================================================================
+
+Error #5
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-21T02:04:11.109431
+Repository: http://github.com/user/project
+Ecosystems: Maven
+Error Type: NOT_FOUND
+Error Message: Repository not found: user/project
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #6
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-21T02:04:11.326743
+Repository: git+https://github.com/user/project.git
+Ecosystems: NPM
+Error Type: NOT_FOUND
+Error Message: Repository not found: user/project
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #7
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-21T02:04:11.545882
+Repository: https://github.com/user/project
+Ecosystems: PyPI
+Error Type: NOT_FOUND
+Error Message: Repository not found: user/project
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #8
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-21T02:04:12.739774
+Repository: https://github.com/affinityproject/common-check-widget-backend-lib.git
+Ecosystems: Maven, PyPI
+Error Type: NOT_FOUND
+Error Message: Repository not found: affinityproject/common-check-widget-backend-lib
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #9
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-21T02:04:13.057924
+Repository: git+https://github.com/affinityproject/common-check-widget-backend-lib.git
+Ecosystems: NPM
+Error Type: NOT_FOUND
+Error Message: Repository not found: affinityproject/common-check-widget-backend-lib
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #10
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-21T02:04:17.651997
+Repository: https://github.com/your-username/your-repo/tree/main
+Ecosystems: Maven
+Error Type: NOT_FOUND
+Error Message: Repository not found: your-username/your-repo
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #11
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-21T02:04:17.867138
+Repository: git+https://github.com/your-username/your-repo.git
+Ecosystems: NPM
+Error Type: NOT_FOUND
+Error Message: Repository not found: your-username/your-repo
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #12
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-21T02:04:18.083075
+Repository: https://github.com/your-username/your-repo
+Ecosystems: PyPI
+Error Type: NOT_FOUND
+Error Message: Repository not found: your-username/your-repo
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #13
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-21T02:04:26.340956
+Repository: https://github.com/professionalaf/enterprise-utils.git
+Ecosystems: Maven, PyPI
+Error Type: NOT_FOUND
+Error Message: Repository not found: professionalaf/enterprise-utils
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #14
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-21T02:04:26.561415
+Repository: git+https://github.com/professionalaf/enterprise-utils.git
+Ecosystems: NPM
+Error Type: NOT_FOUND
+Error Message: Repository not found: professionalaf/enterprise-utils
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #15
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-21T02:04:28.843696
+Repository: https://github.com/iliapolo/constructs-tokens
+Ecosystems: Maven, PyPI
+Error Type: NOT_FOUND
+Error Message: Repository not found: iliapolo/constructs-tokens
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #16
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-21T02:04:29.064679
+Repository: git+https://github.com/iliapolo/constructs-tokens.git
+Ecosystems: NPM
+Error Type: NOT_FOUND
+Error Message: Repository not found: iliapolo/constructs-tokens
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #17
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-21T02:04:32.156823
+Repository: https://github.com/helbing/astrojs-aws.git
+Ecosystems: Maven, PyPI
+Error Type: NOT_FOUND
+Error Message: Repository not found: helbing/astrojs-aws
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #18
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-21T02:04:32.394145
+Repository: git+https://github.com/helbing/astrojs-aws.git
+Ecosystems: NPM
+Error Type: NOT_FOUND
+Error Message: Repository not found: helbing/astrojs-aws
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #19
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-21T02:04:33.314615
+Repository: https://github.com/DevMayur/Inference_Provider_V2
+Ecosystems: Maven, PyPI
+Error Type: NOT_FOUND
+Error Message: Repository not found: DevMayur/Inference_Provider_V2
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #20
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-21T02:04:33.585550
+Repository: git+https://github.com/DevMayur/Inference_Provider_V2.git
+Ecosystems: NPM
+Error Type: NOT_FOUND
+Error Message: Repository not found: DevMayur/Inference_Provider_V2
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #21
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-21T02:04:49.913608
+Repository: https://github.com/cdklabs/cdk-atmosphere-service.git
+Ecosystems: Maven, PyPI
+Error Type: NOT_FOUND
+Error Message: Repository not found: cdklabs/cdk-atmosphere-service
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #22
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-21T02:04:50.175460
+Repository: git+https://github.com/cdklabs/cdk-atmosphere-service.git
+Ecosystems: NPM
+Error Type: NOT_FOUND
+Error Message: Repository not found: cdklabs/cdk-atmosphere-service
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #23
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-21T02:04:54.616114
+Repository: git@github.com:xxx/xxx.git
+Ecosystems: Maven, NPM, PyPI
+Error Type: PARSE_ERROR
+Error Message: Could not parse GitHub URL: git@github.com:xxx/xxx.git
+
+Possible Reason:
+  Ensure the URL follows the format: https://github.com/owner/repo or git@github.com:owner/repo.git
+
+Suggested Solution:
+  Ensure the URL follows the format: https://github.com/owner/repo or git@github.com:owner/repo.git
+
+================================================================================
+
+Error #24
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-21T02:04:54.840012
+Repository: git+https://github.com/xxx/xxx.git
+Ecosystems: NPM
+Error Type: NOT_FOUND
+Error Message: Repository not found: xxx/xxx
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #25
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-21T02:04:55.070406
+Repository: https://github.com/xxx/xxx
+Ecosystems: PyPI
+Error Type: NOT_FOUND
+Error Message: Repository not found: xxx/xxx
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #26
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-21T02:05:00.972759
+Repository: https://github.com/wowsql/wowsql
+Ecosystems: Maven, PyPI
+Error Type: NOT_FOUND
+Error Message: Repository not found: wowsql/wowsql
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #27
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-21T02:05:01.225963
+Repository: git+https://github.com/wowsql/wowsql.git
+Ecosystems: NPM
+Error Type: NOT_FOUND
+Error Message: Repository not found: wowsql/wowsql
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #28
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-21T02:05:17.715959
+Repository: https://github.com/patrick.florek/cdk-dynamodb-backup.git
+Ecosystems: Maven, PyPI
+Error Type: NOT_FOUND
+Error Message: Repository not found: patrick.florek/cdk-dynamodb-backup
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #29
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-21T02:05:17.944629
+Repository: git+https://github.com/patrick.florek/cdk-dynamodb-backup.git
+Ecosystems: NPM
+Error Type: NOT_FOUND
+Error Message: Repository not found: patrick.florek/cdk-dynamodb-backup
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #30
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-21T02:05:21.180514
+Repository: https://github.com/oceanprotocol/keeper-contracts/tree/master
+Ecosystems: Maven
+Error Type: NOT_FOUND
+Error Message: Repository not found: oceanprotocol/keeper-contracts
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #31
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-21T02:05:21.456367
+Repository: git+https://github.com/oceanprotocol/keeper-contracts.git
+Ecosystems: NPM
+Error Type: NOT_FOUND
+Error Message: Repository not found: oceanprotocol/keeper-contracts
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #32
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-21T02:05:21.729078
+Repository: https://github.com/oceanprotocol/keeper-contracts
+Ecosystems: PyPI
+Error Type: NOT_FOUND
+Error Message: Repository not found: oceanprotocol/keeper-contracts
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #33
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-21T02:05:21.954988
+Repository: https://github.com/lazinessdevs/lazy-constructs.git
+Ecosystems: Maven, PyPI
+Error Type: NOT_FOUND
+Error Message: Repository not found: lazinessdevs/lazy-constructs
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #34
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-21T02:05:22.187620
+Repository: git+https://github.com/lazinessdevs/lazy-constructs.git
+Ecosystems: NPM
+Error Type: NOT_FOUND
+Error Message: Repository not found: lazinessdevs/lazy-constructs
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #35
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-21T02:05:54.449562
+Repository: https://github.com/p6m7g8/p6-barrier.git
+Ecosystems: Maven, PyPI
+Error Type: NOT_FOUND
+Error Message: Repository not found: p6m7g8/p6-barrier
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #36
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-21T02:05:54.669452
+Repository: git+https://github.com/p6m7g8/p6-barrier.git
+Ecosystems: NPM
+Error Type: NOT_FOUND
+Error Message: Repository not found: p6m7g8/p6-barrier
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #37
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-21T02:05:56.942773
+Repository: https://github.com/eladb/jsii-library-template.git
+Ecosystems: Maven, PyPI
+Error Type: NOT_FOUND
+Error Message: Repository not found: eladb/jsii-library-template
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #38
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-21T02:05:57.250958
+Repository: git+https://github.com/eladb/jsii-library-template.git
+Ecosystems: NPM
+Error Type: NOT_FOUND
+Error Message: Repository not found: eladb/jsii-library-template
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #39
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-21T02:05:57.469275
+Repository: https://github.com/eladb/awscdk-81-patch.git
+Ecosystems: Maven, PyPI
+Error Type: NOT_FOUND
+Error Message: Repository not found: eladb/awscdk-81-patch
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #40
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-21T02:05:57.691059
+Repository: git+https://github.com/eladb/awscdk-81-patch.git
+Ecosystems: NPM
+Error Type: NOT_FOUND
+Error Message: Repository not found: eladb/awscdk-81-patch
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #41
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-21T02:05:57.904331
+Repository: https://github.com/chris/cdk-auth.git
+Ecosystems: Maven, PyPI
+Error Type: NOT_FOUND
+Error Message: Repository not found: chris/cdk-auth
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #42
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-21T02:05:58.135383
+Repository: git+https://github.com/chris/cdk-auth.git
+Ecosystems: NPM
+Error Type: NOT_FOUND
+Error Message: Repository not found: chris/cdk-auth
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #43
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-21T02:06:03.807399
+Repository: git@github.com:epam/Indigo.git
+Ecosystems: Maven, NPM, PyPI
+Error Type: PARSE_ERROR
+Error Message: Could not parse GitHub URL: git@github.com:epam/Indigo.git
+
+Possible Reason:
+  Ensure the URL follows the format: https://github.com/owner/repo or git@github.com:owner/repo.git
+
+Suggested Solution:
+  Ensure the URL follows the format: https://github.com/owner/repo or git@github.com:owner/repo.git
+
+================================================================================
+
+Error #44
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-21T02:06:10.169185
+Repository: https://github.com/applitools/eyes.sdk.javascript1
+Ecosystems: Maven
+Error Type: NOT_FOUND
+Error Message: Repository not found: applitools/eyes.sdk.javascript1
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #45
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-21T02:06:10.459569
+Repository: git://github.com/applitools/eyes.sdk.javascript1.git
+Ecosystems: NPM
+Error Type: NOT_FOUND
+Error Message: Repository not found: applitools/eyes.sdk.javascript1
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #46
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-21T02:06:10.729987
+Repository: https://github.com/applitools/eyes.sdk.javascript1/tree/master/packages/eyes-universal
+Ecosystems: PyPI
+Error Type: NOT_FOUND
+Error Message: Repository not found: applitools/eyes.sdk.javascript1
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+

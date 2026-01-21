@@ -1,0 +1,743 @@
+================================================================================
+Error Log for NPM_PHP
+================================================================================
+Total Errors: 46
+Generated: 2026-01-21 02:15:51
+================================================================================
+
+Error #1
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-21T00:21:37.860255
+Repository: git@github.com:arpite/arpite.git
+Ecosystems: NPM, PHP
+Error Type: PARSE_ERROR
+Error Message: Could not parse GitHub URL: git@github.com:arpite/arpite.git
+
+Possible Reason:
+  Ensure the URL follows the format: https://github.com/owner/repo or git@github.com:owner/repo.git
+
+Suggested Solution:
+  Ensure the URL follows the format: https://github.com/owner/repo or git@github.com:owner/repo.git
+
+================================================================================
+
+Error #2
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-21T00:22:18.432633
+Repository: git+https://github.com/FastyBird/accounts-module.git
+Ecosystems: NPM
+Error Type: NOT_FOUND
+Error Message: Repository not found: FastyBird/accounts-module
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #3
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-21T00:22:18.659208
+Repository: https://github.com/FastyBird/accounts-module
+Ecosystems: PHP
+Error Type: NOT_FOUND
+Error Message: Repository not found: FastyBird/accounts-module
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #4
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-21T00:22:18.882846
+Repository: git+https://github.com/FastyBird/devices-module.git
+Ecosystems: NPM
+Error Type: NOT_FOUND
+Error Message: Repository not found: FastyBird/devices-module
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #5
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-21T00:22:19.119189
+Repository: https://github.com/FastyBird/devices-module
+Ecosystems: PHP
+Error Type: NOT_FOUND
+Error Message: Repository not found: FastyBird/devices-module
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #6
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-21T00:22:19.341671
+Repository: git+https://github.com/FastyBird/homekit-connector.git
+Ecosystems: NPM
+Error Type: NOT_FOUND
+Error Message: Repository not found: FastyBird/homekit-connector
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #7
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-21T00:22:19.575138
+Repository: https://github.com/FastyBird/homekit-connector
+Ecosystems: PHP
+Error Type: NOT_FOUND
+Error Message: Repository not found: FastyBird/homekit-connector
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #8
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-21T00:22:19.802673
+Repository: git+https://github.com/FastyBird/metadata-library.git
+Ecosystems: NPM
+Error Type: NOT_FOUND
+Error Message: Repository not found: FastyBird/metadata-library
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #9
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-21T00:22:20.024805
+Repository: https://github.com/FastyBird/metadata-library
+Ecosystems: PHP
+Error Type: NOT_FOUND
+Error Message: Repository not found: FastyBird/metadata-library
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #10
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-21T00:22:20.556253
+Repository: git+https://github.com/FastyBird/tools.git
+Ecosystems: NPM
+Error Type: NOT_FOUND
+Error Message: Repository not found: FastyBird/tools
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #11
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-21T00:22:20.779172
+Repository: https://github.com/FastyBird/tools
+Ecosystems: PHP
+Error Type: NOT_FOUND
+Error Message: Repository not found: FastyBird/tools
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #12
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-21T00:22:21.029343
+Repository: git+https://github.com/FastyBird/triggers-module.git
+Ecosystems: NPM
+Error Type: NOT_FOUND
+Error Message: Repository not found: FastyBird/triggers-module
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #13
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-21T00:22:21.267073
+Repository: https://github.com/FastyBird/triggers-module
+Ecosystems: PHP
+Error Type: NOT_FOUND
+Error Message: Repository not found: FastyBird/triggers-module
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #14
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-21T00:22:21.515617
+Repository: git+https://github.com/FastyBird/ui-module.git
+Ecosystems: NPM
+Error Type: NOT_FOUND
+Error Message: Repository not found: FastyBird/ui-module
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #15
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-21T00:22:21.758239
+Repository: https://github.com/FastyBird/ui-module
+Ecosystems: PHP
+Error Type: NOT_FOUND
+Error Message: Repository not found: FastyBird/ui-module
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #16
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-21T00:22:44.972011
+Repository: git@github.com:heimrichhannot/contao-choices-bundle.git
+Ecosystems: NPM, PHP
+Error Type: PARSE_ERROR
+Error Message: Could not parse GitHub URL: git@github.com:heimrichhannot/contao-choices-bundle.git
+
+Possible Reason:
+  Ensure the URL follows the format: https://github.com/owner/repo or git@github.com:owner/repo.git
+
+Suggested Solution:
+  Ensure the URL follows the format: https://github.com/owner/repo or git@github.com:owner/repo.git
+
+================================================================================
+
+Error #17
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-21T00:22:47.551401
+Repository: git@github.com:heimrichhannot/contao-media-library-bundle.git
+Ecosystems: NPM, PHP
+Error Type: PARSE_ERROR
+Error Message: Could not parse GitHub URL: git@github.com:heimrichhannot/contao-media-library-bundle.git
+
+Possible Reason:
+  Ensure the URL follows the format: https://github.com/owner/repo or git@github.com:owner/repo.git
+
+Suggested Solution:
+  Ensure the URL follows the format: https://github.com/owner/repo or git@github.com:owner/repo.git
+
+================================================================================
+
+Error #18
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-21T00:22:48.976265
+Repository: git@github.com:heimrichhannot/contao-multi-column-editor-bundle.git
+Ecosystems: NPM, PHP
+Error Type: PARSE_ERROR
+Error Message: Could not parse GitHub URL: git@github.com:heimrichhannot/contao-multi-column-editor-bundle.git
+
+Possible Reason:
+  Ensure the URL follows the format: https://github.com/owner/repo or git@github.com:owner/repo.git
+
+Suggested Solution:
+  Ensure the URL follows the format: https://github.com/owner/repo or git@github.com:owner/repo.git
+
+================================================================================
+
+Error #19
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-21T00:22:49.604157
+Repository: git@github.com:heimrichhannot/contao-no-ui-slider-bundle.git
+Ecosystems: NPM, PHP
+Error Type: PARSE_ERROR
+Error Message: Could not parse GitHub URL: git@github.com:heimrichhannot/contao-no-ui-slider-bundle.git
+
+Possible Reason:
+  Ensure the URL follows the format: https://github.com/owner/repo or git@github.com:owner/repo.git
+
+Suggested Solution:
+  Ensure the URL follows the format: https://github.com/owner/repo or git@github.com:owner/repo.git
+
+================================================================================
+
+Error #20
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-21T00:22:51.044968
+Repository: git@github.com:heimrichhannot/contao-youtube-bundle.git
+Ecosystems: NPM, PHP
+Error Type: PARSE_ERROR
+Error Message: Could not parse GitHub URL: git@github.com:heimrichhannot/contao-youtube-bundle.git
+
+Possible Reason:
+  Ensure the URL follows the format: https://github.com/owner/repo or git@github.com:owner/repo.git
+
+Suggested Solution:
+  Ensure the URL follows the format: https://github.com/owner/repo or git@github.com:owner/repo.git
+
+================================================================================
+
+Error #21
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-21T00:23:31.937087
+Repository: neos/neos-ui
+Ecosystems: NPM, PHP
+Error Type: PARSE_ERROR
+Error Message: Could not parse GitHub URL: neos/neos-ui
+
+Possible Reason:
+  Ensure the URL follows the format: https://github.com/owner/repo or git@github.com:owner/repo.git
+
+Suggested Solution:
+  Ensure the URL follows the format: https://github.com/owner/repo or git@github.com:owner/repo.git
+
+================================================================================
+
+Error #22
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-21T00:24:24.398912
+Repository: git+https://github.com/themingisprose/icon-pack.git
+Ecosystems: NPM
+Error Type: NOT_FOUND
+Error Message: Repository not found: themingisprose/icon-pack
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #23
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-21T00:24:24.630108
+Repository: https://github.com/themingisprose/icon-pack
+Ecosystems: PHP
+Error Type: NOT_FOUND
+Error Message: Repository not found: themingisprose/icon-pack
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #24
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-21T00:24:33.537151
+Repository: git+https://github.com/vardumper/extended-htmldocument.git#main
+Ecosystems: NPM
+Error Type: NOT_FOUND
+Error Message: Repository not found: vardumper/extended-htmldocument.git
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #25
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-21T00:25:08.354951
+Repository: git+https://github.com/apolbox/apolbox.git
+Ecosystems: NPM
+Error Type: NOT_FOUND
+Error Message: Repository not found: apolbox/apolbox
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #26
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-21T00:25:08.597515
+Repository: https://github.com/apolbox/apolbox
+Ecosystems: PHP
+Error Type: NOT_FOUND
+Error Message: Repository not found: apolbox/apolbox
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #27
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-21T00:25:08.848616
+Repository: git+https://github.com/apolbox/framework.git
+Ecosystems: NPM
+Error Type: NOT_FOUND
+Error Message: Repository not found: apolbox/framework
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #28
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-21T00:25:09.088677
+Repository: https://github.com/apolbox/framework
+Ecosystems: PHP
+Error Type: NOT_FOUND
+Error Message: Repository not found: apolbox/framework
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #29
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-21T00:25:26.955802
+Repository: git+https://github.com/basecondition/base.git
+Ecosystems: NPM
+Error Type: NOT_FOUND
+Error Message: Repository not found: basecondition/base
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #30
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-21T00:25:27.183552
+Repository: https://github.com/basecondition/base
+Ecosystems: PHP
+Error Type: NOT_FOUND
+Error Message: Repository not found: basecondition/base
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #31
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-21T00:25:56.654803
+Repository: git+https://github.com/docomoinnovations/cloud_dashboard.git
+Ecosystems: NPM
+Error Type: NOT_FOUND
+Error Message: Repository not found: docomoinnovations/cloud_dashboard
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #32
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-21T00:25:56.912296
+Repository: https://github.com/docomoinnovations/cloud_dashboard
+Ecosystems: PHP
+Error Type: NOT_FOUND
+Error Message: Repository not found: docomoinnovations/cloud_dashboard
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #33
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-21T00:25:59.586569
+Repository: git+https://github.com/ColbyCommunications/colby-svg.git
+Ecosystems: NPM
+Error Type: NOT_FOUND
+Error Message: Repository not found: ColbyCommunications/colby-svg
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #34
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-21T00:25:59.803123
+Repository: https://github.com/ColbyCommunications/colby-svg
+Ecosystems: PHP
+Error Type: NOT_FOUND
+Error Message: Repository not found: ColbyCommunications/colby-svg
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #35
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-21T00:27:20.682682
+Repository: git+https://github.com/carlosupreme/ErrorOr.git#typescript
+Ecosystems: NPM
+Error Type: NOT_FOUND
+Error Message: Repository not found: carlosupreme/ErrorOr.git
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #36
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-21T00:28:22.246608
+Repository: git+https://github.com/Justintime50/slugify.git
+Ecosystems: NPM
+Error Type: NOT_FOUND
+Error Message: Repository not found: Justintime50/slugify
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #37
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-21T00:28:22.568088
+Repository: https://github.com/Justintime50/slugify
+Ecosystems: PHP
+Error Type: NOT_FOUND
+Error Message: Repository not found: Justintime50/slugify
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #38
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-21T00:28:26.812796
+Repository: git+https://github.com/mr-istiak/administration.git#vue-hook
+Ecosystems: NPM
+Error Type: NOT_FOUND
+Error Message: Repository not found: mr-istiak/administration.git
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #39
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-21T00:28:34.718292
+Repository: git+https://github.com/spatie/laravel-javascript-views.git
+Ecosystems: NPM
+Error Type: NOT_FOUND
+Error Message: Repository not found: spatie/laravel-javascript-views
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #40
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-21T00:28:34.951352
+Repository: https://github.com/spatie/laravel-javascript-views
+Ecosystems: PHP
+Error Type: NOT_FOUND
+Error Message: Repository not found: spatie/laravel-javascript-views
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #41
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-21T00:29:44.322791
+Repository: git://github.com/readdle/rd-crypto.git
+Ecosystems: NPM
+Error Type: NOT_FOUND
+Error Message: Repository not found: readdle/rd-crypto
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #42
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-21T00:29:44.589213
+Repository: https://github.com/readdle/rd-crypto
+Ecosystems: PHP
+Error Type: NOT_FOUND
+Error Message: Repository not found: readdle/rd-crypto
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #43
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-21T00:29:54.503609
+Repository: git+https://github.com/rzl-app/ziggy.git
+Ecosystems: NPM
+Error Type: NOT_FOUND
+Error Message: Repository not found: rzl-app/ziggy
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #44
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-21T00:29:54.754962
+Repository: https://github.com/rzl-app/ziggy
+Ecosystems: PHP
+Error Type: NOT_FOUND
+Error Message: Repository not found: rzl-app/ziggy
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #45
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-21T00:30:10.003804
+Repository: git+https://github.com/KhaledDIFFALAH/simpleDataTables.git
+Ecosystems: NPM
+Error Type: NOT_FOUND
+Error Message: Repository not found: KhaledDIFFALAH/simpleDataTables
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #46
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-21T00:30:10.236180
+Repository: https://github.com/KhaledDIFFALAH/simpleDataTables
+Ecosystems: PHP
+Error Type: NOT_FOUND
+Error Message: Repository not found: KhaledDIFFALAH/simpleDataTables
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
