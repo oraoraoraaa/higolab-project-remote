@@ -564,196 +564,369 @@ class GitHubMetricsMiner:
             return None
 
     def _get_commits_count(self, owner: str, repo: str) -> int:
-        """Get total commits count for a repository using GraphQL API."""
-        try:
-            graphql_url = "https://api.github.com/graphql"
-            query = """
-            query($owner: String!, $repo: String!) {
-              repository(owner: $owner, name: $repo) {
-                defaultBranchRef {
-                  target {
-                    ... on Commit {
-                      history {
-                        totalCount
+        """Get total commits count for a repository using GraphQL API with retry logic."""
+        for attempt in range(MAX_RETRIES + 1):
+            try:
+                graphql_url = "https://api.github.com/graphql"
+                query = """
+                query($owner: String!, $repo: String!) {
+                  repository(owner: $owner, name: $repo) {
+                    defaultBranchRef {
+                      target {
+                        ... on Commit {
+                          history {
+                            totalCount
+                          }
+                        }
                       }
                     }
                   }
                 }
-              }
-            }
-            """
-            
-            response = self._make_request(
-                graphql_url, 
-                method='POST',
-                json_data={"query": query, "variables": {"owner": owner, "repo": repo}}
-            )
-            
-            if response and response.status_code == 200:
-                data = response.json()
-                if "data" in data and data["data"]["repository"]:
-                    default_branch = data["data"]["repository"]["defaultBranchRef"]
-                    if default_branch and default_branch["target"]:
-                        return default_branch["target"]["history"]["totalCount"]
-            
-            return 0
+                """
+                
+                response = self._make_request(
+                    graphql_url,
+                    method='POST',
+                    json_data={"query": query, "variables": {"owner": owner, "repo": repo}}
+                )
+                
+                if response and response.status_code == 200:
+                    data = response.json()
+                    # Verify data structure
+                    if "data" in data and data["data"] and data["data"]["repository"]:
+                        default_branch = data["data"]["repository"]["defaultBranchRef"]
+                        if default_branch and default_branch["target"] and "history" in default_branch["target"]:
+                            count = default_branch["target"]["history"]["totalCount"]
+                            # Verify count is valid
+                            if isinstance(count, int) and count >= 0:
+                                return count
+                            else:
+                                log_message(self.logger, 'warning',
+                                           f"Invalid commits count for {owner}/{repo}: {count}")
+                
+                # If response not successful and not last attempt, retry
+                if attempt < MAX_RETRIES:
+                    wait_time = RETRY_DELAY ** (attempt + 1)
+                    log_message(self.logger, 'info',
+                               f"Retrying commits count for {owner}/{repo} (attempt {attempt + 2}/{MAX_RETRIES + 1})")
+                    time.sleep(wait_time)
+                    continue
+                
+                return 0
 
-        except Exception:
-            return 0
-
+            except Exception as e:
+                if attempt < MAX_RETRIES:
+                    wait_time = RETRY_DELAY ** (attempt + 1)
+                    log_message(self.logger, 'warning',
+                               f"Error getting commits for {owner}/{repo} (attempt {attempt + 1}): {str(e)}. Retrying...")
+                    time.sleep(wait_time)
+                else:
+                    log_message(self.logger, 'error',
+                               f"Failed to get commits for {owner}/{repo} after {MAX_RETRIES + 1} attempts: {str(e)}")
+                    return 0
+        
+        return 0
     def _get_pull_requests(self, owner: str, repo: str) -> Dict[str, int]:
-        """Get pull request counts for a repository using GraphQL API."""
-        try:
-            graphql_url = "https://api.github.com/graphql"
-            query = """
-            query($owner: String!, $repo: String!) {
-              repository(owner: $owner, name: $repo) {
-                openPullRequests: pullRequests(states: OPEN) {
-                  totalCount
-                }
-                closedPullRequests: pullRequests(states: [CLOSED, MERGED]) {
-                  totalCount
-                }
-              }
-            }
-            """
-            
-            response = self._make_request(
-                graphql_url,
-                method='POST',
-                json_data={"query": query, "variables": {"owner": owner, "repo": repo}}
-            )
-            
-            if response and response.status_code == 200:
-                data = response.json()
-                if "data" in data and data["data"]["repository"]:
-                    repo_data = data["data"]["repository"]
-                    active = repo_data["openPullRequests"]["totalCount"]
-                    closed = repo_data["closedPullRequests"]["totalCount"]
-                    return {
-                        "active": active,
-                        "closed": closed,
-                        "all": active + closed,
+        """Get pull request counts for a repository using GraphQL API with retry logic."""
+        for attempt in range(MAX_RETRIES + 1):
+            try:
+                graphql_url = "https://api.github.com/graphql"
+                query = """
+                query($owner: String!, $repo: String!) {
+                  repository(owner: $owner, name: $repo) {
+                    openPullRequests: pullRequests(states: OPEN) {
+                      totalCount
                     }
-            
-            return {"active": 0, "closed": 0, "all": 0}
+                    closedPullRequests: pullRequests(states: [CLOSED, MERGED]) {
+                      totalCount
+                    }
+                  }
+                }
+                """
+                
+                response = self._make_request(
+                    graphql_url,
+                    method='POST',
+                    json_data={"query": query, "variables": {"owner": owner, "repo": repo}}
+                )
+                
+                if response and response.status_code == 200:
+                    data = response.json()
+                    # Verify data structure
+                    if "data" in data and data["data"] and data["data"]["repository"]:
+                        repo_data = data["data"]["repository"]
+                        if "openPullRequests" in repo_data and "closedPullRequests" in repo_data:
+                            active = repo_data["openPullRequests"]["totalCount"]
+                            closed = repo_data["closedPullRequests"]["totalCount"]
+                            # Verify counts are valid
+                            if isinstance(active, int) and isinstance(closed, int) and active >= 0 and closed >= 0:
+                                return {
+                                    "active": active,
+                                    "closed": closed,
+                                    "all": active + closed,
+                                }
+                
+                # If response not successful and not last attempt, retry
+                if attempt < MAX_RETRIES:
+                    wait_time = RETRY_DELAY ** (attempt + 1)
+                    log_message(self.logger, 'info',
+                               f"Retrying PRs for {owner}/{repo} (attempt {attempt + 2}/{MAX_RETRIES + 1})")
+                    time.sleep(wait_time)
+                    continue
+                
+                return {"active": 0, "closed": 0, "all": 0}
 
-        except Exception:
-            return {"active": 0, "closed": 0, "all": 0}
+            except Exception as e:
+                if attempt < MAX_RETRIES:
+                    wait_time = RETRY_DELAY ** (attempt + 1)
+                    log_message(self.logger, 'warning',
+                               f"Error getting PRs for {owner}/{repo} (attempt {attempt + 1}): {str(e)}. Retrying...")
+                    time.sleep(wait_time)
+                else:
+                    log_message(self.logger, 'error',
+                               f"Failed to get PRs for {owner}/{repo} after {MAX_RETRIES + 1} attempts: {str(e)}")
+                    return {"active": 0, "closed": 0, "all": 0}
+        
+        return {"active": 0, "closed": 0, "all": 0}
 
     def _get_issues(self, owner: str, repo: str) -> Dict[str, int]:
-        """Get issue counts for a repository using GraphQL API (excludes PRs)."""
-        try:
-            graphql_url = "https://api.github.com/graphql"
-            query = """
-            query($owner: String!, $repo: String!) {
-              repository(owner: $owner, name: $repo) {
-                openIssues: issues(states: OPEN) {
-                  totalCount
-                }
-                closedIssues: issues(states: CLOSED) {
-                  totalCount
-                }
-              }
-            }
-            """
-            
-            response = self._make_request(
-                graphql_url,
-                method='POST',
-                json_data={"query": query, "variables": {"owner": owner, "repo": repo}}
-            )
-            
-            if response and response.status_code == 200:
-                data = response.json()
-                if "data" in data and data["data"]["repository"]:
-                    repo_data = data["data"]["repository"]
-                    active = repo_data["openIssues"]["totalCount"]
-                    closed = repo_data["closedIssues"]["totalCount"]
-                    return {
-                        "active": active,
-                        "closed": closed,
-                        "all": active + closed,
+        """Get issue counts for a repository using GraphQL API (excludes PRs) with retry logic."""
+        for attempt in range(MAX_RETRIES + 1):
+            try:
+                graphql_url = "https://api.github.com/graphql"
+                query = """
+                query($owner: String!, $repo: String!) {
+                  repository(owner: $owner, name: $repo) {
+                    openIssues: issues(states: OPEN) {
+                      totalCount
                     }
-            
-            return {"active": 0, "closed": 0, "all": 0}
+                    closedIssues: issues(states: CLOSED) {
+                      totalCount
+                    }
+                  }
+                }
+                """
+                
+                response = self._make_request(
+                    graphql_url,
+                    method='POST',
+                    json_data={"query": query, "variables": {"owner": owner, "repo": repo}}
+                )
+                
+                if response and response.status_code == 200:
+                    data = response.json()
+                    # Verify data structure
+                    if "data" in data and data["data"] and data["data"]["repository"]:
+                        repo_data = data["data"]["repository"]
+                        if "openIssues" in repo_data and "closedIssues" in repo_data:
+                            active = repo_data["openIssues"]["totalCount"]
+                            closed = repo_data["closedIssues"]["totalCount"]
+                            # Verify counts are valid
+                            if isinstance(active, int) and isinstance(closed, int) and active >= 0 and closed >= 0:
+                                return {
+                                    "active": active,
+                                    "closed": closed,
+                                    "all": active + closed,
+                                }
+                
+                # If response not successful and not last attempt, retry
+                if attempt < MAX_RETRIES:
+                    wait_time = RETRY_DELAY ** (attempt + 1)
+                    log_message(self.logger, 'info',
+                               f"Retrying issues for {owner}/{repo} (attempt {attempt + 2}/{MAX_RETRIES + 1})")
+                    time.sleep(wait_time)
+                    continue
+                
+                return {"active": 0, "closed": 0, "all": 0}
 
-        except Exception:
-            return {"active": 0, "closed": 0, "all": 0}
+            except Exception as e:
+                if attempt < MAX_RETRIES:
+                    wait_time = RETRY_DELAY ** (attempt + 1)
+                    log_message(self.logger, 'warning',
+                               f"Error getting issues for {owner}/{repo} (attempt {attempt + 1}): {str(e)}. Retrying...")
+                    time.sleep(wait_time)
+                else:
+                    log_message(self.logger, 'error',
+                               f"Failed to get issues for {owner}/{repo} after {MAX_RETRIES + 1} attempts: {str(e)}")
+                    return {"active": 0, "closed": 0, "all": 0}
+        
+        return {"active": 0, "closed": 0, "all": 0}
 
     def _get_contributors_count(self, owner: str, repo: str) -> int:
-        """Get contributors count for a repository."""
-        try:
-            contributors_url = f"{self.base_url}/repos/{owner}/{repo}/contributors"
-            params = {"per_page": 1, "anon": "true"}
-            
-            token = self.token_manager.ensure_rate_limit()
-            headers = {'Authorization': f'token {token}'} if token else {}
-            
-            response = requests.get(contributors_url, headers=headers, params=params, timeout=10)
+        """Get contributors count for a repository (registered GitHub users only) with retry logic."""
+        for attempt in range(MAX_RETRIES + 1):
+            try:
+                contributors_url = f"{self.base_url}/repos/{owner}/{repo}/contributors"
+                params = {"per_page": 1}  # Removed anon=true to match GitHub website behavior
+                
+                token = self.token_manager.ensure_rate_limit()
+                headers = {'Authorization': f'token {token}'} if token else {}
+                
+                response = requests.get(contributors_url, headers=headers, params=params, timeout=10)
 
-            if response.status_code == 200 and "Link" in response.headers:
-                link_header = response.headers["Link"]
-                match = re.search(r'page=(\d+)>; rel="last"', link_header)
-                if match:
-                    return int(match.group(1))
-            elif response.status_code == 200:
-                return len(response.json())
+                if response.status_code == 200:
+                    # Try pagination header first
+                    if "Link" in response.headers:
+                        link_header = response.headers["Link"]
+                        match = re.search(r'page=(\d+)>; rel="last"', link_header)
+                        if match:
+                            count = int(match.group(1))
+                            # Verify count is valid
+                            if count > 0:
+                                return count
+                    # Fallback to counting array length
+                    contributors = response.json()
+                    if isinstance(contributors, list):
+                        return len(contributors)
+                    else:
+                        log_message(self.logger, 'warning',
+                                   f"Invalid contributors response for {owner}/{repo}: not a list")
+                elif response.status_code == 404:
+                    # Repo not found or no contributors - return 0 without retry
+                    return 0
+                
+                # If response not successful and not last attempt, retry
+                if attempt < MAX_RETRIES:
+                    wait_time = RETRY_DELAY ** (attempt + 1)
+                    log_message(self.logger, 'info',
+                               f"Retrying contributors for {owner}/{repo} (attempt {attempt + 2}/{MAX_RETRIES + 1})")
+                    time.sleep(wait_time)
+                    continue
+                
+                return 0
 
-            return 0
-
-        except Exception:
-            return 0
+            except Exception as e:
+                if attempt < MAX_RETRIES:
+                    wait_time = RETRY_DELAY ** (attempt + 1)
+                    log_message(self.logger, 'warning',
+                               f"Error getting contributors for {owner}/{repo} (attempt {attempt + 1}): {str(e)}. Retrying...")
+                    time.sleep(wait_time)
+                else:
+                    log_message(self.logger, 'error',
+                               f"Failed to get contributors for {owner}/{repo} after {MAX_RETRIES + 1} attempts: {str(e)}")
+                    return 0
+        
+        return 0
 
     def _get_dependencies_count(self, owner: str, repo: str) -> int:
-        """Get dependencies count by scraping the GitHub dependency graph page."""
-        try:
-            dependencies_url = f"https://github.com/{owner}/{repo}/network/dependencies"
-            
-            token = self.token_manager.ensure_rate_limit()
-            headers = {'Authorization': f'token {token}'} if token else {}
-            
-            response = requests.get(dependencies_url, headers=headers, timeout=10)
+        """Get dependencies count by scraping the GitHub dependency graph page with retry logic."""
+        for attempt in range(MAX_RETRIES + 1):
+            try:
+                dependencies_url = f"https://github.com/{owner}/{repo}/network/dependencies"
+                
+                token = self.token_manager.ensure_rate_limit()
+                headers = {'Authorization': f'token {token}'} if token else {}
+                
+                response = requests.get(dependencies_url, headers=headers, timeout=10)
 
-            if response.status_code == 200:
-                content = response.text
-                match = re.search(r'([\d,]+)\s+Total', content)
-                if match:
-                    count_str = match.group(1).replace(',', '')
-                    return int(count_str)
-                match = re.search(r'(\d+)\s+Dependenc(?:y|ies)', content, re.IGNORECASE)
-                if match:
-                    return int(match.group(1))
+                if response.status_code == 200:
+                    content = response.text
+                    # Try to find "X Total" pattern
+                    match = re.search(r'([\d,]+)\s+Total', content)
+                    if match:
+                        count_str = match.group(1).replace(',', '')
+                        count = int(count_str)
+                        # Verify count is valid
+                        if count >= 0:
+                            return count
+                        else:
+                            log_message(self.logger, 'warning',
+                                       f"Invalid dependencies count for {owner}/{repo}: {count}")
+                    # Try alternative pattern
+                    match = re.search(r'(\d+)\s+Dependenc(?:y|ies)', content, re.IGNORECASE)
+                    if match:
+                        count = int(match.group(1))
+                        if count >= 0:
+                            return count
+                elif response.status_code == 404:
+                    # Repo not found or no dependencies page - return 0 without retry
+                    return 0
+                elif response.status_code != 200:
+                    # Log non-200/404 errors
+                    if attempt < MAX_RETRIES:
+                        wait_time = RETRY_DELAY ** (attempt + 1)
+                        log_message(self.logger, 'info',
+                                   f"Failed to fetch dependencies for {owner}/{repo}: HTTP {response.status_code}. Retrying...")
+                        time.sleep(wait_time)
+                        continue
+                    else:
+                        log_message(self.logger, 'warning',
+                                   f"Failed to fetch dependencies for {owner}/{repo}: HTTP {response.status_code}")
 
-            return 0
+                return 0
 
-        except Exception:
-            return 0
+            except Exception as e:
+                if attempt < MAX_RETRIES:
+                    wait_time = RETRY_DELAY ** (attempt + 1)
+                    log_message(self.logger, 'warning',
+                               f"Error getting dependencies for {owner}/{repo} (attempt {attempt + 1}): {str(e)}. Retrying...")
+                    time.sleep(wait_time)
+                else:
+                    log_message(self.logger, 'error',
+                               f"Failed to get dependencies for {owner}/{repo} after {MAX_RETRIES + 1} attempts: {str(e)}")
+                    return 0
+        
+        return 0
 
     def _get_dependents_count(self, owner: str, repo: str) -> int:
-        """Get dependents count by scraping the GitHub network/dependents page."""
-        try:
-            dependents_url = f"https://github.com/{owner}/{repo}/network/dependents"
-            
-            token = self.token_manager.ensure_rate_limit()
-            headers = {'Authorization': f'token {token}'} if token else {}
-            
-            response = requests.get(dependents_url, headers=headers, timeout=10)
+        """Get dependents count by scraping the GitHub network/dependents page with retry logic."""
+        for attempt in range(MAX_RETRIES + 1):
+            try:
+                dependents_url = f"https://github.com/{owner}/{repo}/network/dependents"
+                
+                token = self.token_manager.ensure_rate_limit()
+                headers = {'Authorization': f'token {token}'} if token else {}
+                
+                response = requests.get(dependents_url, headers=headers, timeout=10)
 
-            if response.status_code == 200:
-                content = response.text
-                match = re.search(r'([\d,]+)\s+Repositor(?:y|ies)', content)
-                if match:
-                    count_str = match.group(1).replace(',', '')
-                    return int(count_str)
-                match = re.search(r'"dependents_count":(\d+)', content)
-                if match:
-                    return int(match.group(1))
+                if response.status_code == 200:
+                    content = response.text
+                    # Try to find "X Repositories" pattern
+                    match = re.search(r'([\d,]+)\s+Repositor(?:y|ies)', content)
+                    if match:
+                        count_str = match.group(1).replace(',', '')
+                        count = int(count_str)
+                        # Verify count is valid
+                        if count >= 0:
+                            return count
+                        else:
+                            log_message(self.logger, 'warning',
+                                       f"Invalid dependents count for {owner}/{repo}: {count}")
+                    # Try alternative pattern
+                    match = re.search(r'"dependents_count":(\d+)', content)
+                    if match:
+                        count = int(match.group(1))
+                        if count >= 0:
+                            return count
+                elif response.status_code == 404:
+                    # Repo not found or no dependents page - return 0 without retry
+                    return 0
+                elif response.status_code != 200:
+                    # Log non-200/404 errors
+                    if attempt < MAX_RETRIES:
+                        wait_time = RETRY_DELAY ** (attempt + 1)
+                        log_message(self.logger, 'info',
+                                   f"Failed to fetch dependents for {owner}/{repo}: HTTP {response.status_code}. Retrying...")
+                        time.sleep(wait_time)
+                        continue
+                    else:
+                        log_message(self.logger, 'warning',
+                                   f"Failed to fetch dependents for {owner}/{repo}: HTTP {response.status_code}")
 
-            return 0
+                return 0
 
-        except Exception:
-            return 0
+            except Exception as e:
+                if attempt < MAX_RETRIES:
+                    wait_time = RETRY_DELAY ** (attempt + 1)
+                    log_message(self.logger, 'warning',
+                               f"Error getting dependents for {owner}/{repo} (attempt {attempt + 1}): {str(e)}. Retrying...")
+                    time.sleep(wait_time)
+                else:
+                    log_message(self.logger, 'error',
+                               f"Failed to get dependents for {owner}/{repo} after {MAX_RETRIES + 1} attempts: {str(e)}")
+                    return 0
+        
+        return 0
 
 
 # ============================================================================
