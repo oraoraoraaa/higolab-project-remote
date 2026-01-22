@@ -753,11 +753,11 @@ class GitHubMetricsMiner:
         return {"active": 0, "closed": 0, "all": 0}
 
     def _get_contributors_count(self, owner: str, repo: str) -> int:
-        """Get contributors count for a repository (registered GitHub users only) with retry logic."""
+        """Get contributors count for a repository (including anonymous) with retry logic."""
         for attempt in range(MAX_RETRIES + 1):
             try:
                 contributors_url = f"{self.base_url}/repos/{owner}/{repo}/contributors"
-                params = {"per_page": 1}  # Removed anon=true to match GitHub website behavior
+                params = {"per_page": 1, "anon": "true"}  # Remove anon=true to match GitHub webpage data
                 
                 token = self.token_manager.ensure_rate_limit()
                 headers = {'Authorization': f'token {token}'} if token else {}
