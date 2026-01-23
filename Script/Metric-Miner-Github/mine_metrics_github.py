@@ -323,15 +323,17 @@ def load_progress(output_path: Path) -> Tuple[Dict[str, Dict], int]:
 class GitHubMetricsMiner:
     """Mines metrics from GitHub repositories with parallel processing."""
 
-    def __init__(self, token_manager: TokenManager):
+    def __init__(self, token_manager: TokenManager, logger=None):
         """
         Initialize the miner.
 
         Args:
             token_manager: TokenManager instance for handling GitHub tokens
+            logger: Logger instance for logging
         """
         self.token_manager = token_manager
         self.base_url = "https://api.github.com"
+        self.logger = logger
 
     def parse_github_url(self, url: str) -> Optional[Tuple[str, str]]:
         """
@@ -390,6 +392,17 @@ class GitHubMetricsMiner:
                 
                 # Check rate limit and rotate if needed
                 if response.status_code == 403:
+                    # For GraphQL, 403 without rate limit headers means auth required
+                    if method == 'POST' and 'graphql' in url:
+                        # GraphQL requires authentication
+                        try:
+                            error_data = response.json()
+                            if 'errors' in error_data:
+                                # Authentication error, don't retry
+                                return response
+                        except:
+                            pass
+                    
                     remaining = response.headers.get('X-RateLimit-Remaining', '1')
                     if remaining == '0':
                         if self.token_manager.rotate_token():
@@ -512,13 +525,11 @@ class GitHubMetricsMiner:
 
             repo_data = repo_response.json()
 
-            # Check if forked
-            if repo_data.get("fork", False):
-                return None
-
-            # Get basic metrics
+            # Get basic metrics (including fork and archived status)
             stars = repo_data.get("stargazers_count", 0)
             forks = repo_data.get("forks_count", 0)
+            is_fork = repo_data.get("fork", False)
+            is_archived = repo_data.get("archived", False)
 
             # Get language data
             languages = self.get_languages(owner, repo)
@@ -544,6 +555,8 @@ class GitHubMetricsMiner:
             metrics = {
                 "stars": stars,
                 "forks": forks,
+                "is_fork": is_fork,
+                "is_archived": is_archived,
                 "commits": commits,
                 "active_pull_requests": prs["active"],
                 "closed_pull_requests": prs["closed"],
@@ -560,7 +573,10 @@ class GitHubMetricsMiner:
 
             return metrics
 
-        except Exception:
+        except Exception as e:
+            if self.logger:
+                log_message(self.logger, 'error',
+                           f"Exception in get_metrics for {owner}/{repo}: {type(e).__name__}: {str(e)}")
             return None
 
     def _get_commits_count(self, owner: str, repo: str) -> int:
@@ -592,6 +608,16 @@ class GitHubMetricsMiner:
                 
                 if response and response.status_code == 200:
                     data = response.json()
+                    
+                    # Check for GraphQL errors (e.g., authentication failures)
+                    if "errors" in data:
+                        if self.logger:
+                            errors = data.get("errors", [])
+                            error_msg = errors[0].get("message", "Unknown error") if errors else "Unknown error"
+                            log_message(self.logger, 'error',
+                                       f"GraphQL error for {owner}/{repo} commits: {error_msg}")
+                        return 0
+                    
                     # Verify data structure
                     if "data" in data and data["data"] and data["data"]["repository"]:
                         default_branch = data["data"]["repository"]["defaultBranchRef"]
@@ -601,14 +627,16 @@ class GitHubMetricsMiner:
                             if isinstance(count, int) and count >= 0:
                                 return count
                             else:
-                                log_message(self.logger, 'warning',
-                                           f"Invalid commits count for {owner}/{repo}: {count}")
+                                if self.logger:
+                                    log_message(self.logger, 'warning',
+                                               f"Invalid commits count for {owner}/{repo}: {count}")
                 
                 # If response not successful and not last attempt, retry
                 if attempt < MAX_RETRIES:
                     wait_time = RETRY_DELAY ** (attempt + 1)
-                    log_message(self.logger, 'info',
-                               f"Retrying commits count for {owner}/{repo} (attempt {attempt + 2}/{MAX_RETRIES + 1})")
+                    if self.logger:
+                        log_message(self.logger, 'info',
+                                   f"Retrying commits count for {owner}/{repo} (attempt {attempt + 2}/{MAX_RETRIES + 1})")
                     time.sleep(wait_time)
                     continue
                 
@@ -617,12 +645,14 @@ class GitHubMetricsMiner:
             except Exception as e:
                 if attempt < MAX_RETRIES:
                     wait_time = RETRY_DELAY ** (attempt + 1)
-                    log_message(self.logger, 'warning',
-                               f"Error getting commits for {owner}/{repo} (attempt {attempt + 1}): {str(e)}. Retrying...")
+                    if self.logger:
+                        log_message(self.logger, 'warning',
+                                   f"Error getting commits for {owner}/{repo} (attempt {attempt + 1}): {str(e)}. Retrying...")
                     time.sleep(wait_time)
                 else:
-                    log_message(self.logger, 'error',
-                               f"Failed to get commits for {owner}/{repo} after {MAX_RETRIES + 1} attempts: {str(e)}")
+                    if self.logger:
+                        log_message(self.logger, 'error',
+                                   f"Failed to get commits for {owner}/{repo} after {MAX_RETRIES + 1} attempts: {str(e)}")
                     return 0
         
         return 0
@@ -652,6 +682,16 @@ class GitHubMetricsMiner:
                 
                 if response and response.status_code == 200:
                     data = response.json()
+                    
+                    # Check for GraphQL errors
+                    if "errors" in data:
+                        if self.logger:
+                            errors = data.get("errors", [])
+                            error_msg = errors[0].get("message", "Unknown error") if errors else "Unknown error"
+                            log_message(self.logger, 'error',
+                                       f"GraphQL error for {owner}/{repo} PRs: {error_msg}")
+                        return {"active": 0, "closed": 0, "all": 0}
+                    
                     # Verify data structure
                     if "data" in data and data["data"] and data["data"]["repository"]:
                         repo_data = data["data"]["repository"]
@@ -669,8 +709,9 @@ class GitHubMetricsMiner:
                 # If response not successful and not last attempt, retry
                 if attempt < MAX_RETRIES:
                     wait_time = RETRY_DELAY ** (attempt + 1)
-                    log_message(self.logger, 'info',
-                               f"Retrying PRs for {owner}/{repo} (attempt {attempt + 2}/{MAX_RETRIES + 1})")
+                    if self.logger:
+                        log_message(self.logger, 'info',
+                                   f"Retrying PRs for {owner}/{repo} (attempt {attempt + 2}/{MAX_RETRIES + 1})")
                     time.sleep(wait_time)
                     continue
                 
@@ -679,12 +720,14 @@ class GitHubMetricsMiner:
             except Exception as e:
                 if attempt < MAX_RETRIES:
                     wait_time = RETRY_DELAY ** (attempt + 1)
-                    log_message(self.logger, 'warning',
-                               f"Error getting PRs for {owner}/{repo} (attempt {attempt + 1}): {str(e)}. Retrying...")
+                    if self.logger:
+                        log_message(self.logger, 'warning',
+                                   f"Error getting PRs for {owner}/{repo} (attempt {attempt + 1}): {str(e)}. Retrying...")
                     time.sleep(wait_time)
                 else:
-                    log_message(self.logger, 'error',
-                               f"Failed to get PRs for {owner}/{repo} after {MAX_RETRIES + 1} attempts: {str(e)}")
+                    if self.logger:
+                        log_message(self.logger, 'error',
+                                   f"Failed to get PRs for {owner}/{repo} after {MAX_RETRIES + 1} attempts: {str(e)}")
                     return {"active": 0, "closed": 0, "all": 0}
         
         return {"active": 0, "closed": 0, "all": 0}
@@ -715,6 +758,16 @@ class GitHubMetricsMiner:
                 
                 if response and response.status_code == 200:
                     data = response.json()
+                    
+                    # Check for GraphQL errors
+                    if "errors" in data:
+                        if self.logger:
+                            errors = data.get("errors", [])
+                            error_msg = errors[0].get("message", "Unknown error") if errors else "Unknown error"
+                            log_message(self.logger, 'error',
+                                       f"GraphQL error for {owner}/{repo} issues: {error_msg}")
+                        return {"active": 0, "closed": 0, "all": 0}
+                    
                     # Verify data structure
                     if "data" in data and data["data"] and data["data"]["repository"]:
                         repo_data = data["data"]["repository"]
@@ -732,8 +785,9 @@ class GitHubMetricsMiner:
                 # If response not successful and not last attempt, retry
                 if attempt < MAX_RETRIES:
                     wait_time = RETRY_DELAY ** (attempt + 1)
-                    log_message(self.logger, 'info',
-                               f"Retrying issues for {owner}/{repo} (attempt {attempt + 2}/{MAX_RETRIES + 1})")
+                    if self.logger:
+                        log_message(self.logger, 'info',
+                                   f"Retrying issues for {owner}/{repo} (attempt {attempt + 2}/{MAX_RETRIES + 1})")
                     time.sleep(wait_time)
                     continue
                 
@@ -742,12 +796,14 @@ class GitHubMetricsMiner:
             except Exception as e:
                 if attempt < MAX_RETRIES:
                     wait_time = RETRY_DELAY ** (attempt + 1)
-                    log_message(self.logger, 'warning',
-                               f"Error getting issues for {owner}/{repo} (attempt {attempt + 1}): {str(e)}. Retrying...")
+                    if self.logger:
+                        log_message(self.logger, 'warning',
+                                   f"Error getting issues for {owner}/{repo} (attempt {attempt + 1}): {str(e)}. Retrying...")
                     time.sleep(wait_time)
                 else:
-                    log_message(self.logger, 'error',
-                               f"Failed to get issues for {owner}/{repo} after {MAX_RETRIES + 1} attempts: {str(e)}")
+                    if self.logger:
+                        log_message(self.logger, 'error',
+                                   f"Failed to get issues for {owner}/{repo} after {MAX_RETRIES + 1} attempts: {str(e)}")
                     return {"active": 0, "closed": 0, "all": 0}
         
         return {"active": 0, "closed": 0, "all": 0}
@@ -779,8 +835,9 @@ class GitHubMetricsMiner:
                     if isinstance(contributors, list):
                         return len(contributors)
                     else:
-                        log_message(self.logger, 'warning',
-                                   f"Invalid contributors response for {owner}/{repo}: not a list")
+                        if self.logger:
+                            log_message(self.logger, 'warning',
+                                       f"Invalid contributors response for {owner}/{repo}: not a list")
                 elif response.status_code == 404:
                     # Repo not found or no contributors - return 0 without retry
                     return 0
@@ -788,8 +845,9 @@ class GitHubMetricsMiner:
                 # If response not successful and not last attempt, retry
                 if attempt < MAX_RETRIES:
                     wait_time = RETRY_DELAY ** (attempt + 1)
-                    log_message(self.logger, 'info',
-                               f"Retrying contributors for {owner}/{repo} (attempt {attempt + 2}/{MAX_RETRIES + 1})")
+                    if self.logger:
+                        log_message(self.logger, 'info',
+                                   f"Retrying contributors for {owner}/{repo} (attempt {attempt + 2}/{MAX_RETRIES + 1})")
                     time.sleep(wait_time)
                     continue
                 
@@ -798,12 +856,14 @@ class GitHubMetricsMiner:
             except Exception as e:
                 if attempt < MAX_RETRIES:
                     wait_time = RETRY_DELAY ** (attempt + 1)
-                    log_message(self.logger, 'warning',
-                               f"Error getting contributors for {owner}/{repo} (attempt {attempt + 1}): {str(e)}. Retrying...")
+                    if self.logger:
+                        log_message(self.logger, 'warning',
+                                   f"Error getting contributors for {owner}/{repo} (attempt {attempt + 1}): {str(e)}. Retrying...")
                     time.sleep(wait_time)
                 else:
-                    log_message(self.logger, 'error',
-                               f"Failed to get contributors for {owner}/{repo} after {MAX_RETRIES + 1} attempts: {str(e)}")
+                    if self.logger:
+                        log_message(self.logger, 'error',
+                                   f"Failed to get contributors for {owner}/{repo} after {MAX_RETRIES + 1} attempts: {str(e)}")
                     return 0
         
         return 0
@@ -830,8 +890,9 @@ class GitHubMetricsMiner:
                         if count >= 0:
                             return count
                         else:
-                            log_message(self.logger, 'warning',
-                                       f"Invalid dependencies count for {owner}/{repo}: {count}")
+                            if self.logger:
+                                log_message(self.logger, 'warning',
+                                           f"Invalid dependencies count for {owner}/{repo}: {count}")
                     # Try alternative pattern
                     match = re.search(r'(\d+)\s+Dependenc(?:y|ies)', content, re.IGNORECASE)
                     if match:
@@ -845,25 +906,29 @@ class GitHubMetricsMiner:
                     # Log non-200/404 errors
                     if attempt < MAX_RETRIES:
                         wait_time = RETRY_DELAY ** (attempt + 1)
-                        log_message(self.logger, 'info',
-                                   f"Failed to fetch dependencies for {owner}/{repo}: HTTP {response.status_code}. Retrying...")
+                        if self.logger:
+                            log_message(self.logger, 'info',
+                                       f"Failed to fetch dependencies for {owner}/{repo}: HTTP {response.status_code}. Retrying...")
                         time.sleep(wait_time)
                         continue
                     else:
-                        log_message(self.logger, 'warning',
-                                   f"Failed to fetch dependencies for {owner}/{repo}: HTTP {response.status_code}")
+                        if self.logger:
+                            log_message(self.logger, 'warning',
+                                       f"Failed to fetch dependencies for {owner}/{repo}: HTTP {response.status_code}")
 
                 return 0
 
             except Exception as e:
                 if attempt < MAX_RETRIES:
                     wait_time = RETRY_DELAY ** (attempt + 1)
-                    log_message(self.logger, 'warning',
-                               f"Error getting dependencies for {owner}/{repo} (attempt {attempt + 1}): {str(e)}. Retrying...")
+                    if self.logger:
+                        log_message(self.logger, 'warning',
+                                   f"Error getting dependencies for {owner}/{repo} (attempt {attempt + 1}): {str(e)}. Retrying...")
                     time.sleep(wait_time)
                 else:
-                    log_message(self.logger, 'error',
-                               f"Failed to get dependencies for {owner}/{repo} after {MAX_RETRIES + 1} attempts: {str(e)}")
+                    if self.logger:
+                        log_message(self.logger, 'error',
+                                   f"Failed to get dependencies for {owner}/{repo} after {MAX_RETRIES + 1} attempts: {str(e)}")
                     return 0
         
         return 0
@@ -890,8 +955,9 @@ class GitHubMetricsMiner:
                         if count >= 0:
                             return count
                         else:
-                            log_message(self.logger, 'warning',
-                                       f"Invalid dependents count for {owner}/{repo}: {count}")
+                            if self.logger:
+                                log_message(self.logger, 'warning',
+                                           f"Invalid dependents count for {owner}/{repo}: {count}")
                     # Try alternative pattern
                     match = re.search(r'"dependents_count":(\d+)', content)
                     if match:
@@ -905,25 +971,29 @@ class GitHubMetricsMiner:
                     # Log non-200/404 errors
                     if attempt < MAX_RETRIES:
                         wait_time = RETRY_DELAY ** (attempt + 1)
-                        log_message(self.logger, 'info',
-                                   f"Failed to fetch dependents for {owner}/{repo}: HTTP {response.status_code}. Retrying...")
+                        if self.logger:
+                            log_message(self.logger, 'info',
+                                       f"Failed to fetch dependents for {owner}/{repo}: HTTP {response.status_code}. Retrying...")
                         time.sleep(wait_time)
                         continue
                     else:
-                        log_message(self.logger, 'warning',
-                                   f"Failed to fetch dependents for {owner}/{repo}: HTTP {response.status_code}")
+                        if self.logger:
+                            log_message(self.logger, 'warning',
+                                       f"Failed to fetch dependents for {owner}/{repo}: HTTP {response.status_code}")
 
                 return 0
 
             except Exception as e:
                 if attempt < MAX_RETRIES:
                     wait_time = RETRY_DELAY ** (attempt + 1)
-                    log_message(self.logger, 'warning',
-                               f"Error getting dependents for {owner}/{repo} (attempt {attempt + 1}): {str(e)}. Retrying...")
+                    if self.logger:
+                        log_message(self.logger, 'warning',
+                                   f"Error getting dependents for {owner}/{repo} (attempt {attempt + 1}): {str(e)}. Retrying...")
                     time.sleep(wait_time)
                 else:
-                    log_message(self.logger, 'error',
-                               f"Failed to get dependents for {owner}/{repo} after {MAX_RETRIES + 1} attempts: {str(e)}")
+                    if self.logger:
+                        log_message(self.logger, 'error',
+                                   f"Failed to get dependents for {owner}/{repo} after {MAX_RETRIES + 1} attempts: {str(e)}")
                     return 0
         
         return 0
@@ -1060,6 +1130,8 @@ def process_packages_parallel(
     results_lock = Lock()
     save_interval = 10  # Save progress every 10 packages
     processed_count = 0
+    error_count = 0
+    warning_shown = False
 
     with tqdm(total=len(packages_to_process), desc=f"Mining repositories", unit="repo") as pbar:
         with ThreadPoolExecutor(max_workers=max_workers) as executor:
@@ -1082,6 +1154,21 @@ def process_packages_parallel(
                         else:
                             # Mark as processed but failed
                             processed_packages[pkg_key] = None
+                            error_count += 1
+                            
+                            # Show warning when errors exceed 50
+                            if error_count > 50 and not warning_shown:
+                                warning_shown = True
+                                safe_print("\n" + "!" * 80)
+                                safe_print("⚠️  WARNING: More than 50 repositories have failed to be mined!")
+                                safe_print("⚠️  Current error count: {}".format(error_count))
+                                safe_print("⚠️  Check processing.log for detailed error messages")
+                                safe_print("⚠️  Common causes: authentication issues, rate limits, network errors")
+                                safe_print("!" * 80 + "\n")
+                            
+                            # Continue showing periodic warnings every 100 errors after threshold
+                            elif error_count > 50 and error_count % 100 == 0:
+                                safe_print("\n⚠️  Error count: {} (check processing.log)\n".format(error_count))
                         
                         processed_count += 1
                         
@@ -1092,6 +1179,21 @@ def process_packages_parallel(
                 except Exception as e:
                     with results_lock:
                         processed_packages[pkg_key] = None
+                        error_count += 1
+                        
+                        # Show warning when errors exceed 50
+                        if error_count > 50 and not warning_shown:
+                            warning_shown = True
+                            safe_print("\n" + "!" * 80)
+                            safe_print("⚠️  WARNING: More than 50 repositories have failed to be mined!")
+                            safe_print("⚠️  Current error count: {}".format(error_count))
+                            safe_print("⚠️  Check processing.log for detailed error messages")
+                            safe_print("⚠️  Common causes: authentication issues, rate limits, network errors")
+                            safe_print("!" * 80 + "\n")
+                        
+                        # Continue showing periodic warnings every 100 errors after threshold
+                        elif error_count > 50 and error_count % 100 == 0:
+                            safe_print("\n⚠️  Error count: {} (check processing.log)\n".format(error_count))
                 
                 pbar.update(1)
 
@@ -1247,8 +1349,12 @@ def main():
             print("\n\n✗ Operation cancelled by user.")
             return
 
+    # Setup logger
+    logger = setup_logging()
+    token_manager.logger = logger
+    
     # Initialize miner
-    miner = GitHubMetricsMiner(token_manager)
+    miner = GitHubMetricsMiner(token_manager, logger)
 
     # Get input directory
     input_dir = (script_dir / args.input_dir).resolve()
