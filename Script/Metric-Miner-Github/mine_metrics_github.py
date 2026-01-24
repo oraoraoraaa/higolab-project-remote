@@ -41,7 +41,7 @@ LOG_FILE = SCRIPT_DIR / "processing.log"
 # PARALLEL PROCESSING CONFIGURATION
 # ============================================================================
 
-MAX_WORKERS = 20  # Number of concurrent threads for API calls
+MAX_WORKERS = 2  # Number of concurrent threads for API calls (reduced to avoid rate limits)
 MAX_RETRIES = 3   # Maximum number of retry attempts for network errors
 RETRY_DELAY = 2   # Initial delay in seconds before retry (exponential backoff)
 
@@ -389,6 +389,22 @@ class GitHubMetricsMiner:
                     response = requests.post(url, headers=headers, json=json_data, timeout=timeout)
                 else:
                     return None
+                
+                # Handle rate limiting
+                if response.status_code == 429:
+                    # Explicit rate limit exceeded
+                    if self.logger:
+                        log_message(self.logger, 'warning',
+                                   f"Rate limit exceeded (429). Attempting token rotation...")
+                    if self.token_manager.rotate_token():
+                        time.sleep(1)  # Brief pause after rotation
+                        retry_count += 1
+                        continue
+                    else:
+                        # No other tokens available, wait for reset
+                        self.token_manager.wait_for_rate_limit_reset()
+                        retry_count += 1
+                        continue
                 
                 # Check rate limit and rotate if needed
                 if response.status_code == 403:
@@ -902,8 +918,24 @@ class GitHubMetricsMiner:
                 elif response.status_code == 404:
                     # Repo not found or no dependencies page - return 0 without retry
                     return 0
+                elif response.status_code == 429:
+                    # Rate limit exceeded - handle specially
+                    if self.logger:
+                        log_message(self.logger, 'warning',
+                                   f"Rate limit hit for {owner}/{repo} dependencies. Waiting for reset...")
+                    # Try rotating to another token first
+                    if self.token_manager.rotate_token():
+                        if attempt < MAX_RETRIES:
+                            time.sleep(1)  # Brief pause after token rotation
+                            continue
+                    else:
+                        # No other tokens available, wait for rate limit reset
+                        self.token_manager.wait_for_rate_limit_reset()
+                        if attempt < MAX_RETRIES:
+                            continue
+                    return 0
                 elif response.status_code != 200:
-                    # Log non-200/404 errors
+                    # Log non-200/404/429 errors
                     if attempt < MAX_RETRIES:
                         wait_time = RETRY_DELAY ** (attempt + 1)
                         if self.logger:
@@ -967,8 +999,24 @@ class GitHubMetricsMiner:
                 elif response.status_code == 404:
                     # Repo not found or no dependents page - return 0 without retry
                     return 0
+                elif response.status_code == 429:
+                    # Rate limit exceeded - handle specially
+                    if self.logger:
+                        log_message(self.logger, 'warning',
+                                   f"Rate limit hit for {owner}/{repo} dependents. Waiting for reset...")
+                    # Try rotating to another token first
+                    if self.token_manager.rotate_token():
+                        if attempt < MAX_RETRIES:
+                            time.sleep(1)  # Brief pause after token rotation
+                            continue
+                    else:
+                        # No other tokens available, wait for rate limit reset
+                        self.token_manager.wait_for_rate_limit_reset()
+                        if attempt < MAX_RETRIES:
+                            continue
+                    return 0
                 elif response.status_code != 200:
-                    # Log non-200/404 errors
+                    # Log non-200/404/429 errors
                     if attempt < MAX_RETRIES:
                         wait_time = RETRY_DELAY ** (attempt + 1)
                         if self.logger:
