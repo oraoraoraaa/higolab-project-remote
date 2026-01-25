@@ -864,6 +864,39 @@ def main():
         github_tokens=args.token, error_log_dir=str(error_log_dir)
     )
 
+    # Prompt for tokens if not provided
+    if not miner.tokens:
+        print("\n" + "=" * 80)
+        print("GitHub Personal Access Token Required")
+        print("=" * 80)
+        print("To use the GitHub API, you need to provide at least one Personal Access Token.")
+        print("\nYou can:")
+        print("  1. Set the GITHUB_TOKEN environment variable")
+        print("  2. Use the --token option when running the script")
+        print("  3. Enter tokens interactively now\n")
+        
+        response = input("Would you like to enter tokens now? (y/n): ").strip().lower()
+        
+        if response in ['y', 'yes']:
+            tokens = []
+            print("\nEnter tokens (one per line, press Enter with empty line when done):")
+            while True:
+                token = input(f"Token {len(tokens) + 1}: ").strip()
+                if not token:
+                    break
+                tokens.append(token)
+            
+            if tokens:
+                miner.tokens = tokens
+                miner.current_token_index = 0
+                print(f"\n✓ Added {len(tokens)} token(s)")
+            else:
+                print("\n⚠ No tokens provided. Exiting...")
+                sys.exit(1)
+        else:
+            print("\n⚠ Cannot proceed without authentication. Exiting...")
+            sys.exit(1)
+
     if miner.tokens:
         miner.validate_tokens()
         try:
@@ -1010,6 +1043,65 @@ def main():
             print(f"    • {f.name}")
         if len(files_by_count[count]) > 5:
             print(f"    ... and {len(files_by_count[count]) - 5} more")
+
+    # Parse all CSV files to count total packages
+    print(f"\n{'=' * 80}")
+    print("Parsing input files to count packages...")
+    print(f"{'=' * 80}")
+    
+    total_packages = 0
+    files_package_counts = {}
+    
+    for csv_file in csv_files:
+        with open(csv_file, "r", encoding="utf-8") as f:
+            reader = csv.DictReader(f)
+            rows = list(reader)
+            
+            # Count valid packages (those with Normalized_URL)
+            valid_count = 0
+            for row in rows:
+                normalized_url = row.get("Normalized_URL", "").strip()
+                if normalized_url:
+                    # Validate format
+                    parts = normalized_url.replace('github.com/', '').split('/')
+                    if len(parts) == 2 and parts[0] and parts[1]:
+                        valid_count += 1
+            
+            files_package_counts[csv_file] = valid_count
+            total_packages += valid_count
+    
+    print(f"\nTotal packages to process: {total_packages:,}")
+    print(f"Total CSV files: {len(csv_files)}")
+    
+    # Group counts by ecosystem count
+    counts_by_ecosystem = {}
+    for csv_file, count in files_package_counts.items():
+        ecosystem_count = len(csv_file.stem.split("_"))
+        if ecosystem_count not in counts_by_ecosystem:
+            counts_by_ecosystem[ecosystem_count] = {'files': 0, 'packages': 0}
+        counts_by_ecosystem[ecosystem_count]['files'] += 1
+        counts_by_ecosystem[ecosystem_count]['packages'] += count
+    
+    print(f"\nPackages by ecosystem count:")
+    for count in sorted(counts_by_ecosystem.keys()):
+        stats = counts_by_ecosystem[count]
+        print(f"  {count}-ecosystems: {stats['packages']:,} packages from {stats['files']} files")
+    
+    # Ask for confirmation
+    print(f"\n{'=' * 80}")
+    try:
+        response = input("\nProceed with mining? (y/n): ").strip().lower()
+        
+        if response not in ['y', 'yes']:
+            print("\n⚠ Mining cancelled by user. Exiting...")
+            sys.exit(0)
+    except (KeyboardInterrupt, EOFError):
+        print("\n\n⚠ Mining cancelled by user. Exiting...")
+        sys.exit(0)
+    
+    print(f"\n{'=' * 80}")
+    print("Starting mining process...")
+    print(f"{'=' * 80}")
 
     # Process each CSV file and organize output by ecosystem count
     results_summary = []
