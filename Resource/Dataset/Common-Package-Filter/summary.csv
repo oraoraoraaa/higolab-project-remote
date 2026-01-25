@@ -15,7 +15,7 @@ Ecosystem Count,Ecosystems,Package Count,Output File
 2,Maven + PyPI,209,2_ecosystems/Maven_PyPI.csv
 2,Maven + Ruby,63,2_ecosystems/Maven_Ruby.csv
 2,NPM + PHP,759,2_ecosystems/NPM_PHP.csv
-2,NPM + PyPI,2327,2_ecosystems/NPM_PyPI.csv
+2,NPM + PyPI,2324,2_ecosystems/NPM_PyPI.csv
 2,NPM + Ruby,382,2_ecosystems/NPM_Ruby.csv
 2,PHP + PyPI,21,2_ecosystems/PHP_PyPI.csv
 2,PHP + Ruby,7,2_ecosystems/PHP_Ruby.csv
@@ -47,7 +47,7 @@ Ecosystem Count,Ecosystems,Package Count,Output File
 3,Maven + PyPI + Ruby,4,3_ecosystems/Maven_PyPI_Ruby.csv
 3,NPM + PHP + PyPI,14,3_ecosystems/NPM_PHP_PyPI.csv
 3,NPM + PHP + Ruby,5,3_ecosystems/NPM_PHP_Ruby.csv
-3,NPM + PyPI + Ruby,29,3_ecosystems/NPM_PyPI_Ruby.csv
+3,NPM + PyPI + Ruby,28,3_ecosystems/NPM_PyPI_Ruby.csv
 3,PHP + PyPI + Ruby,2,3_ecosystems/PHP_PyPI_Ruby.csv
 4,Crates + Go + Maven + NPM,17,4_ecosystems/Crates_Go_Maven_NPM.csv
 4,Crates + Go + Maven + PyPI,5,4_ecosystems/Crates_Go_Maven_PyPI.csv
