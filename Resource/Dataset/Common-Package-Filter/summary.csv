@@ -1,71 +1,64 @@
 Ecosystem Count,Ecosystems,Package Count,Output File
-2,Crates + Go,2128,2_ecosystems/Crates_Go.csv
-2,Crates + Maven,39,2_ecosystems/Crates_Maven.csv
-2,Crates + NPM,1570,2_ecosystems/Crates_NPM.csv
-2,Crates + PHP,30,2_ecosystems/Crates_PHP.csv
+2,Crates + Go,2127,2_ecosystems/Crates_Go.csv
+2,Crates + Maven,38,2_ecosystems/Crates_Maven.csv
+2,Crates + NPM,1569,2_ecosystems/Crates_NPM.csv
+2,Crates + PHP,29,2_ecosystems/Crates_PHP.csv
 2,Crates + PyPI,815,2_ecosystems/Crates_PyPI.csv
-2,Crates + Ruby,37,2_ecosystems/Crates_Ruby.csv
+2,Crates + Ruby,36,2_ecosystems/Crates_Ruby.csv
 2,Go + Maven,2818,2_ecosystems/Go_Maven.csv
-2,Go + NPM,13857,2_ecosystems/Go_NPM.csv
+2,Go + NPM,13856,2_ecosystems/Go_NPM.csv
 2,Go + PHP,2418,2_ecosystems/Go_PHP.csv
-2,Go + PyPI,6225,2_ecosystems/Go_PyPI.csv
+2,Go + PyPI,6224,2_ecosystems/Go_PyPI.csv
 2,Go + Ruby,2455,2_ecosystems/Go_Ruby.csv
-2,Maven + NPM,10729,2_ecosystems/Maven_NPM.csv
-2,Maven + PHP,21,2_ecosystems/Maven_PHP.csv
-2,Maven + PyPI,212,2_ecosystems/Maven_PyPI.csv
-2,Maven + Ruby,64,2_ecosystems/Maven_Ruby.csv
+2,Maven + NPM,10724,2_ecosystems/Maven_NPM.csv
+2,Maven + PHP,20,2_ecosystems/Maven_PHP.csv
+2,Maven + PyPI,209,2_ecosystems/Maven_PyPI.csv
+2,Maven + Ruby,63,2_ecosystems/Maven_Ruby.csv
 2,NPM + PHP,759,2_ecosystems/NPM_PHP.csv
-2,NPM + PyPI,2330,2_ecosystems/NPM_PyPI.csv
-2,NPM + Ruby,385,2_ecosystems/NPM_Ruby.csv
+2,NPM + PyPI,2327,2_ecosystems/NPM_PyPI.csv
+2,NPM + Ruby,382,2_ecosystems/NPM_Ruby.csv
 2,PHP + PyPI,21,2_ecosystems/PHP_PyPI.csv
 2,PHP + Ruby,7,2_ecosystems/PHP_Ruby.csv
-2,PyPI + Ruby,66,2_ecosystems/PyPI_Ruby.csv
-3,Crates + Go + Maven,14,3_ecosystems/Crates_Go_Maven.csv
+2,PyPI + Ruby,65,2_ecosystems/PyPI_Ruby.csv
+3,Crates + Go + Maven,13,3_ecosystems/Crates_Go_Maven.csv
 3,Crates + Go + NPM,263,3_ecosystems/Crates_Go_NPM.csv
-3,Crates + Go + PHP,5,3_ecosystems/Crates_Go_PHP.csv
+3,Crates + Go + PHP,4,3_ecosystems/Crates_Go_PHP.csv
 3,Crates + Go + PyPI,85,3_ecosystems/Crates_Go_PyPI.csv
-3,Crates + Go + Ruby,8,3_ecosystems/Crates_Go_Ruby.csv
+3,Crates + Go + Ruby,7,3_ecosystems/Crates_Go_Ruby.csv
 3,Crates + Maven + NPM,25,3_ecosystems/Crates_Maven_NPM.csv
-3,Crates + Maven + PyPI,8,3_ecosystems/Crates_Maven_PyPI.csv
-3,Crates + NPM + PHP,3,3_ecosystems/Crates_NPM_PHP.csv
-3,Crates + NPM + PyPI,207,3_ecosystems/Crates_NPM_PyPI.csv
+3,Crates + Maven + PyPI,7,3_ecosystems/Crates_Maven_PyPI.csv
+3,Crates + NPM + PHP,2,3_ecosystems/Crates_NPM_PHP.csv
+3,Crates + NPM + PyPI,206,3_ecosystems/Crates_NPM_PyPI.csv
 3,Crates + NPM + Ruby,10,3_ecosystems/Crates_NPM_Ruby.csv
-3,Crates + PHP + PyPI,2,3_ecosystems/Crates_PHP_PyPI.csv
-3,Crates + PHP + Ruby,1,3_ecosystems/Crates_PHP_Ruby.csv
-3,Crates + PyPI + Ruby,3,3_ecosystems/Crates_PyPI_Ruby.csv
+3,Crates + PHP + PyPI,1,3_ecosystems/Crates_PHP_PyPI.csv
+3,Crates + PyPI + Ruby,2,3_ecosystems/Crates_PyPI_Ruby.csv
 3,Go + Maven + NPM,2733,3_ecosystems/Go_Maven_NPM.csv
 3,Go + Maven + PHP,8,3_ecosystems/Go_Maven_PHP.csv
-3,Go + Maven + PyPI,84,3_ecosystems/Go_Maven_PyPI.csv
+3,Go + Maven + PyPI,83,3_ecosystems/Go_Maven_PyPI.csv
 3,Go + Maven + Ruby,14,3_ecosystems/Go_Maven_Ruby.csv
 3,Go + NPM + PHP,33,3_ecosystems/Go_NPM_PHP.csv
-3,Go + NPM + PyPI,410,3_ecosystems/Go_NPM_PyPI.csv
+3,Go + NPM + PyPI,409,3_ecosystems/Go_NPM_PyPI.csv
 3,Go + NPM + Ruby,47,3_ecosystems/Go_NPM_Ruby.csv
 3,Go + PHP + PyPI,1,3_ecosystems/Go_PHP_PyPI.csv
 3,Go + PyPI + Ruby,8,3_ecosystems/Go_PyPI_Ruby.csv
-3,Maven + NPM + PHP,155,3_ecosystems/Maven_NPM_PHP.csv
-3,Maven + NPM + PyPI,209,3_ecosystems/Maven_NPM_PyPI.csv
+3,Maven + NPM + PHP,154,3_ecosystems/Maven_NPM_PHP.csv
+3,Maven + NPM + PyPI,208,3_ecosystems/Maven_NPM_PyPI.csv
 3,Maven + NPM + Ruby,23,3_ecosystems/Maven_NPM_Ruby.csv
-3,Maven + PHP + PyPI,1,3_ecosystems/Maven_PHP_PyPI.csv
-3,Maven + PyPI + Ruby,5,3_ecosystems/Maven_PyPI_Ruby.csv
+3,Maven + PyPI + Ruby,4,3_ecosystems/Maven_PyPI_Ruby.csv
 3,NPM + PHP + PyPI,14,3_ecosystems/NPM_PHP_PyPI.csv
 3,NPM + PHP + Ruby,5,3_ecosystems/NPM_PHP_Ruby.csv
-3,NPM + PyPI + Ruby,30,3_ecosystems/NPM_PyPI_Ruby.csv
+3,NPM + PyPI + Ruby,29,3_ecosystems/NPM_PyPI_Ruby.csv
 3,PHP + PyPI + Ruby,2,3_ecosystems/PHP_PyPI_Ruby.csv
 4,Crates + Go + Maven + NPM,17,4_ecosystems/Crates_Go_Maven_NPM.csv
 4,Crates + Go + Maven + PyPI,5,4_ecosystems/Crates_Go_Maven_PyPI.csv
 4,Crates + Go + Maven + Ruby,1,4_ecosystems/Crates_Go_Maven_Ruby.csv
-4,Crates + Go + NPM + PHP,2,4_ecosystems/Crates_Go_NPM_PHP.csv
+4,Crates + Go + NPM + PHP,1,4_ecosystems/Crates_Go_NPM_PHP.csv
 4,Crates + Go + NPM + PyPI,45,4_ecosystems/Crates_Go_NPM_PyPI.csv
-4,Crates + Go + NPM + Ruby,6,4_ecosystems/Crates_Go_NPM_Ruby.csv
-4,Crates + Go + PHP + PyPI,1,4_ecosystems/Crates_Go_PHP_PyPI.csv
-4,Crates + Go + PHP + Ruby,1,4_ecosystems/Crates_Go_PHP_Ruby.csv
-4,Crates + Go + PyPI + Ruby,2,4_ecosystems/Crates_Go_PyPI_Ruby.csv
+4,Crates + Go + NPM + Ruby,5,4_ecosystems/Crates_Go_NPM_Ruby.csv
+4,Crates + Go + PyPI + Ruby,1,4_ecosystems/Crates_Go_PyPI_Ruby.csv
 4,Crates + Maven + NPM + PyPI,13,4_ecosystems/Crates_Maven_NPM_PyPI.csv
 4,Crates + Maven + NPM + Ruby,1,4_ecosystems/Crates_Maven_NPM_Ruby.csv
-4,Crates + NPM + PHP + PyPI,1,4_ecosystems/Crates_NPM_PHP_PyPI.csv
-4,Crates + NPM + PHP + Ruby,1,4_ecosystems/Crates_NPM_PHP_Ruby.csv
-4,Crates + NPM + PyPI + Ruby,25,4_ecosystems/Crates_NPM_PyPI_Ruby.csv
-4,Crates + PHP + PyPI + Ruby,1,4_ecosystems/Crates_PHP_PyPI_Ruby.csv
+4,Crates + NPM + PyPI + Ruby,24,4_ecosystems/Crates_NPM_PyPI_Ruby.csv
 4,Go + Maven + NPM + PHP,47,4_ecosystems/Go_Maven_NPM_PHP.csv
 4,Go + Maven + NPM + PyPI,206,4_ecosystems/Go_Maven_NPM_PyPI.csv
 4,Go + Maven + NPM + Ruby,24,4_ecosystems/Go_Maven_NPM_Ruby.csv
@@ -74,7 +67,7 @@ Ecosystem Count,Ecosystems,Package Count,Output File
 4,Go + NPM + PHP + PyPI,2,4_ecosystems/Go_NPM_PHP_PyPI.csv
 4,Go + NPM + PHP + Ruby,1,4_ecosystems/Go_NPM_PHP_Ruby.csv
 4,Go + NPM + PyPI + Ruby,9,4_ecosystems/Go_NPM_PyPI_Ruby.csv
-4,Maven + NPM + PHP + PyPI,6,4_ecosystems/Maven_NPM_PHP_PyPI.csv
+4,Maven + NPM + PHP + PyPI,5,4_ecosystems/Maven_NPM_PHP_PyPI.csv
 4,Maven + NPM + PHP + Ruby,1,4_ecosystems/Maven_NPM_PHP_Ruby.csv
 4,Maven + NPM + PyPI + Ruby,7,4_ecosystems/Maven_NPM_PyPI_Ruby.csv
 4,NPM + PHP + PyPI + Ruby,2,4_ecosystems/NPM_PHP_PyPI_Ruby.csv
@@ -82,17 +75,15 @@ Ecosystem Count,Ecosystems,Package Count,Output File
 5,Crates + Go + Maven + NPM + PyPI,22,5_ecosystems/Crates_Go_Maven_NPM_PyPI.csv
 5,Crates + Go + Maven + NPM + Ruby,4,5_ecosystems/Crates_Go_Maven_NPM_Ruby.csv
 5,Crates + Go + Maven + PyPI + Ruby,2,5_ecosystems/Crates_Go_Maven_PyPI_Ruby.csv
-5,Crates + Go + NPM + PHP + PyPI,2,5_ecosystems/Crates_Go_NPM_PHP_PyPI.csv
-5,Crates + Go + NPM + PHP + Ruby,1,5_ecosystems/Crates_Go_NPM_PHP_Ruby.csv
-5,Crates + Go + NPM + PyPI + Ruby,11,5_ecosystems/Crates_Go_NPM_PyPI_Ruby.csv
-5,Crates + Go + PHP + PyPI + Ruby,1,5_ecosystems/Crates_Go_PHP_PyPI_Ruby.csv
+5,Crates + Go + NPM + PHP + PyPI,1,5_ecosystems/Crates_Go_NPM_PHP_PyPI.csv
+5,Crates + Go + NPM + PyPI + Ruby,10,5_ecosystems/Crates_Go_NPM_PyPI_Ruby.csv
 5,Crates + Maven + NPM + PyPI + Ruby,2,5_ecosystems/Crates_Maven_NPM_PyPI_Ruby.csv
 5,Crates + Maven + PHP + PyPI + Ruby,1,5_ecosystems/Crates_Maven_PHP_PyPI_Ruby.csv
-5,Crates + NPM + PHP + PyPI + Ruby,2,5_ecosystems/Crates_NPM_PHP_PyPI_Ruby.csv
+5,Crates + NPM + PHP + PyPI + Ruby,1,5_ecosystems/Crates_NPM_PHP_PyPI_Ruby.csv
 5,Go + Maven + NPM + PHP + PyPI,2,5_ecosystems/Go_Maven_NPM_PHP_PyPI.csv
 5,Go + Maven + NPM + PHP + Ruby,1,5_ecosystems/Go_Maven_NPM_PHP_Ruby.csv
 5,Go + Maven + NPM + PyPI + Ruby,11,5_ecosystems/Go_Maven_NPM_PyPI_Ruby.csv
-5,Go + NPM + PHP + PyPI + Ruby,2,5_ecosystems/Go_NPM_PHP_PyPI_Ruby.csv
+5,Go + NPM + PHP + PyPI + Ruby,1,5_ecosystems/Go_NPM_PHP_PyPI_Ruby.csv
 6,Crates + Go + Maven + NPM + PHP + PyPI,1,6_ecosystems/Crates_Go_Maven_NPM_PHP_PyPI.csv
 6,Crates + Go + Maven + NPM + PyPI + Ruby,7,6_ecosystems/Crates_Go_Maven_NPM_PyPI_Ruby.csv
 6,Crates + Go + NPM + PHP + PyPI + Ruby,3,6_ecosystems/Crates_Go_NPM_PHP_PyPI_Ruby.csv

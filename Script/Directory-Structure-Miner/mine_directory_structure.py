@@ -10,6 +10,7 @@ import csv
 import requests
 import base64
 import time
+import re
 from pathlib import Path
 from typing import List, Dict, Optional, Tuple
 import argparse
@@ -29,6 +30,49 @@ DEFAULT_OUTPUT_DIR = DATASET_DIR / "Directory-Structure-Miner"
 DEFAULT_ERROR_LOG_DIR = DATASET_DIR / "Directory-Structure-Miner/error-log"
 
 # ============================================================================
+
+
+def normalize_github_url(url):
+    """
+    Normalize GitHub repository URLs to a standard format for comparison.
+    Returns None if URL is invalid, empty, or not a GitHub URL.
+    This should match the normalization used in find_cross_ecosystem_packages.py
+    """
+    if not url or (isinstance(url, str) and url.strip() == ""):
+        return None
+
+    url = str(url).strip().lower()
+
+    # Check if it's a GitHub URL
+    if "github.com" not in url:
+        return None
+
+    # Remove common suffixes and prefixes
+    url = re.sub(r"\.git$", "", url)
+    url = re.sub(r"/$", "", url)
+    
+    # Remove git protocol prefixes
+    url = url.replace('git+https://', 'https://')
+    url = url.replace('git+ssh://', 'ssh://')
+    url = url.replace('git://', 'https://')
+
+    # Extract path from URL
+    try:
+        # Handle various GitHub URL formats (https, ssh, git@)
+        match = re.search(r"github\.com[:/]([^/]+/[^/\s]+)", url)
+        if match:
+            repo_path = match.group(1)
+            # Remove trailing content after repository name
+            repo_path = re.split(r"[\s#?]", repo_path)[0]
+            # Remove .git suffix if still present in the extracted path
+            repo_path = re.sub(r"\.git$", "", repo_path)
+            # Remove trailing slash
+            repo_path = repo_path.rstrip('/')
+            return f"github.com/{repo_path}"
+    except:
+        pass
+
+    return None
 
 
 class GitHubDirectoryMiner:
@@ -58,6 +102,7 @@ class GitHubDirectoryMiner:
         self.rate_limit_remaining = 60  # Default for unauthenticated requests
         self.error_log_dir = error_log_dir
         self.error_logs = {}  # Store errors by ecosystem combination
+        self.error_stats = {}  # Track error types and counts globally
 
     @property
     def current_token(self) -> Optional[str]:
@@ -126,6 +171,11 @@ class GitHubDirectoryMiner:
         }
 
         self.error_logs[ecosystem_combination].append(error_entry)
+        
+        # Track global error statistics
+        if error_type not in self.error_stats:
+            self.error_stats[error_type] = 0
+        self.error_stats[error_type] += 1
 
     def write_error_logs(self):
         """Write all accumulated error logs to files."""
@@ -547,11 +597,7 @@ def process_csv_file(
     # Extract ecosystems from CSV filename
     csv_ecosystems = csv_filename.replace(".csv", "").split("_")
 
-    # Determine which repo columns are present based on filename
-    repo_columns = [f"{eco}_Repo" for eco in csv_ecosystems]
-
     tqdm.write(f"Total packages: {len(rows)}")
-    tqdm.write(f"Repository columns: {repo_columns}")
     tqdm.write(f"Ecosystems: {', '.join(csv_ecosystems)}\n")
 
     # Process each row with progress bar
@@ -559,62 +605,69 @@ def process_csv_file(
 
     with tqdm(total=len(rows), desc=f"Mining {csv_filename}", unit="pkg") as pbar:
         for idx, row in enumerate(rows, 1):
-            # Try each repo column
-            found_tree = False
-            processed_repos = set()  # Track processed repos to avoid duplicates
-            for repo_col in repo_columns:
-                repo_url = row.get(repo_col, "").strip()
-
-                # Skip if empty or already processed
-                if not repo_url or repo_url in processed_repos:
-                    continue
-
-                processed_repos.add(repo_url)
-
-                parsed = miner.parse_github_url(repo_url)
-                if not parsed:
-                    miner.log_error(
-                        ecosystem_combination=ecosystem_combination,
-                        repo_url=repo_url,
-                        ecosystems=csv_ecosystems,
-                        error_type="PARSE_ERROR",
-                        error_msg=f"Could not parse GitHub URL: {repo_url}",
-                        solution="Ensure the URL follows the format: https://github.com/owner/repo or git@github.com:owner/repo.git",
-                    )
-                    continue
-
-                owner, repo_name = parsed
-                pbar.set_postfix_str(f"{owner}/{repo_name}")
-
-                # Determine ecosystems for this repo
-                repo_ecosystems = [
-                    col.replace("_Repo", "")
-                    for col in repo_columns
-                    if row.get(col, "").strip() == repo_url
-                ]
-
-                # Get directory tree
-                tree = miner.get_tree(
-                    owner,
-                    repo_name,
-                    max_depth=max_depth,
-                    repo_url=repo_url,
-                    ecosystems=repo_ecosystems,
+            # Only use Normalized_URL column - no fallback
+            normalized_url = row.get("Normalized_URL", "").strip()
+            
+            if not normalized_url:
+                miner.log_error(
                     ecosystem_combination=ecosystem_combination,
+                    repo_url="Missing",
+                    ecosystems=csv_ecosystems,
+                    error_type="MISSING_NORMALIZED_URL",
+                    error_msg="Normalized_URL column is missing or empty",
+                    solution="Ensure the CSV file was generated with the updated find_cross_ecosystem_packages.py that includes Normalized_URL column.",
                 )
-
-                if tree:
-                    results.append(
-                        {
-                            "repo_url": repo_url,
-                            "owner": owner,
-                            "repo": repo_name,
-                            "tree": tree,
-                            "ecosystems": repo_ecosystems,
-                        }
-                    )
-                    found_tree = True
-                    break  # Found valid tree, move to next row
+                pbar.update(1)
+                continue
+            
+            # Convert normalized URL (github.com/owner/repo) to full URL
+            full_url = f"https://{normalized_url}"
+            parsed = miner.parse_github_url(full_url)
+            
+            if not parsed:
+                miner.log_error(
+                    ecosystem_combination=ecosystem_combination,
+                    repo_url=full_url,
+                    ecosystems=csv_ecosystems,
+                    error_type="PARSE_ERROR",
+                    error_msg=f"Could not parse normalized URL: {normalized_url}",
+                    solution="Check if the normalized URL format is correct (should be github.com/owner/repo).",
+                )
+                pbar.update(1)
+                continue
+            
+            owner, repo_name = parsed
+            pbar.set_postfix_str(f"{owner}/{repo_name}")
+            
+            # Get directory tree
+            tree = miner.get_tree(
+                owner,
+                repo_name,
+                max_depth=max_depth,
+                repo_url=full_url,
+                ecosystems=csv_ecosystems,
+                ecosystem_combination=ecosystem_combination,
+            )
+            
+            if tree:
+                results.append(
+                    {
+                        "repo_url": full_url,
+                        "owner": owner,
+                        "repo": repo_name,
+                        "tree": tree,
+                        "ecosystems": csv_ecosystems,
+                    }
+                )
+            else:
+                miner.log_error(
+                    ecosystem_combination=ecosystem_combination,
+                    repo_url=full_url,
+                    ecosystems=csv_ecosystems,
+                    error_type="TREE_FETCH_FAILED",
+                    error_msg=f"Failed to fetch directory tree for {owner}/{repo_name}",
+                    solution="Repository may not exist, be private, or API may have failed. Check error logs for details.",
+                )
 
             pbar.update(1)
 
@@ -1002,6 +1055,58 @@ def main():
         f.write("=" * 80 + "\n\n")
         f.write(f"Generated: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n")
         f.write(f"Total Files Processed: {len(results_summary)}\n\n")
+        
+        # Calculate overall statistics
+        total_packages = sum(r.get("total", 0) for r in results_summary if not r.get("skipped"))
+        mined_packages = sum(r.get("mined", 0) for r in results_summary if not r.get("skipped"))
+        failed_packages = total_packages - mined_packages
+        success_rate = (mined_packages / total_packages * 100) if total_packages > 0 else 0
+        error_rate = (failed_packages / total_packages * 100) if total_packages > 0 else 0
+        
+        # Overall statistics section
+        f.write("=" * 80 + "\n")
+        f.write("OVERALL STATISTICS\n")
+        f.write("=" * 80 + "\n")
+        f.write(f"Total Input Repositories: {total_packages:,}\n")
+        f.write(f"Successfully Mined: {mined_packages:,} ({success_rate:.2f}%)\n")
+        f.write(f"Errors: {failed_packages:,} ({error_rate:.2f}%)\n\n")
+        
+        # Error breakdown section
+        if miner.error_stats:
+            f.write("ERROR BREAKDOWN\n")
+            f.write("=" * 80 + "\n")
+            
+            # Sort errors by count descending
+            sorted_errors = sorted(miner.error_stats.items(), key=lambda x: x[1], reverse=True)
+            
+            for error_type, count in sorted_errors:
+                percentage = (count / total_packages * 100) if total_packages > 0 else 0
+                f.write(f"{error_type}: {count:,} ({percentage:.2f}%)\n")
+                
+                # Add explanation for common error types
+                if error_type == "NOT_FOUND":
+                    f.write("  → Repository not found (deleted or made private)\n")
+                elif error_type == "ACCESS_DENIED":
+                    f.write("  → Access forbidden (private repository or rate limit)\n")
+                elif error_type == "MISSING_NORMALIZED_URL":
+                    f.write("  → Normalized_URL column is missing or empty in CSV\n")
+                elif error_type == "PARSE_ERROR":
+                    f.write("  → Could not parse GitHub URL from normalized URL\n")
+                elif error_type == "TREE_FETCH_FAILED":
+                    f.write("  → Failed to fetch directory tree (API error)\n")
+                elif error_type == "TREE_ERROR":
+                    f.write("  → Error getting repository tree structure\n")
+                elif error_type == "TREE_EMPTY":
+                    f.write("  → Repository tree is empty or malformed\n")
+                elif error_type == "API_ERROR":
+                    f.write("  → GitHub API returned an error\n")
+                elif error_type == "TIMEOUT":
+                    f.write("  → Request timed out\n")
+                elif error_type == "NETWORK_ERROR":
+                    f.write("  → Network or connection error\n")
+                f.write("\n")
+            
+            f.write("\n")
 
         # Group by ecosystem count
         summary_by_count = {}

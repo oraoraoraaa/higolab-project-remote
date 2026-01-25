@@ -1,8 +1,8 @@
-PHP_ID,PHP_Name,PHP_Homepage,PHP_Repo,Ruby_ID,Ruby_Name,Ruby_Homepage,Ruby_Repo
-25615,arashabedii/telebot,,https://github.com/ArashAbedii/TeleBot,147581,sayhello12,https://github.com/arashabedii/telebot,https://github.com/arashabedii/telebot
-54995,byteinternet/hypernode-vagrant,,https://github.com/ByteInternet/hypernode-vagrant,178035,vagrant-hypconfigmgmt,https://github.com/ByteInternet/hypernode-vagrant,https://github.com/ByteInternet/hypernode-vagrant
-189613,jtkendall/kurin,,https://github.com/jtkendall/kurin,88087,kurin,http://github.com/jtkendall/kurin,http://github.com/jtkendall/kurin
-237068,mdshakeer/spell_it,,https://github.com/mdshakeer/spell_it,159177,spell_it,https://github.com/mdshakeer,https://github.com/mdshakeer/spell_it
-282641,pablotron/luigi-template,,https://github.com/pablotron/luigi-template,94584,luigi-template,https://github.com/pablotron/luigi-template,https://github.com/pablotron/luigi-template
-286285,paycertify/wrappers,,https://github.com/PayCertify/wrappers,118663,paycertify,http://github.com/paycertify/wrappers/ruby,http://github.com/paycertify/wrappers/ruby
-348854,snowplow/referer-parser,,https://github.com/snowplow/referer-parser,135290,referer-parser,http://github.com/snowplow/referer-parser,http://github.com/snowplow/referer-parser
+Normalized_URL,PHP_ID,PHP_Name,PHP_Homepage,PHP_Repo,Ruby_ID,Ruby_Name,Ruby_Homepage,Ruby_Repo
+github.com/arashabedii/telebot,25615,arashabedii/telebot,,https://github.com/ArashAbedii/TeleBot,147581,sayhello12,https://github.com/arashabedii/telebot,https://github.com/arashabedii/telebot
+github.com/byteinternet/hypernode-vagrant,54995,byteinternet/hypernode-vagrant,,https://github.com/ByteInternet/hypernode-vagrant,178035,vagrant-hypconfigmgmt,https://github.com/ByteInternet/hypernode-vagrant,https://github.com/ByteInternet/hypernode-vagrant
+github.com/jtkendall/kurin,189613,jtkendall/kurin,,https://github.com/jtkendall/kurin,88087,kurin,http://github.com/jtkendall/kurin,http://github.com/jtkendall/kurin
+github.com/mdshakeer/spell_it,237068,mdshakeer/spell_it,,https://github.com/mdshakeer/spell_it,159177,spell_it,https://github.com/mdshakeer,https://github.com/mdshakeer/spell_it
+github.com/pablotron/luigi-template,282641,pablotron/luigi-template,,https://github.com/pablotron/luigi-template,94584,luigi-template,https://github.com/pablotron/luigi-template,https://github.com/pablotron/luigi-template
+github.com/paycertify/wrappers,286285,paycertify/wrappers,,https://github.com/PayCertify/wrappers,118663,paycertify,http://github.com/paycertify/wrappers/ruby,http://github.com/paycertify/wrappers/ruby
+github.com/snowplow/referer-parser,348854,snowplow/referer-parser,,https://github.com/snowplow/referer-parser,135290,referer-parser,http://github.com/snowplow/referer-parser,http://github.com/snowplow/referer-parser

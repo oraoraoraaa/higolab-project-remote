@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 GitHub Metrics Miner
-Mines GitHub repository metrics from Config-Locator results.
+Mines GitHub repository metrics from Common-Package-Filter CSV results.
 Outputs CSV files with stars, commits, PRs, issues, contributors, and language proportions.
 
 Features:
@@ -32,7 +32,7 @@ from threading import Lock
 
 SCRIPT_DIR = Path(__file__).parent
 DATASET_DIR = SCRIPT_DIR / "../../Resource/Dataset/"
-DEFAULT_INPUT_DIR = DATASET_DIR / "Directory-Structure-Miner"
+DEFAULT_INPUT_DIR = DATASET_DIR / "Common-Package-Filter"
 DEFAULT_OUTPUT_DIR = DATASET_DIR / "Metric-Miner-Github"
 DEFAULT_OUTPUT_FILE = "github_metrics.json"
 LOG_FILE = SCRIPT_DIR / "processing.log"
@@ -530,14 +530,15 @@ class GitHubMetricsMiner:
             repo_response = self._make_request(repo_url)
 
             if not repo_response:
-                return None
+                return {"error": "API_REQUEST_FAILED", "error_detail": "No response from API"}
             
             if repo_response.status_code == 404:
-                return None
+                # HTTP 404 is not critical - repository may be deleted or made private
+                return {"error": "HTTP_404", "error_detail": "Repository not found (deleted or private)"}
             elif repo_response.status_code == 403:
-                return None
+                return {"error": "HTTP_403", "error_detail": "Access forbidden (private or rate limit)"}
             elif repo_response.status_code != 200:
-                return None
+                return {"error": f"HTTP_{repo_response.status_code}", "error_detail": f"API returned status {repo_response.status_code}"}
 
             repo_data = repo_response.json()
 
@@ -1051,51 +1052,49 @@ class GitHubMetricsMiner:
 # FILE PARSING
 # ============================================================================
 
-def parse_txt_file(txt_path: str) -> List[Dict[str, str]]:
+def parse_csv_file(csv_path: str) -> List[Dict[str, str]]:
     """
-    Parse a txt file from Directory-Structure-Miner results.
+    Parse a CSV file from Common-Package-Filter results.
 
     Args:
-        txt_path: Path to the txt file
+        csv_path: Path to the CSV file
 
     Returns:
-        List of dictionaries with owner/repo and repository URL
+        List of dictionaries with normalized_url and ecosystems
     """
     packages = []
+    
+    # Extract ecosystems from CSV filename
+    csv_filename = os.path.basename(csv_path)
+    ecosystems = csv_filename.replace(".csv", "").split("_")
+    ecosystems_str = ", ".join(ecosystems)
 
-    with open(txt_path, "r", encoding="utf-8") as f:
-        content = f.read()
-
-    # Split by package sections
-    package_sections = re.split(r"={80}\nPackage \d+/\d+\n={80}\n", content)
-
-    for section in package_sections[1:]:  # Skip header
-        if not section.strip():
-            continue
-
-        # Extract repository URL
-        repo_match = re.search(r"Repository: (.+)", section)
-        if not repo_match:
-            continue
-
-        repo_url = repo_match.group(1).strip()
-
-        # Extract Owner/Repo
-        owner_repo_match = re.search(r"Owner/Repo: (.+)", section)
-        if not owner_repo_match:
-            continue
-
-        owner_repo = owner_repo_match.group(1).strip()
-
-        # Extract Ecosystems
-        ecosystems_match = re.search(r"Ecosystems: (.+)", section)
-        ecosystems = ecosystems_match.group(1).strip() if ecosystems_match else ""
-
-        packages.append({
-            "owner_repo": owner_repo,
-            "repo_url": repo_url,
-            "ecosystems": ecosystems
-        })
+    with open(csv_path, "r", encoding="utf-8") as f:
+        reader = csv.DictReader(f)
+        
+        for row in reader:
+            # Only use Normalized_URL column - no fallback
+            normalized_url = row.get("Normalized_URL", "").strip()
+            
+            if not normalized_url:
+                continue  # Skip rows without normalized URL
+            
+            # Convert normalized URL (github.com/owner/repo) to full URL and owner/repo
+            # normalized_url format: github.com/owner/repo
+            parts = normalized_url.replace("github.com/", "").split("/")
+            if len(parts) != 2:
+                continue  # Invalid format
+            
+            owner, repo_name = parts[0], parts[1]
+            owner_repo = f"{owner}/{repo_name}"
+            full_url = f"https://{normalized_url}"
+            
+            packages.append({
+                "owner_repo": owner_repo,
+                "repo_url": full_url,
+                "normalized_url": normalized_url,
+                "ecosystems": ecosystems_str
+            })
 
     return packages
 
@@ -1137,7 +1136,8 @@ def process_single_package(package: Dict, miner: GitHubMetricsMiner) -> Optional
             **metrics
         }
     
-    return None
+    # Should not reach here, but just in case
+    return {"owner_repo": owner_repo, "repo_url": repo_url, "ecosystems": ecosystems, "error": "UNKNOWN", "error_detail": "No metrics returned"}
 
 
 def process_packages_parallel(
@@ -1180,6 +1180,7 @@ def process_packages_parallel(
     processed_count = 0
     error_count = 0
     warning_shown = False
+    error_stats = {}  # Track error types and counts
 
     with tqdm(total=len(packages_to_process), desc=f"Mining repositories", unit="repo") as pbar:
         with ThreadPoolExecutor(max_workers=max_workers) as executor:
@@ -1198,25 +1199,46 @@ def process_packages_parallel(
                     
                     with results_lock:
                         if result:
-                            processed_packages[pkg_key] = result
+                            # Check if result contains error
+                            if "error" in result:
+                                error_type = result.get("error", "UNKNOWN")
+                                error_detail = result.get("error_detail", "")
+                                
+                                # Track error statistics
+                                if error_type not in error_stats:
+                                    error_stats[error_type] = 0
+                                error_stats[error_type] += 1
+                                
+                                # HTTP 404 is expected (deleted/private repos) - don't count as critical error
+                                if error_type != "HTTP_404":
+                                    error_count += 1
+                                
+                                # Store result with error info
+                                processed_packages[pkg_key] = result
+                                
+                                # Show warning when critical errors exceed 50
+                                if error_count > 50 and not warning_shown:
+                                    warning_shown = True
+                                    safe_print("\n" + "!" * 80)
+                                    safe_print("⚠️  WARNING: More than 50 repositories have failed to be mined!")
+                                    safe_print("⚠️  Current error count: {}".format(error_count))
+                                    safe_print("⚠️  Check processing.log for detailed error messages")
+                                    safe_print("⚠️  Common causes: authentication issues, rate limits, network errors")
+                                    safe_print("!" * 80 + "\n")
+                                
+                                # Continue showing periodic warnings every 100 errors after threshold
+                                elif error_count > 50 and error_count % 100 == 0:
+                                    safe_print("\n⚠️  Error count: {} (check processing.log)\n".format(error_count))
+                            else:
+                                # Success
+                                processed_packages[pkg_key] = result
                         else:
-                            # Mark as processed but failed
-                            processed_packages[pkg_key] = None
+                            # Should not happen with updated logic, but keep for safety
+                            processed_packages[pkg_key] = {"error": "NO_RESULT", "error_detail": "No result returned"}
                             error_count += 1
-                            
-                            # Show warning when errors exceed 50
-                            if error_count > 50 and not warning_shown:
-                                warning_shown = True
-                                safe_print("\n" + "!" * 80)
-                                safe_print("⚠️  WARNING: More than 50 repositories have failed to be mined!")
-                                safe_print("⚠️  Current error count: {}".format(error_count))
-                                safe_print("⚠️  Check processing.log for detailed error messages")
-                                safe_print("⚠️  Common causes: authentication issues, rate limits, network errors")
-                                safe_print("!" * 80 + "\n")
-                            
-                            # Continue showing periodic warnings every 100 errors after threshold
-                            elif error_count > 50 and error_count % 100 == 0:
-                                safe_print("\n⚠️  Error count: {} (check processing.log)\n".format(error_count))
+                            if "NO_RESULT" not in error_stats:
+                                error_stats["NO_RESULT"] = 0
+                            error_stats["NO_RESULT"] += 1
                         
                         processed_count += 1
                         
@@ -1226,8 +1248,13 @@ def process_packages_parallel(
                 
                 except Exception as e:
                     with results_lock:
-                        processed_packages[pkg_key] = None
+                        processed_packages[pkg_key] = {"error": "PROCESSING_EXCEPTION", "error_detail": str(e)}
                         error_count += 1
+                        
+                        # Track error
+                        if "PROCESSING_EXCEPTION" not in error_stats:
+                            error_stats["PROCESSING_EXCEPTION"] = 0
+                        error_stats["PROCESSING_EXCEPTION"] += 1
                         
                         # Show warning when errors exceed 50
                         if error_count > 50 and not warning_shown:
@@ -1248,7 +1275,7 @@ def process_packages_parallel(
     # Save final progress
     save_progress(output_path, processed_packages, len(all_packages) - 1)
     
-    return processed_packages
+    return processed_packages, error_stats
 
 
 def count_successful_packages(processed_packages: Dict) -> int:
@@ -1261,7 +1288,83 @@ def count_successful_packages(processed_packages: Dict) -> int:
     Returns:
         Number of successfully mined packages
     """
-    return len([v for v in processed_packages.values() if v is not None])
+    return len([v for v in processed_packages.values() if v and "error" not in v])
+
+
+def generate_summary_stats(processed_packages: Dict, error_stats: Dict) -> Dict:
+    """
+    Generate summary statistics for the mining process.
+    
+    Args:
+        processed_packages: Dictionary of processed results
+        error_stats: Dictionary of error type counts
+        
+    Returns:
+        Dictionary with summary statistics
+    """
+    total = len(processed_packages)
+    success = count_successful_packages(processed_packages)
+    total_errors = sum(error_stats.values())
+    
+    return {
+        "total": total,
+        "success": success,
+        "success_rate": (success / total * 100) if total > 0 else 0,
+        "total_errors": total_errors,
+        "error_rate": (total_errors / total * 100) if total > 0 else 0,
+        "error_breakdown": error_stats
+    }
+
+
+def write_summary_file(output_dir: Path, stats: Dict, all_packages: List[Dict]):
+    """
+    Write summary.txt file with statistics.
+    
+    Args:
+        output_dir: Output directory path
+        stats: Summary statistics dictionary
+        all_packages: List of all packages
+    """
+    summary_path = output_dir / "summary.txt"
+    
+    with open(summary_path, "w", encoding="utf-8") as f:
+        f.write("=" * 80 + "\n")
+        f.write("GITHUB METRICS MINING SUMMARY\n")
+        f.write("=" * 80 + "\n\n")
+        
+        f.write("OVERALL STATISTICS\n")
+        f.write("=" * 80 + "\n")
+        f.write(f"Total Input Repositories: {stats['total']:,}\n")
+        f.write(f"Successfully Mined: {stats['success']:,} ({stats['success_rate']:.2f}%)\n")
+        f.write(f"Errors: {stats['total_errors']:,} ({stats['error_rate']:.2f}%)\n\n")
+        
+        if stats['error_breakdown']:
+            f.write("ERROR BREAKDOWN\n")
+            f.write("=" * 80 + "\n")
+            
+            # Sort errors by count descending
+            sorted_errors = sorted(stats['error_breakdown'].items(), key=lambda x: x[1], reverse=True)
+            
+            for error_type, count in sorted_errors:
+                percentage = (count / stats['total'] * 100) if stats['total'] > 0 else 0
+                f.write(f"{error_type}: {count:,} ({percentage:.2f}%)\n")
+                
+                # Add explanation for common error types
+                if error_type == "HTTP_404":
+                    f.write("  → Repository not found (deleted or made private)\n")
+                elif error_type == "HTTP_403":
+                    f.write("  → Access forbidden (private repository or rate limit)\n")
+                elif error_type == "API_REQUEST_FAILED":
+                    f.write("  → Network or API connection issues\n")
+                elif error_type == "EXCEPTION":
+                    f.write("  → Unexpected exception during processing\n")
+                f.write("\n")
+        
+        f.write("=" * 80 + "\n")
+        f.write(f"Summary generated: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n")
+        f.write("=" * 80 + "\n")
+    
+    safe_print(f"✓ Summary saved to {summary_path}")
 
 
 # ============================================================================
@@ -1271,12 +1374,12 @@ def count_successful_packages(processed_packages: Dict) -> int:
 def main():
     """Main entry point."""
     parser = argparse.ArgumentParser(
-        description="Mine GitHub metrics from Directory-Structure-Miner results (with parallel processing)"
+        description="Mine GitHub metrics from Common-Package-Filter CSV results (with parallel processing)"
     )
     parser.add_argument(
         "--input-dir",
         default=DEFAULT_INPUT_DIR,
-        help=f"Directory containing txt input files (default: {DEFAULT_INPUT_DIR})",
+        help=f"Directory containing CSV input files (default: {DEFAULT_INPUT_DIR})",
     )
     parser.add_argument(
         "--output-dir",
@@ -1296,7 +1399,7 @@ def main():
     parser.add_argument(
         "--files",
         nargs="+",
-        help="Specific txt files to process (default: all txt files in input dir)",
+        help="Specific CSV files to process (default: all CSV files in input dir)",
     )
     parser.add_argument(
         "--workers",
@@ -1412,24 +1515,24 @@ def main():
     output_path = output_dir / args.output_file
     print(f"Output file: {output_path}")
 
-    # Get txt files to process
-    txt_files = []
+    # Get CSV files to process
+    csv_files = []
     if args.files:
         # If specific files provided
         for f in args.files:
             file_path = input_dir / f
             if file_path.is_file():
-                txt_files.append(file_path)
+                csv_files.append(file_path)
             else:
                 # Try searching in subdirectories
                 for subdir in input_dir.iterdir():
                     if subdir.is_dir():
                         possible_path = subdir / f
                         if possible_path.is_file():
-                            txt_files.append(possible_path)
+                            csv_files.append(possible_path)
                             break
     else:
-        # Get all txt files from subdirectories
+        # Get all CSV files from subdirectories
         ecosystem_dirs = [
             d
             for d in input_dir.iterdir()
@@ -1439,22 +1542,22 @@ def main():
         if ecosystem_dirs:
             # Structure with ecosystem folders
             for ecosystem_dir in sorted(ecosystem_dirs):
-                txt_files.extend(list(ecosystem_dir.glob("*.txt")))
+                csv_files.extend(list(ecosystem_dir.glob("*.csv")))
         else:
-            # Fallback: txt files directly in input_dir
-            txt_files = list(input_dir.glob("*.txt"))
+            # Fallback: CSV files directly in input_dir
+            csv_files = list(input_dir.glob("*.csv"))
 
-    txt_files = [f for f in txt_files if f.is_file()]
+    csv_files = [f for f in csv_files if f.is_file()]
 
-    if not txt_files:
-        print(f"\n✗ No txt files found in {input_dir}")
+    if not csv_files:
+        print(f"\n✗ No CSV files found in {input_dir}")
         return
 
-    print(f"\nFound {len(txt_files)} txt file(s) to process:")
+    print(f"\nFound {len(csv_files)} CSV file(s) to process:")
 
     # Group by ecosystem count for display
     files_by_count = {}
-    for f in txt_files:
+    for f in csv_files:
         # Determine ecosystem count from parent folder name
         parent = f.parent.name
         if parent.endswith("_ecosystems"):
@@ -1491,17 +1594,17 @@ def main():
     all_packages = []
     files_by_count_stats = {}
     
-    for txt_file in tqdm(txt_files, desc="Parsing files", unit="file"):
+    for csv_file in tqdm(csv_files, desc="Parsing files", unit="file"):
         try:
-            packages = parse_txt_file(str(txt_file))
+            packages = parse_csv_file(str(csv_file))
             all_packages.extend(packages)
             
             # Track stats by ecosystem count
-            parent = txt_file.parent.name
+            parent = csv_file.parent.name
             if parent.endswith("_ecosystems"):
                 count = int(parent.split("_")[0])
             else:
-                count = len(txt_file.stem.split("_"))
+                count = len(csv_file.stem.split("_"))
             
             if count not in files_by_count_stats:
                 files_by_count_stats[count] = {"files": 0, "packages": 0}
@@ -1509,7 +1612,7 @@ def main():
             files_by_count_stats[count]["packages"] += len(packages)
             
         except Exception as e:
-            safe_print(f"\n✗ Error parsing {txt_file.name}: {e}")
+            safe_print(f"\n✗ Error parsing {csv_file.name}: {e}")
             continue
 
     # Remove duplicates (same owner/repo)
@@ -1522,7 +1625,7 @@ def main():
     all_packages = list(unique_packages.values())
     
     safe_print(f"\nTotal unique repositories: {len(all_packages)}")
-    safe_print(f"Files parsed: {len(txt_files)}")
+    safe_print(f"Files parsed: {len(csv_files)}")
     
     # Display stats by ecosystem count
     safe_print(f"\nPackages by ecosystem count:")
@@ -1536,7 +1639,7 @@ def main():
         safe_print("Mining GitHub metrics...")
         safe_print(f"{'=' * 80}\n")
         
-        processed_packages = process_packages_parallel(
+        processed_packages, error_stats = process_packages_parallel(
             all_packages,
             miner,
             processed_packages,
@@ -1546,8 +1649,14 @@ def main():
         
         successful_count = count_successful_packages(processed_packages)
         
+        # Generate summary statistics
+        summary_stats = generate_summary_stats(processed_packages, error_stats)
+        
         safe_print(f"\n✓ Results saved to {output_path}")
         safe_print(f"  Successfully mined: {successful_count}/{len(all_packages)} repositories")
+        
+        # Write summary file
+        write_summary_file(output_dir, summary_stats, all_packages)
         
     except KeyboardInterrupt:
         print("\n\n⚠ Interrupted by user. Progress has been saved.")
@@ -1564,9 +1673,18 @@ def main():
     print("Processing Complete!")
     print(f"{'=' * 80}")
     print(f"Output file: {output_path}")
-    print(f"Total repositories processed: {len(all_packages)}")
-    print(f"Successfully mined: {successful_count}")
-    print(f"Success rate: {(successful_count/len(all_packages)*100):.1f}%")
+    print(f"Summary file: {output_dir / 'summary.txt'}")
+    print(f"\nTotal repositories processed: {len(all_packages)}")
+    print(f"Successfully mined: {successful_count} ({summary_stats['success_rate']:.2f}%)")
+    print(f"Errors: {summary_stats['total_errors']} ({summary_stats['error_rate']:.2f}%)")
+    
+    if error_stats:
+        print(f"\nTop error types:")
+        sorted_errors = sorted(error_stats.items(), key=lambda x: x[1], reverse=True)
+        for error_type, count in sorted_errors[:5]:  # Show top 5
+            percentage = (count / len(all_packages) * 100) if len(all_packages) > 0 else 0
+            print(f"  • {error_type}: {count} ({percentage:.2f}%)")
+    
     print(f"{'=' * 80}\n")
 
 
