@@ -1,0 +1,103 @@
+================================================================================
+Error Log for Crates_Maven
+================================================================================
+Total Errors: 6
+Generated: 2026-01-26 02:36:49
+================================================================================
+
+Error #1
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-26T02:26:53.908204
+Repository: https://github.com/pahappa-ltd/commssdk
+Ecosystems: Crates, Maven
+Error Type: NOT_FOUND
+Error Message: Repository not found: pahappa-ltd/commssdk
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #2
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-26T02:26:54.131341
+Repository: https://github.com/pahappa-ltd/commssdk
+Ecosystems: Crates, Maven
+Error Type: NOT_FOUND
+Error Message: Repository not found: pahappa-ltd/commssdk
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #3
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-26T02:26:54.374907
+Repository: https://github.com/sheshagiri/pacman-app
+Ecosystems: Crates, Maven
+Error Type: NOT_FOUND
+Error Message: Repository not found: sheshagiri/pacman-app
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #4
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-26T02:26:54.619610
+Repository: https://github.com/sheshagiri/pacman-app
+Ecosystems: Crates, Maven
+Error Type: NOT_FOUND
+Error Message: Repository not found: sheshagiri/pacman-app
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #5
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-26T02:26:54.902370
+Repository: https://github.com/pahappa-ltd/egosmssdk
+Ecosystems: Crates, Maven
+Error Type: NOT_FOUND
+Error Message: Repository not found: pahappa-ltd/egosmssdk
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #6
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-26T02:26:55.124194
+Repository: https://github.com/pahappa-ltd/egosmssdk
+Ecosystems: Crates, Maven
+Error Type: NOT_FOUND
+Error Message: Repository not found: pahappa-ltd/egosmssdk
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+

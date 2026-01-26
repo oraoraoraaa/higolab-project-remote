@@ -1,0 +1,263 @@
+================================================================================
+Error Log for Go_Ruby
+================================================================================
+Total Errors: 16
+Generated: 2026-01-26 02:36:49
+================================================================================
+
+Error #1
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-26T02:29:57.255130
+Repository: https://github.com/mochizukikotaro/regex_sample
+Ecosystems: Go, Ruby
+Error Type: NOT_FOUND
+Error Message: Repository not found: mochizukikotaro/regex_sample
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #2
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-26T02:29:57.475144
+Repository: https://github.com/mochizukikotaro/regex_sample
+Ecosystems: Go, Ruby
+Error Type: NOT_FOUND
+Error Message: Repository not found: mochizukikotaro/regex_sample
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #3
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-26T02:29:57.759853
+Repository: https://github.com/monkeylearn/monkeylearn-ruby
+Ecosystems: Go, Ruby
+Error Type: NOT_FOUND
+Error Message: Repository not found: monkeylearn/monkeylearn-ruby
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #4
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-26T02:29:58.064888
+Repository: https://github.com/monkeylearn/monkeylearn-ruby
+Ecosystems: Go, Ruby
+Error Type: NOT_FOUND
+Error Message: Repository not found: monkeylearn/monkeylearn-ruby
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #5
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-26T02:29:58.285415
+Repository: https://github.com/rundocs/jekyll-rtd-theme
+Ecosystems: Go, Ruby
+Error Type: NOT_FOUND
+Error Message: Repository not found: rundocs/jekyll-rtd-theme
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #6
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-26T02:29:58.514648
+Repository: https://github.com/rundocs/jekyll-rtd-theme
+Ecosystems: Go, Ruby
+Error Type: NOT_FOUND
+Error Message: Repository not found: rundocs/jekyll-rtd-theme
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #7
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-26T02:29:58.798183
+Repository: https://github.com/p0deje/spring-commands-rubocop
+Ecosystems: Go, Ruby
+Error Type: NOT_FOUND
+Error Message: Repository not found: p0deje/spring-commands-rubocop
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #8
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-26T02:29:59.069854
+Repository: https://github.com/p0deje/spring-commands-rubocop
+Ecosystems: Go, Ruby
+Error Type: NOT_FOUND
+Error Message: Repository not found: p0deje/spring-commands-rubocop
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #9
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-26T02:29:59.307296
+Repository: https://github.com/flintinatux/spintax_parser
+Ecosystems: Go, Ruby
+Error Type: NOT_FOUND
+Error Message: Repository not found: flintinatux/spintax_parser
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #10
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-26T02:29:59.563235
+Repository: https://github.com/flintinatux/spintax_parser
+Ecosystems: Go, Ruby
+Error Type: NOT_FOUND
+Error Message: Repository not found: flintinatux/spintax_parser
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #11
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-26T02:29:59.798204
+Repository: https://github.com/atmos/hancock-client
+Ecosystems: Go, Ruby
+Error Type: NOT_FOUND
+Error Message: Repository not found: atmos/hancock-client
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #12
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-26T02:30:00.014400
+Repository: https://github.com/atmos/hancock-client
+Ecosystems: Go, Ruby
+Error Type: NOT_FOUND
+Error Message: Repository not found: atmos/hancock-client
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #13
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-26T02:30:00.235769
+Repository: https://github.com/atmos/sinatra_auth_github
+Ecosystems: Go, Ruby
+Error Type: NOT_FOUND
+Error Message: Repository not found: atmos/sinatra_auth_github
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #14
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-26T02:30:00.473771
+Repository: https://github.com/atmos/sinatra_auth_github
+Ecosystems: Go, Ruby
+Error Type: NOT_FOUND
+Error Message: Repository not found: atmos/sinatra_auth_github
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #15
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-26T02:30:00.700986
+Repository: https://github.com/0xshariq/ruby_package_installer_cli
+Ecosystems: Go, Ruby
+Error Type: NOT_FOUND
+Error Message: Repository not found: 0xshariq/ruby_package_installer_cli
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #16
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-26T02:30:00.930681
+Repository: https://github.com/0xshariq/ruby_package_installer_cli
+Ecosystems: Go, Ruby
+Error Type: NOT_FOUND
+Error Message: Repository not found: 0xshariq/ruby_package_installer_cli
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+

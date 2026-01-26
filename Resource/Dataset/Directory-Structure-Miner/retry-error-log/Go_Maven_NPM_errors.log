@@ -1,0 +1,167 @@
+================================================================================
+Error Log for Go_Maven_NPM
+================================================================================
+Total Errors: 10
+Generated: 2026-01-26 02:36:49
+================================================================================
+
+Error #1
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-26T02:28:52.831921
+Repository: https://github.com/konfig-dev/newscatcher-sdks
+Ecosystems: Go, Maven, NPM
+Error Type: NOT_FOUND
+Error Message: Repository not found: konfig-dev/newscatcher-sdks
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #2
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-26T02:28:53.060592
+Repository: https://github.com/konfig-dev/newscatcher-sdks
+Ecosystems: Go, Maven, NPM
+Error Type: NOT_FOUND
+Error Message: Repository not found: konfig-dev/newscatcher-sdks
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #3
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-26T02:28:53.292551
+Repository: https://github.com/wikiki/bulma-timeline
+Ecosystems: Go, Maven, NPM
+Error Type: NOT_FOUND
+Error Message: Repository not found: wikiki/bulma-timeline
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #4
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-26T02:28:53.526432
+Repository: https://github.com/wikiki/bulma-timeline
+Ecosystems: Go, Maven, NPM
+Error Type: NOT_FOUND
+Error Message: Repository not found: wikiki/bulma-timeline
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #5
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-26T02:28:53.853312
+Repository: https://github.com/hootsuite/grid
+Ecosystems: Go, Maven, NPM
+Error Type: NOT_FOUND
+Error Message: Repository not found: hootsuite/grid
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #6
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-26T02:28:54.115553
+Repository: https://github.com/hootsuite/grid
+Ecosystems: Go, Maven, NPM
+Error Type: NOT_FOUND
+Error Message: Repository not found: hootsuite/grid
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #7
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-26T02:28:54.348764
+Repository: https://github.com/lukechilds/cacheable-request
+Ecosystems: Go, Maven, NPM
+Error Type: NOT_FOUND
+Error Message: Repository not found: lukechilds/cacheable-request
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #8
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-26T02:28:54.581971
+Repository: https://github.com/lukechilds/cacheable-request
+Ecosystems: Go, Maven, NPM
+Error Type: NOT_FOUND
+Error Message: Repository not found: lukechilds/cacheable-request
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #9
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-26T02:28:54.803888
+Repository: https://github.com/wikiki/bulma-carousel
+Ecosystems: Go, Maven, NPM
+Error Type: NOT_FOUND
+Error Message: Repository not found: wikiki/bulma-carousel
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #10
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-26T02:28:55.018431
+Repository: https://github.com/wikiki/bulma-carousel
+Ecosystems: Go, Maven, NPM
+Error Type: NOT_FOUND
+Error Message: Repository not found: wikiki/bulma-carousel
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
