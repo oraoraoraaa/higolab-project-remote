@@ -1,0 +1,39 @@
+================================================================================
+Error Log for Crates_Go_Ruby
+================================================================================
+Total Errors: 2
+Generated: 2026-01-25 19:54:23
+================================================================================
+
+Error #1
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T18:48:28.644242
+Repository: https://github.com/easbarba/qas
+Ecosystems: Crates, Go, Ruby
+Error Type: NOT_FOUND
+Error Message: Repository not found: easbarba/qas
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #2
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T18:48:28.646376
+Repository: https://github.com/easbarba/qas
+Ecosystems: Crates, Go, Ruby
+Error Type: TREE_FETCH_FAILED
+Error Message: Failed to fetch directory tree for easbarba/qas
+
+Possible Reason:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+Suggested Solution:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+================================================================================
+

@@ -1,0 +1,743 @@
+================================================================================
+Error Log for Crates_PHP
+================================================================================
+Total Errors: 46
+Generated: 2026-01-25 19:54:23
+================================================================================
+
+Error #1
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T09:05:53.270127
+Repository: https://github.com/qy-upup/ai-kissing
+Ecosystems: Crates, PHP
+Error Type: NOT_FOUND
+Error Message: Repository not found: qy-upup/ai-kissing
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #2
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T09:05:53.271220
+Repository: https://github.com/qy-upup/ai-kissing
+Ecosystems: Crates, PHP
+Error Type: TREE_FETCH_FAILED
+Error Message: Failed to fetch directory tree for qy-upup/ai-kissing
+
+Possible Reason:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+Suggested Solution:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+================================================================================
+
+Error #3
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T09:05:53.487473
+Repository: https://github.com/qy-upup/first-last-frame
+Ecosystems: Crates, PHP
+Error Type: NOT_FOUND
+Error Message: Repository not found: qy-upup/first-last-frame
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #4
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T09:05:53.488560
+Repository: https://github.com/qy-upup/first-last-frame
+Ecosystems: Crates, PHP
+Error Type: TREE_FETCH_FAILED
+Error Message: Failed to fetch directory tree for qy-upup/first-last-frame
+
+Possible Reason:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+Suggested Solution:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+================================================================================
+
+Error #5
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T09:05:53.701654
+Repository: https://github.com/qy-upup/copyright-free-songs
+Ecosystems: Crates, PHP
+Error Type: NOT_FOUND
+Error Message: Repository not found: qy-upup/copyright-free-songs
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #6
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T09:05:53.702728
+Repository: https://github.com/qy-upup/copyright-free-songs
+Ecosystems: Crates, PHP
+Error Type: TREE_FETCH_FAILED
+Error Message: Failed to fetch directory tree for qy-upup/copyright-free-songs
+
+Possible Reason:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+Suggested Solution:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+================================================================================
+
+Error #7
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T09:05:53.924840
+Repository: https://github.com/qy-upup/sora-ai-video
+Ecosystems: Crates, PHP
+Error Type: NOT_FOUND
+Error Message: Repository not found: qy-upup/sora-ai-video
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #8
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T09:05:53.925924
+Repository: https://github.com/qy-upup/sora-ai-video
+Ecosystems: Crates, PHP
+Error Type: TREE_FETCH_FAILED
+Error Message: Failed to fetch directory tree for qy-upup/sora-ai-video
+
+Possible Reason:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+Suggested Solution:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+================================================================================
+
+Error #9
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T09:05:54.153196
+Repository: https://github.com/qy-upup/chat-1
+Ecosystems: Crates, PHP
+Error Type: NOT_FOUND
+Error Message: Repository not found: qy-upup/chat-1
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #10
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T09:05:54.154326
+Repository: https://github.com/qy-upup/chat-1
+Ecosystems: Crates, PHP
+Error Type: TREE_FETCH_FAILED
+Error Message: Failed to fetch directory tree for qy-upup/chat-1
+
+Possible Reason:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+Suggested Solution:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+================================================================================
+
+Error #11
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T09:05:54.712503
+Repository: https://github.com/qy-upup/seedance-ai-video
+Ecosystems: Crates, PHP
+Error Type: NOT_FOUND
+Error Message: Repository not found: qy-upup/seedance-ai-video
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #12
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T09:05:54.713608
+Repository: https://github.com/qy-upup/seedance-ai-video
+Ecosystems: Crates, PHP
+Error Type: TREE_FETCH_FAILED
+Error Message: Failed to fetch directory tree for qy-upup/seedance-ai-video
+
+Possible Reason:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+Suggested Solution:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+================================================================================
+
+Error #13
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T09:05:55.237288
+Repository: https://github.com/qy-upup/sm-chat
+Ecosystems: Crates, PHP
+Error Type: NOT_FOUND
+Error Message: Repository not found: qy-upup/sm-chat
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #14
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T09:05:55.238417
+Repository: https://github.com/qy-upup/sm-chat
+Ecosystems: Crates, PHP
+Error Type: TREE_FETCH_FAILED
+Error Message: Failed to fetch directory tree for qy-upup/sm-chat
+
+Possible Reason:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+Suggested Solution:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+================================================================================
+
+Error #15
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T09:05:56.440717
+Repository: https://github.com/qy-upup/veo
+Ecosystems: Crates, PHP
+Error Type: NOT_FOUND
+Error Message: Repository not found: qy-upup/veo
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #16
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T09:05:56.441973
+Repository: https://github.com/qy-upup/veo
+Ecosystems: Crates, PHP
+Error Type: TREE_FETCH_FAILED
+Error Message: Failed to fetch directory tree for qy-upup/veo
+
+Possible Reason:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+Suggested Solution:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+================================================================================
+
+Error #17
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T09:05:56.655903
+Repository: https://github.com/qy-upup/nano-banana-2
+Ecosystems: Crates, PHP
+Error Type: NOT_FOUND
+Error Message: Repository not found: qy-upup/nano-banana-2
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #18
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T09:05:56.656963
+Repository: https://github.com/qy-upup/nano-banana-2
+Ecosystems: Crates, PHP
+Error Type: TREE_FETCH_FAILED
+Error Message: Failed to fetch directory tree for qy-upup/nano-banana-2
+
+Possible Reason:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+Suggested Solution:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+================================================================================
+
+Error #19
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T09:05:56.871403
+Repository: https://github.com/qy-upup/ai-soulmate-drawing-generator
+Ecosystems: Crates, PHP
+Error Type: NOT_FOUND
+Error Message: Repository not found: qy-upup/ai-soulmate-drawing-generator
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #20
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T09:05:56.872488
+Repository: https://github.com/qy-upup/ai-soulmate-drawing-generator
+Ecosystems: Crates, PHP
+Error Type: TREE_FETCH_FAILED
+Error Message: Failed to fetch directory tree for qy-upup/ai-soulmate-drawing-generator
+
+Possible Reason:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+Suggested Solution:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+================================================================================
+
+Error #21
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T09:05:57.400578
+Repository: https://github.com/qy-upup/ai-twerk-video-generator
+Ecosystems: Crates, PHP
+Error Type: NOT_FOUND
+Error Message: Repository not found: qy-upup/ai-twerk-video-generator
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #22
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T09:05:57.401647
+Repository: https://github.com/qy-upup/ai-twerk-video-generator
+Ecosystems: Crates, PHP
+Error Type: TREE_FETCH_FAILED
+Error Message: Failed to fetch directory tree for qy-upup/ai-twerk-video-generator
+
+Possible Reason:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+Suggested Solution:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+================================================================================
+
+Error #23
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T09:05:57.618468
+Repository: https://github.com/qy-upup/nano-banana-1
+Ecosystems: Crates, PHP
+Error Type: NOT_FOUND
+Error Message: Repository not found: qy-upup/nano-banana-1
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #24
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T09:05:57.619566
+Repository: https://github.com/qy-upup/nano-banana-1
+Ecosystems: Crates, PHP
+Error Type: TREE_FETCH_FAILED
+Error Message: Failed to fetch directory tree for qy-upup/nano-banana-1
+
+Possible Reason:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+Suggested Solution:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+================================================================================
+
+Error #25
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T09:05:57.829747
+Repository: https://github.com/qy-upup/ai-minecraft-image
+Ecosystems: Crates, PHP
+Error Type: NOT_FOUND
+Error Message: Repository not found: qy-upup/ai-minecraft-image
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #26
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T09:05:57.830822
+Repository: https://github.com/qy-upup/ai-minecraft-image
+Ecosystems: Crates, PHP
+Error Type: TREE_FETCH_FAILED
+Error Message: Failed to fetch directory tree for qy-upup/ai-minecraft-image
+
+Possible Reason:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+Suggested Solution:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+================================================================================
+
+Error #27
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T09:05:58.060002
+Repository: https://github.com/qy-upup/ai-soulmate-sketch-filter
+Ecosystems: Crates, PHP
+Error Type: NOT_FOUND
+Error Message: Repository not found: qy-upup/ai-soulmate-sketch-filter
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #28
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T09:05:58.061102
+Repository: https://github.com/qy-upup/ai-soulmate-sketch-filter
+Ecosystems: Crates, PHP
+Error Type: TREE_FETCH_FAILED
+Error Message: Failed to fetch directory tree for qy-upup/ai-soulmate-sketch-filter
+
+Possible Reason:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+Suggested Solution:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+================================================================================
+
+Error #29
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T09:06:00.298389
+Repository: https://github.com/qy-upup/ai-baby-generator
+Ecosystems: Crates, PHP
+Error Type: NOT_FOUND
+Error Message: Repository not found: qy-upup/ai-baby-generator
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #30
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T09:06:00.299479
+Repository: https://github.com/qy-upup/ai-baby-generator
+Ecosystems: Crates, PHP
+Error Type: TREE_FETCH_FAILED
+Error Message: Failed to fetch directory tree for qy-upup/ai-baby-generator
+
+Possible Reason:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+Suggested Solution:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+================================================================================
+
+Error #31
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T09:06:00.513087
+Repository: https://github.com/qy-upup/bigfoot-video-generator
+Ecosystems: Crates, PHP
+Error Type: NOT_FOUND
+Error Message: Repository not found: qy-upup/bigfoot-video-generator
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #32
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T09:06:00.514333
+Repository: https://github.com/qy-upup/bigfoot-video-generator
+Ecosystems: Crates, PHP
+Error Type: TREE_FETCH_FAILED
+Error Message: Failed to fetch directory tree for qy-upup/bigfoot-video-generator
+
+Possible Reason:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+Suggested Solution:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+================================================================================
+
+Error #33
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T09:06:00.727010
+Repository: https://github.com/qy-upup/ai-make-music
+Ecosystems: Crates, PHP
+Error Type: NOT_FOUND
+Error Message: Repository not found: qy-upup/ai-make-music
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #34
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T09:06:00.728181
+Repository: https://github.com/qy-upup/ai-make-music
+Ecosystems: Crates, PHP
+Error Type: TREE_FETCH_FAILED
+Error Message: Failed to fetch directory tree for qy-upup/ai-make-music
+
+Possible Reason:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+Suggested Solution:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+================================================================================
+
+Error #35
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T09:06:00.955929
+Repository: https://github.com/qy-upup/makeshot.ai
+Ecosystems: Crates, PHP
+Error Type: NOT_FOUND
+Error Message: Repository not found: qy-upup/makeshot.ai
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #36
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T09:06:00.957090
+Repository: https://github.com/qy-upup/makeshot.ai
+Ecosystems: Crates, PHP
+Error Type: TREE_FETCH_FAILED
+Error Message: Failed to fetch directory tree for qy-upup/makeshot.ai
+
+Possible Reason:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+Suggested Solution:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+================================================================================
+
+Error #37
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T09:06:01.182579
+Repository: https://github.com/qy-upup/banana-prompts
+Ecosystems: Crates, PHP
+Error Type: NOT_FOUND
+Error Message: Repository not found: qy-upup/banana-prompts
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #38
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T09:06:01.183736
+Repository: https://github.com/qy-upup/banana-prompts
+Ecosystems: Crates, PHP
+Error Type: TREE_FETCH_FAILED
+Error Message: Failed to fetch directory tree for qy-upup/banana-prompts
+
+Possible Reason:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+Suggested Solution:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+================================================================================
+
+Error #39
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T09:06:01.422693
+Repository: https://github.com/qy-upup/diffrhythm.ai
+Ecosystems: Crates, PHP
+Error Type: NOT_FOUND
+Error Message: Repository not found: qy-upup/diffrhythm.ai
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #40
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T09:06:01.423826
+Repository: https://github.com/qy-upup/diffrhythm.ai
+Ecosystems: Crates, PHP
+Error Type: TREE_FETCH_FAILED
+Error Message: Failed to fetch directory tree for qy-upup/diffrhythm.ai
+
+Possible Reason:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+Suggested Solution:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+================================================================================
+
+Error #41
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T09:06:01.641501
+Repository: https://github.com/qy-upup/bananaproai-com
+Ecosystems: Crates, PHP
+Error Type: NOT_FOUND
+Error Message: Repository not found: qy-upup/bananaproai-com
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #42
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T09:06:01.642674
+Repository: https://github.com/qy-upup/bananaproai-com
+Ecosystems: Crates, PHP
+Error Type: TREE_FETCH_FAILED
+Error Message: Failed to fetch directory tree for qy-upup/bananaproai-com
+
+Possible Reason:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+Suggested Solution:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+================================================================================
+
+Error #43
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T09:06:01.854152
+Repository: https://github.com/qy-upup/tomusic.ai-1
+Ecosystems: Crates, PHP
+Error Type: NOT_FOUND
+Error Message: Repository not found: qy-upup/tomusic.ai-1
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #44
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T09:06:01.855243
+Repository: https://github.com/qy-upup/tomusic.ai-1
+Ecosystems: Crates, PHP
+Error Type: TREE_FETCH_FAILED
+Error Message: Failed to fetch directory tree for qy-upup/tomusic.ai-1
+
+Possible Reason:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+Suggested Solution:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+================================================================================
+
+Error #45
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T09:06:02.067254
+Repository: https://github.com/qy-upup/sotavideo.ai
+Ecosystems: Crates, PHP
+Error Type: NOT_FOUND
+Error Message: Repository not found: qy-upup/sotavideo.ai
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #46
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T09:06:02.068369
+Repository: https://github.com/qy-upup/sotavideo.ai
+Ecosystems: Crates, PHP
+Error Type: TREE_FETCH_FAILED
+Error Message: Failed to fetch directory tree for qy-upup/sotavideo.ai
+
+Possible Reason:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+Suggested Solution:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+================================================================================
+

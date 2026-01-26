@@ -1,0 +1,103 @@
+================================================================================
+Error Log for Crates_Maven_NPM_PyPI
+================================================================================
+Total Errors: 6
+Generated: 2026-01-25 19:54:23
+================================================================================
+
+Error #1
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T19:47:13.428843
+Repository: https://github.com/your/repo
+Ecosystems: Crates, Maven, NPM, PyPI
+Error Type: NOT_FOUND
+Error Message: Repository not found: your/repo
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #2
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T19:47:13.430585
+Repository: https://github.com/your/repo
+Ecosystems: Crates, Maven, NPM, PyPI
+Error Type: TREE_FETCH_FAILED
+Error Message: Failed to fetch directory tree for your/repo
+
+Possible Reason:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+Suggested Solution:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+================================================================================
+
+Error #3
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T19:47:16.383708
+Repository: https://github.com/thunkmetrc/sdks
+Ecosystems: Crates, Maven, NPM, PyPI
+Error Type: NOT_FOUND
+Error Message: Repository not found: thunkmetrc/sdks
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #4
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T19:47:16.385456
+Repository: https://github.com/thunkmetrc/sdks
+Ecosystems: Crates, Maven, NPM, PyPI
+Error Type: TREE_FETCH_FAILED
+Error Message: Failed to fetch directory tree for thunkmetrc/sdks
+
+Possible Reason:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+Suggested Solution:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+================================================================================
+
+Error #5
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T19:47:18.133611
+Repository: https://github.com/test/test
+Ecosystems: Crates, Maven, NPM, PyPI
+Error Type: NOT_FOUND
+Error Message: Repository not found: test/test
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #6
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T19:47:18.136088
+Repository: https://github.com/test/test
+Ecosystems: Crates, Maven, NPM, PyPI
+Error Type: TREE_FETCH_FAILED
+Error Message: Failed to fetch directory tree for test/test
+
+Possible Reason:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+Suggested Solution:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+================================================================================
+

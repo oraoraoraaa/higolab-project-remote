@@ -1,0 +1,935 @@
+================================================================================
+Error Log for NPM_Ruby
+================================================================================
+Total Errors: 58
+Generated: 2026-01-25 19:54:23
+================================================================================
+
+Error #1
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T18:36:38.691689
+Repository: https://github.com/buoysoftware/anchor_view_components
+Ecosystems: NPM, Ruby
+Error Type: NOT_FOUND
+Error Message: Repository not found: buoysoftware/anchor_view_components
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #2
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T18:36:38.693420
+Repository: https://github.com/buoysoftware/anchor_view_components
+Ecosystems: NPM, Ruby
+Error Type: TREE_FETCH_FAILED
+Error Message: Failed to fetch directory tree for buoysoftware/anchor_view_components
+
+Possible Reason:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+Suggested Solution:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+================================================================================
+
+Error #3
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T18:36:55.192790
+Repository: https://github.com/figurepos/dev-tool-configuration
+Ecosystems: NPM, Ruby
+Error Type: NOT_FOUND
+Error Message: Repository not found: figurepos/dev-tool-configuration
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #4
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T18:36:55.194583
+Repository: https://github.com/figurepos/dev-tool-configuration
+Ecosystems: NPM, Ruby
+Error Type: TREE_FETCH_FAILED
+Error Message: Failed to fetch directory tree for figurepos/dev-tool-configuration
+
+Possible Reason:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+Suggested Solution:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+================================================================================
+
+Error #5
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T18:37:00.362308
+Repository: https://github.com/shopify/sewing-kit
+Ecosystems: NPM, Ruby
+Error Type: NOT_FOUND
+Error Message: Repository not found: shopify/sewing-kit
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #6
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T18:37:00.364134
+Repository: https://github.com/shopify/sewing-kit
+Ecosystems: NPM, Ruby
+Error Type: TREE_FETCH_FAILED
+Error Message: Failed to fetch directory tree for shopify/sewing-kit
+
+Possible Reason:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+Suggested Solution:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+================================================================================
+
+Error #7
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T18:37:28.310863
+Repository: https://github.com/rainforestapp/wisp
+Ecosystems: NPM, Ruby
+Error Type: NOT_FOUND
+Error Message: Repository not found: rainforestapp/wisp
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #8
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T18:37:28.312603
+Repository: https://github.com/rainforestapp/wisp
+Ecosystems: NPM, Ruby
+Error Type: TREE_FETCH_FAILED
+Error Message: Failed to fetch directory tree for rainforestapp/wisp
+
+Possible Reason:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+Suggested Solution:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+================================================================================
+
+Error #9
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T18:37:46.383910
+Repository: https://github.com/trailervote/trailervote-api-clients
+Ecosystems: NPM, Ruby
+Error Type: NOT_FOUND
+Error Message: Repository not found: trailervote/trailervote-api-clients
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #10
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T18:37:46.385656
+Repository: https://github.com/trailervote/trailervote-api-clients
+Ecosystems: NPM, Ruby
+Error Type: TREE_FETCH_FAILED
+Error Message: Failed to fetch directory tree for trailervote/trailervote-api-clients
+
+Possible Reason:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+Suggested Solution:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+================================================================================
+
+Error #11
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T18:37:53.696367
+Repository: https://github.com/watermarkchurch/paper-signs
+Ecosystems: NPM, Ruby
+Error Type: NOT_FOUND
+Error Message: Repository not found: watermarkchurch/paper-signs
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #12
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T18:37:53.698159
+Repository: https://github.com/watermarkchurch/paper-signs
+Ecosystems: NPM, Ruby
+Error Type: TREE_FETCH_FAILED
+Error Message: Failed to fetch directory tree for watermarkchurch/paper-signs
+
+Possible Reason:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+Suggested Solution:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+================================================================================
+
+Error #13
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T18:37:53.956078
+Repository: https://github.com/wikipaddle/protobuf
+Ecosystems: NPM, Ruby
+Error Type: NOT_FOUND
+Error Message: Repository not found: wikipaddle/protobuf
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #14
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T18:37:53.957809
+Repository: https://github.com/wikipaddle/protobuf
+Ecosystems: NPM, Ruby
+Error Type: TREE_FETCH_FAILED
+Error Message: Failed to fetch directory tree for wikipaddle/protobuf
+
+Possible Reason:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+Suggested Solution:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+================================================================================
+
+Error #15
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T18:38:00.406951
+Repository: https://github.com/markusbansky/afgor-framework
+Ecosystems: NPM, Ruby
+Error Type: NOT_FOUND
+Error Message: Repository not found: markusbansky/afgor-framework
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #16
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T18:38:00.408661
+Repository: https://github.com/markusbansky/afgor-framework
+Ecosystems: NPM, Ruby
+Error Type: TREE_FETCH_FAILED
+Error Message: Failed to fetch directory tree for markusbansky/afgor-framework
+
+Possible Reason:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+Suggested Solution:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+================================================================================
+
+Error #17
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T18:38:01.256400
+Repository: https://github.com/finelineprototyping/angularjs-rails-resource
+Ecosystems: NPM, Ruby
+Error Type: NOT_FOUND
+Error Message: Repository not found: finelineprototyping/angularjs-rails-resource
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #18
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T18:38:01.258204
+Repository: https://github.com/finelineprototyping/angularjs-rails-resource
+Ecosystems: NPM, Ruby
+Error Type: TREE_FETCH_FAILED
+Error Message: Failed to fetch directory tree for finelineprototyping/angularjs-rails-resource
+
+Possible Reason:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+Suggested Solution:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+================================================================================
+
+Error #19
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T18:38:26.044134
+Repository: https://github.com/username/bridgetown-avatar
+Ecosystems: NPM, Ruby
+Error Type: NOT_FOUND
+Error Message: Repository not found: username/bridgetown-avatar
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #20
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T18:38:26.045896
+Repository: https://github.com/username/bridgetown-avatar
+Ecosystems: NPM, Ruby
+Error Type: TREE_FETCH_FAILED
+Error Message: Failed to fetch directory tree for username/bridgetown-avatar
+
+Possible Reason:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+Suggested Solution:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+================================================================================
+
+Error #21
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T18:38:33.810143
+Repository: https://github.com/crown-commercial-service/cmp-design-prototype
+Ecosystems: NPM, Ruby
+Error Type: NOT_FOUND
+Error Message: Repository not found: crown-commercial-service/cmp-design-prototype
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #22
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T18:38:33.811915
+Repository: https://github.com/crown-commercial-service/cmp-design-prototype
+Ecosystems: NPM, Ruby
+Error Type: TREE_FETCH_FAILED
+Error Message: Failed to fetch directory tree for crown-commercial-service/cmp-design-prototype
+
+Possible Reason:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+Suggested Solution:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+================================================================================
+
+Error #23
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T18:38:54.141249
+Repository: https://github.com/gbarctester2/dpltest
+Ecosystems: NPM, Ruby
+Error Type: NOT_FOUND
+Error Message: Repository not found: gbarctester2/dpltest
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #24
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T18:38:54.143058
+Repository: https://github.com/gbarctester2/dpltest
+Ecosystems: NPM, Ruby
+Error Type: TREE_FETCH_FAILED
+Error Message: Failed to fetch directory tree for gbarctester2/dpltest
+
+Possible Reason:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+Suggested Solution:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+================================================================================
+
+Error #25
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T18:39:00.727982
+Repository: https://github.com/netguru/react_webpack_rails
+Ecosystems: NPM, Ruby
+Error Type: NOT_FOUND
+Error Message: Repository not found: netguru/react_webpack_rails
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #26
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T18:39:00.729761
+Repository: https://github.com/netguru/react_webpack_rails
+Ecosystems: NPM, Ruby
+Error Type: TREE_FETCH_FAILED
+Error Message: Failed to fetch directory tree for netguru/react_webpack_rails
+
+Possible Reason:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+Suggested Solution:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+================================================================================
+
+Error #27
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T18:39:24.807657
+Repository: https://github.com/llskin/rubyfacialmassage
+Ecosystems: NPM, Ruby
+Error Type: NOT_FOUND
+Error Message: Repository not found: llskin/rubyfacialmassage
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #28
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T18:39:24.809380
+Repository: https://github.com/llskin/rubyfacialmassage
+Ecosystems: NPM, Ruby
+Error Type: TREE_FETCH_FAILED
+Error Message: Failed to fetch directory tree for llskin/rubyfacialmassage
+
+Possible Reason:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+Suggested Solution:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+================================================================================
+
+Error #29
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T18:39:36.467255
+Repository: https://github.com/powa/gtin
+Ecosystems: NPM, Ruby
+Error Type: NOT_FOUND
+Error Message: Repository not found: powa/gtin
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #30
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T18:39:36.469095
+Repository: https://github.com/powa/gtin
+Ecosystems: NPM, Ruby
+Error Type: TREE_FETCH_FAILED
+Error Message: Failed to fetch directory tree for powa/gtin
+
+Possible Reason:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+Suggested Solution:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+================================================================================
+
+Error #31
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T18:39:38.046284
+Repository: https://github.com/insiting/headmin
+Ecosystems: NPM, Ruby
+Error Type: NOT_FOUND
+Error Message: Repository not found: insiting/headmin
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #32
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T18:39:38.048094
+Repository: https://github.com/insiting/headmin
+Ecosystems: NPM, Ruby
+Error Type: TREE_FETCH_FAILED
+Error Message: Failed to fetch directory tree for insiting/headmin
+
+Possible Reason:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+Suggested Solution:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+================================================================================
+
+Error #33
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T18:39:38.866598
+Repository: https://github.com/marcoroth/herbst
+Ecosystems: NPM, Ruby
+Error Type: NOT_FOUND
+Error Message: Repository not found: marcoroth/herbst
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #34
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T18:39:38.868414
+Repository: https://github.com/marcoroth/herbst
+Ecosystems: NPM, Ruby
+Error Type: TREE_FETCH_FAILED
+Error Message: Failed to fetch directory tree for marcoroth/herbst
+
+Possible Reason:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+Suggested Solution:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+================================================================================
+
+Error #35
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T18:39:43.711598
+Repository: https://github.com/abd3lraouf/jekyll-theme-abd3lraouf
+Ecosystems: NPM, Ruby
+Error Type: NOT_FOUND
+Error Message: Repository not found: abd3lraouf/jekyll-theme-abd3lraouf
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #36
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T18:39:43.713388
+Repository: https://github.com/abd3lraouf/jekyll-theme-abd3lraouf
+Ecosystems: NPM, Ruby
+Error Type: TREE_FETCH_FAILED
+Error Message: Failed to fetch directory tree for abd3lraouf/jekyll-theme-abd3lraouf
+
+Possible Reason:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+Suggested Solution:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+================================================================================
+
+Error #37
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T18:40:11.504466
+Repository: https://github.com/jcaru/pigman
+Ecosystems: NPM, Ruby
+Error Type: NOT_FOUND
+Error Message: Repository not found: jcaru/pigman
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #38
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T18:40:11.506263
+Repository: https://github.com/jcaru/pigman
+Ecosystems: NPM, Ruby
+Error Type: TREE_FETCH_FAILED
+Error Message: Failed to fetch directory tree for jcaru/pigman
+
+Possible Reason:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+Suggested Solution:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+================================================================================
+
+Error #39
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T18:40:33.771426
+Repository: https://github.com/netguru/rwr-redux
+Ecosystems: NPM, Ruby
+Error Type: NOT_FOUND
+Error Message: Repository not found: netguru/rwr-redux
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #40
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T18:40:33.773187
+Repository: https://github.com/netguru/rwr-redux
+Ecosystems: NPM, Ruby
+Error Type: TREE_FETCH_FAILED
+Error Message: Failed to fetch directory tree for netguru/rwr-redux
+
+Possible Reason:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+Suggested Solution:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+================================================================================
+
+Error #41
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T18:40:34.038439
+Repository: https://github.com/netguru/rwr-alt
+Ecosystems: NPM, Ruby
+Error Type: NOT_FOUND
+Error Message: Repository not found: netguru/rwr-alt
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #42
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T18:40:34.040186
+Repository: https://github.com/netguru/rwr-alt
+Ecosystems: NPM, Ruby
+Error Type: TREE_FETCH_FAILED
+Error Message: Failed to fetch directory tree for netguru/rwr-alt
+
+Possible Reason:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+Suggested Solution:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+================================================================================
+
+Error #43
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T18:40:34.297186
+Repository: https://github.com/netguru/rwr-view_helpers
+Ecosystems: NPM, Ruby
+Error Type: NOT_FOUND
+Error Message: Repository not found: netguru/rwr-view_helpers
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #44
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T18:40:34.299049
+Repository: https://github.com/netguru/rwr-view_helpers
+Ecosystems: NPM, Ruby
+Error Type: TREE_FETCH_FAILED
+Error Message: Failed to fetch directory tree for netguru/rwr-view_helpers
+
+Possible Reason:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+Suggested Solution:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+================================================================================
+
+Error #45
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T18:40:34.535400
+Repository: https://github.com/s6kpay/s6kpay-sdks
+Ecosystems: NPM, Ruby
+Error Type: NOT_FOUND
+Error Message: Repository not found: s6kpay/s6kpay-sdks
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #46
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T18:40:34.537129
+Repository: https://github.com/s6kpay/s6kpay-sdks
+Ecosystems: NPM, Ruby
+Error Type: TREE_FETCH_FAILED
+Error Message: Failed to fetch directory tree for s6kpay/s6kpay-sdks
+
+Possible Reason:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+Suggested Solution:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+================================================================================
+
+Error #47
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T18:40:46.048325
+Repository: https://github.com/heroku/shibori
+Ecosystems: NPM, Ruby
+Error Type: NOT_FOUND
+Error Message: Repository not found: heroku/shibori
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #48
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T18:40:46.050032
+Repository: https://github.com/heroku/shibori
+Ecosystems: NPM, Ruby
+Error Type: TREE_FETCH_FAILED
+Error Message: Failed to fetch directory tree for heroku/shibori
+
+Possible Reason:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+Suggested Solution:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+================================================================================
+
+Error #49
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T18:40:54.725087
+Repository: https://github.com/fesuydev/tamem-scss
+Ecosystems: NPM, Ruby
+Error Type: NOT_FOUND
+Error Message: Repository not found: fesuydev/tamem-scss
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #50
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T18:40:54.726933
+Repository: https://github.com/fesuydev/tamem-scss
+Ecosystems: NPM, Ruby
+Error Type: TREE_FETCH_FAILED
+Error Message: Failed to fetch directory tree for fesuydev/tamem-scss
+
+Possible Reason:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+Suggested Solution:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+================================================================================
+
+Error #51
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T18:41:11.730989
+Repository: https://github.com/louiswdavis/utility_components
+Ecosystems: NPM, Ruby
+Error Type: NOT_FOUND
+Error Message: Repository not found: louiswdavis/utility_components
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #52
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T18:41:11.732746
+Repository: https://github.com/louiswdavis/utility_components
+Ecosystems: NPM, Ruby
+Error Type: TREE_FETCH_FAILED
+Error Message: Failed to fetch directory tree for louiswdavis/utility_components
+
+Possible Reason:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+Suggested Solution:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+================================================================================
+
+Error #53
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T18:41:11.979034
+Repository: https://github.com/louiswdavis/utility_forms
+Ecosystems: NPM, Ruby
+Error Type: NOT_FOUND
+Error Message: Repository not found: louiswdavis/utility_forms
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #54
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T18:41:11.980786
+Repository: https://github.com/louiswdavis/utility_forms
+Ecosystems: NPM, Ruby
+Error Type: TREE_FETCH_FAILED
+Error Message: Failed to fetch directory tree for louiswdavis/utility_forms
+
+Possible Reason:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+Suggested Solution:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+================================================================================
+
+Error #55
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T18:41:12.218137
+Repository: https://github.com/louiswdavis/utility_styles
+Ecosystems: NPM, Ruby
+Error Type: NOT_FOUND
+Error Message: Repository not found: louiswdavis/utility_styles
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #56
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T18:41:12.219879
+Repository: https://github.com/louiswdavis/utility_styles
+Ecosystems: NPM, Ruby
+Error Type: TREE_FETCH_FAILED
+Error Message: Failed to fetch directory tree for louiswdavis/utility_styles
+
+Possible Reason:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+Suggested Solution:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+================================================================================
+
+Error #57
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T18:41:12.494220
+Repository: https://github.com/louiswdavis/utility_ui
+Ecosystems: NPM, Ruby
+Error Type: NOT_FOUND
+Error Message: Repository not found: louiswdavis/utility_ui
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #58
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T18:41:12.495961
+Repository: https://github.com/louiswdavis/utility_ui
+Ecosystems: NPM, Ruby
+Error Type: TREE_FETCH_FAILED
+Error Message: Failed to fetch directory tree for louiswdavis/utility_ui
+
+Possible Reason:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+Suggested Solution:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+================================================================================
+

@@ -1,0 +1,391 @@
+================================================================================
+Error Log for Go_Maven
+================================================================================
+Total Errors: 24
+Generated: 2026-01-25 19:54:23
+================================================================================
+
+Error #1
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T09:17:46.617998
+Repository: https://github.com/streamnative/pulsar
+Ecosystems: Go, Maven
+Error Type: NOT_FOUND
+Error Message: Repository not found: streamnative/pulsar
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #2
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T09:17:46.619092
+Repository: https://github.com/streamnative/pulsar
+Ecosystems: Go, Maven
+Error Type: TREE_FETCH_FAILED
+Error Message: Failed to fetch directory tree for streamnative/pulsar
+
+Possible Reason:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+Suggested Solution:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+================================================================================
+
+Error #3
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T09:22:24.912226
+Repository: https://github.com/beingcoder/openapi-generator
+Ecosystems: Go, Maven
+Error Type: NOT_FOUND
+Error Message: Repository not found: beingcoder/openapi-generator
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #4
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T09:22:24.913354
+Repository: https://github.com/beingcoder/openapi-generator
+Ecosystems: Go, Maven
+Error Type: TREE_FETCH_FAILED
+Error Message: Failed to fetch directory tree for beingcoder/openapi-generator
+
+Possible Reason:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+Suggested Solution:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+================================================================================
+
+Error #5
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T09:27:35.974997
+Repository: https://github.com/salesforce/argus
+Ecosystems: Go, Maven
+Error Type: NOT_FOUND
+Error Message: Repository not found: salesforce/argus
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #6
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T09:27:35.976441
+Repository: https://github.com/salesforce/argus
+Ecosystems: Go, Maven
+Error Type: TREE_FETCH_FAILED
+Error Message: Failed to fetch directory tree for salesforce/argus
+
+Possible Reason:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+Suggested Solution:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+================================================================================
+
+Error #7
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T09:40:52.944015
+Repository: https://github.com/scalamath/vecmatlib
+Ecosystems: Go, Maven
+Error Type: NOT_FOUND
+Error Message: Repository not found: scalamath/vecmatlib
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #8
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T09:40:52.945182
+Repository: https://github.com/scalamath/vecmatlib
+Ecosystems: Go, Maven
+Error Type: TREE_FETCH_FAILED
+Error Message: Failed to fetch directory tree for scalamath/vecmatlib
+
+Possible Reason:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+Suggested Solution:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+================================================================================
+
+Error #9
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T09:47:11.025958
+Repository: https://github.com/groupon/jesos
+Ecosystems: Go, Maven
+Error Type: NOT_FOUND
+Error Message: Repository not found: groupon/jesos
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #10
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T09:47:11.027148
+Repository: https://github.com/groupon/jesos
+Ecosystems: Go, Maven
+Error Type: TREE_FETCH_FAILED
+Error Message: Failed to fetch directory tree for groupon/jesos
+
+Possible Reason:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+Suggested Solution:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+================================================================================
+
+Error #11
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T09:52:03.859133
+Repository: https://github.com/d-tarasov/android-intents
+Ecosystems: Go, Maven
+Error Type: NOT_FOUND
+Error Message: Repository not found: d-tarasov/android-intents
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #12
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T09:52:03.860358
+Repository: https://github.com/d-tarasov/android-intents
+Ecosystems: Go, Maven
+Error Type: TREE_FETCH_FAILED
+Error Message: Failed to fetch directory tree for d-tarasov/android-intents
+
+Possible Reason:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+Suggested Solution:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+================================================================================
+
+Error #13
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T09:52:56.443030
+Repository: https://github.com/blazecss/blaze
+Ecosystems: Go, Maven
+Error Type: TREE_ERROR
+Error Message: Error getting tree: HTTP 409
+
+Possible Reason:
+  The repository tree may be too large or the default branch may be empty. Try cloning the repository manually to inspect its structure.
+
+Suggested Solution:
+  The repository tree may be too large or the default branch may be empty. Try cloning the repository manually to inspect its structure.
+
+================================================================================
+
+Error #14
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T09:52:56.445157
+Repository: https://github.com/blazecss/blaze
+Ecosystems: Go, Maven
+Error Type: TREE_FETCH_FAILED
+Error Message: Failed to fetch directory tree for blazecss/blaze
+
+Possible Reason:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+Suggested Solution:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+================================================================================
+
+Error #15
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T09:53:23.127561
+Repository: https://github.com/bsadeh/scalastic
+Ecosystems: Go, Maven
+Error Type: NOT_FOUND
+Error Message: Repository not found: bsadeh/scalastic
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #16
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T09:53:23.128819
+Repository: https://github.com/bsadeh/scalastic
+Ecosystems: Go, Maven
+Error Type: TREE_FETCH_FAILED
+Error Message: Failed to fetch directory tree for bsadeh/scalastic
+
+Possible Reason:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+Suggested Solution:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+================================================================================
+
+Error #17
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T09:53:49.626465
+Repository: https://github.com/groupon/sparklint
+Ecosystems: Go, Maven
+Error Type: NOT_FOUND
+Error Message: Repository not found: groupon/sparklint
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #18
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T09:53:49.627725
+Repository: https://github.com/groupon/sparklint
+Ecosystems: Go, Maven
+Error Type: TREE_FETCH_FAILED
+Error Message: Failed to fetch directory tree for groupon/sparklint
+
+Possible Reason:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+Suggested Solution:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+================================================================================
+
+Error #19
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T09:54:31.021617
+Repository: https://github.com/net-a-porter/scala-uri
+Ecosystems: Go, Maven
+Error Type: NOT_FOUND
+Error Message: Repository not found: net-a-porter/scala-uri
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #20
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T09:54:31.022895
+Repository: https://github.com/net-a-porter/scala-uri
+Ecosystems: Go, Maven
+Error Type: TREE_FETCH_FAILED
+Error Message: Failed to fetch directory tree for net-a-porter/scala-uri
+
+Possible Reason:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+Suggested Solution:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+================================================================================
+
+Error #21
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T09:58:23.360950
+Repository: https://github.com/jarrettluo/can-do-parser
+Ecosystems: Go, Maven
+Error Type: NOT_FOUND
+Error Message: Repository not found: jarrettluo/can-do-parser
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #22
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T09:58:23.362316
+Repository: https://github.com/jarrettluo/can-do-parser
+Ecosystems: Go, Maven
+Error Type: TREE_FETCH_FAILED
+Error Message: Failed to fetch directory tree for jarrettluo/can-do-parser
+
+Possible Reason:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+Suggested Solution:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+================================================================================
+
+Error #23
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T09:58:37.773174
+Repository: https://github.com/keymaster65/copper2go
+Ecosystems: Go, Maven
+Error Type: NOT_FOUND
+Error Message: Repository not found: keymaster65/copper2go
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #24
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T09:58:37.774514
+Repository: https://github.com/keymaster65/copper2go
+Ecosystems: Go, Maven
+Error Type: TREE_FETCH_FAILED
+Error Message: Failed to fetch directory tree for keymaster65/copper2go
+
+Possible Reason:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+Suggested Solution:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+================================================================================
+

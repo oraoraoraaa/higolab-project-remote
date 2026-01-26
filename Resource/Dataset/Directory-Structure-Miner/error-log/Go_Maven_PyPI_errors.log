@@ -1,0 +1,71 @@
+================================================================================
+Error Log for Go_Maven_PyPI
+================================================================================
+Total Errors: 4
+Generated: 2026-01-25 19:54:23
+================================================================================
+
+Error #1
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T19:30:06.913222
+Repository: https://github.com/workiva/frugal
+Ecosystems: Go, Maven, PyPI
+Error Type: NOT_FOUND
+Error Message: Repository not found: workiva/frugal
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #2
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T19:30:06.915037
+Repository: https://github.com/workiva/frugal
+Ecosystems: Go, Maven, PyPI
+Error Type: TREE_FETCH_FAILED
+Error Message: Failed to fetch directory tree for workiva/frugal
+
+Possible Reason:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+Suggested Solution:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+================================================================================
+
+Error #3
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T19:31:20.867282
+Repository: https://github.com/pair-systems-inc/goodmem
+Ecosystems: Go, Maven, PyPI
+Error Type: NOT_FOUND
+Error Message: Repository not found: pair-systems-inc/goodmem
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #4
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T19:31:20.869061
+Repository: https://github.com/pair-systems-inc/goodmem
+Ecosystems: Go, Maven, PyPI
+Error Type: TREE_FETCH_FAILED
+Error Message: Failed to fetch directory tree for pair-systems-inc/goodmem
+
+Possible Reason:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+Suggested Solution:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+================================================================================
+

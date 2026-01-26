@@ -1,0 +1,583 @@
+================================================================================
+Error Log for Maven_NPM_PyPI
+================================================================================
+Total Errors: 36
+Generated: 2026-01-25 19:54:23
+================================================================================
+
+Error #1
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T19:42:36.625603
+Repository: https://github.com/user/project
+Ecosystems: Maven, NPM, PyPI
+Error Type: NOT_FOUND
+Error Message: Repository not found: user/project
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #2
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T19:42:36.627353
+Repository: https://github.com/user/project
+Ecosystems: Maven, NPM, PyPI
+Error Type: TREE_FETCH_FAILED
+Error Message: Failed to fetch directory tree for user/project
+
+Possible Reason:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+Suggested Solution:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+================================================================================
+
+Error #3
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T19:42:37.949205
+Repository: https://github.com/affinityproject/common-check-widget-backend-lib
+Ecosystems: Maven, NPM, PyPI
+Error Type: NOT_FOUND
+Error Message: Repository not found: affinityproject/common-check-widget-backend-lib
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #4
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T19:42:37.950958
+Repository: https://github.com/affinityproject/common-check-widget-backend-lib
+Ecosystems: Maven, NPM, PyPI
+Error Type: TREE_FETCH_FAILED
+Error Message: Failed to fetch directory tree for affinityproject/common-check-widget-backend-lib
+
+Possible Reason:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+Suggested Solution:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+================================================================================
+
+Error #5
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T19:42:43.161207
+Repository: https://github.com/your-username/your-repo
+Ecosystems: Maven, NPM, PyPI
+Error Type: NOT_FOUND
+Error Message: Repository not found: your-username/your-repo
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #6
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T19:42:43.163053
+Repository: https://github.com/your-username/your-repo
+Ecosystems: Maven, NPM, PyPI
+Error Type: TREE_FETCH_FAILED
+Error Message: Failed to fetch directory tree for your-username/your-repo
+
+Possible Reason:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+Suggested Solution:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+================================================================================
+
+Error #7
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T19:42:51.661881
+Repository: https://github.com/professionalaf/enterprise-utils
+Ecosystems: Maven, NPM, PyPI
+Error Type: NOT_FOUND
+Error Message: Repository not found: professionalaf/enterprise-utils
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #8
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T19:42:51.663800
+Repository: https://github.com/professionalaf/enterprise-utils
+Ecosystems: Maven, NPM, PyPI
+Error Type: TREE_FETCH_FAILED
+Error Message: Failed to fetch directory tree for professionalaf/enterprise-utils
+
+Possible Reason:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+Suggested Solution:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+================================================================================
+
+Error #9
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T19:42:54.056338
+Repository: https://github.com/iliapolo/constructs-tokens
+Ecosystems: Maven, NPM, PyPI
+Error Type: NOT_FOUND
+Error Message: Repository not found: iliapolo/constructs-tokens
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #10
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T19:42:54.058174
+Repository: https://github.com/iliapolo/constructs-tokens
+Ecosystems: Maven, NPM, PyPI
+Error Type: TREE_FETCH_FAILED
+Error Message: Failed to fetch directory tree for iliapolo/constructs-tokens
+
+Possible Reason:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+Suggested Solution:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+================================================================================
+
+Error #11
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T19:42:56.777579
+Repository: https://github.com/helbing/astrojs-aws
+Ecosystems: Maven, NPM, PyPI
+Error Type: NOT_FOUND
+Error Message: Repository not found: helbing/astrojs-aws
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #12
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T19:42:56.779404
+Repository: https://github.com/helbing/astrojs-aws
+Ecosystems: Maven, NPM, PyPI
+Error Type: TREE_FETCH_FAILED
+Error Message: Failed to fetch directory tree for helbing/astrojs-aws
+
+Possible Reason:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+Suggested Solution:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+================================================================================
+
+Error #13
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T19:42:58.310222
+Repository: https://github.com/devmayur/inference_provider_v2
+Ecosystems: Maven, NPM, PyPI
+Error Type: NOT_FOUND
+Error Message: Repository not found: devmayur/inference_provider_v2
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #14
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T19:42:58.311995
+Repository: https://github.com/devmayur/inference_provider_v2
+Ecosystems: Maven, NPM, PyPI
+Error Type: TREE_FETCH_FAILED
+Error Message: Failed to fetch directory tree for devmayur/inference_provider_v2
+
+Possible Reason:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+Suggested Solution:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+================================================================================
+
+Error #15
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T19:43:18.372550
+Repository: https://github.com/cdklabs/cdk-atmosphere-service
+Ecosystems: Maven, NPM, PyPI
+Error Type: NOT_FOUND
+Error Message: Repository not found: cdklabs/cdk-atmosphere-service
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #16
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T19:43:18.374396
+Repository: https://github.com/cdklabs/cdk-atmosphere-service
+Ecosystems: Maven, NPM, PyPI
+Error Type: TREE_FETCH_FAILED
+Error Message: Failed to fetch directory tree for cdklabs/cdk-atmosphere-service
+
+Possible Reason:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+Suggested Solution:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+================================================================================
+
+Error #17
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T19:43:23.772449
+Repository: https://github.com/xxx/xxx
+Ecosystems: Maven, NPM, PyPI
+Error Type: NOT_FOUND
+Error Message: Repository not found: xxx/xxx
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #18
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T19:43:23.774300
+Repository: https://github.com/xxx/xxx
+Ecosystems: Maven, NPM, PyPI
+Error Type: TREE_FETCH_FAILED
+Error Message: Failed to fetch directory tree for xxx/xxx
+
+Possible Reason:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+Suggested Solution:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+================================================================================
+
+Error #19
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T19:43:30.447168
+Repository: https://github.com/wowsql/wowsql
+Ecosystems: Maven, NPM, PyPI
+Error Type: NOT_FOUND
+Error Message: Repository not found: wowsql/wowsql
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #20
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T19:43:30.449032
+Repository: https://github.com/wowsql/wowsql
+Ecosystems: Maven, NPM, PyPI
+Error Type: TREE_FETCH_FAILED
+Error Message: Failed to fetch directory tree for wowsql/wowsql
+
+Possible Reason:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+Suggested Solution:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+================================================================================
+
+Error #21
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T19:43:48.824107
+Repository: https://github.com/patrick.florek/cdk-dynamodb-backup
+Ecosystems: Maven, NPM, PyPI
+Error Type: NOT_FOUND
+Error Message: Repository not found: patrick.florek/cdk-dynamodb-backup
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #22
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T19:43:48.826394
+Repository: https://github.com/patrick.florek/cdk-dynamodb-backup
+Ecosystems: Maven, NPM, PyPI
+Error Type: TREE_FETCH_FAILED
+Error Message: Failed to fetch directory tree for patrick.florek/cdk-dynamodb-backup
+
+Possible Reason:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+Suggested Solution:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+================================================================================
+
+Error #23
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T19:43:51.648287
+Repository: https://github.com/oceanprotocol/keeper-contracts
+Ecosystems: Maven, NPM, PyPI
+Error Type: NOT_FOUND
+Error Message: Repository not found: oceanprotocol/keeper-contracts
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #24
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T19:43:51.650070
+Repository: https://github.com/oceanprotocol/keeper-contracts
+Ecosystems: Maven, NPM, PyPI
+Error Type: TREE_FETCH_FAILED
+Error Message: Failed to fetch directory tree for oceanprotocol/keeper-contracts
+
+Possible Reason:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+Suggested Solution:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+================================================================================
+
+Error #25
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T19:43:52.198872
+Repository: https://github.com/lazinessdevs/lazy-constructs
+Ecosystems: Maven, NPM, PyPI
+Error Type: NOT_FOUND
+Error Message: Repository not found: lazinessdevs/lazy-constructs
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #26
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T19:43:52.200630
+Repository: https://github.com/lazinessdevs/lazy-constructs
+Ecosystems: Maven, NPM, PyPI
+Error Type: TREE_FETCH_FAILED
+Error Message: Failed to fetch directory tree for lazinessdevs/lazy-constructs
+
+Possible Reason:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+Suggested Solution:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+================================================================================
+
+Error #27
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T19:44:25.627891
+Repository: https://github.com/p6m7g8/p6-barrier
+Ecosystems: Maven, NPM, PyPI
+Error Type: NOT_FOUND
+Error Message: Repository not found: p6m7g8/p6-barrier
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #28
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T19:44:25.629645
+Repository: https://github.com/p6m7g8/p6-barrier
+Ecosystems: Maven, NPM, PyPI
+Error Type: TREE_FETCH_FAILED
+Error Message: Failed to fetch directory tree for p6m7g8/p6-barrier
+
+Possible Reason:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+Suggested Solution:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+================================================================================
+
+Error #29
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T19:44:27.958760
+Repository: https://github.com/eladb/jsii-library-template
+Ecosystems: Maven, NPM, PyPI
+Error Type: NOT_FOUND
+Error Message: Repository not found: eladb/jsii-library-template
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #30
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T19:44:27.960542
+Repository: https://github.com/eladb/jsii-library-template
+Ecosystems: Maven, NPM, PyPI
+Error Type: TREE_FETCH_FAILED
+Error Message: Failed to fetch directory tree for eladb/jsii-library-template
+
+Possible Reason:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+Suggested Solution:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+================================================================================
+
+Error #31
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T19:44:28.190634
+Repository: https://github.com/eladb/awscdk-81-patch
+Ecosystems: Maven, NPM, PyPI
+Error Type: NOT_FOUND
+Error Message: Repository not found: eladb/awscdk-81-patch
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #32
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T19:44:28.192413
+Repository: https://github.com/eladb/awscdk-81-patch
+Ecosystems: Maven, NPM, PyPI
+Error Type: TREE_FETCH_FAILED
+Error Message: Failed to fetch directory tree for eladb/awscdk-81-patch
+
+Possible Reason:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+Suggested Solution:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+================================================================================
+
+Error #33
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T19:44:28.408363
+Repository: https://github.com/chris/cdk-auth
+Ecosystems: Maven, NPM, PyPI
+Error Type: NOT_FOUND
+Error Message: Repository not found: chris/cdk-auth
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #34
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T19:44:28.410159
+Repository: https://github.com/chris/cdk-auth
+Ecosystems: Maven, NPM, PyPI
+Error Type: TREE_FETCH_FAILED
+Error Message: Failed to fetch directory tree for chris/cdk-auth
+
+Possible Reason:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+Suggested Solution:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+================================================================================
+
+Error #35
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T19:44:36.996842
+Repository: https://github.com/applitools/eyes.sdk.javascript1
+Ecosystems: Maven, NPM, PyPI
+Error Type: NOT_FOUND
+Error Message: Repository not found: applitools/eyes.sdk.javascript1
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #36
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T19:44:36.998642
+Repository: https://github.com/applitools/eyes.sdk.javascript1
+Ecosystems: Maven, NPM, PyPI
+Error Type: TREE_FETCH_FAILED
+Error Message: Failed to fetch directory tree for applitools/eyes.sdk.javascript1
+
+Possible Reason:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+Suggested Solution:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+================================================================================
+

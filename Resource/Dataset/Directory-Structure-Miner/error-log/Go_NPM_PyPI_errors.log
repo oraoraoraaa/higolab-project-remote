@@ -1,0 +1,167 @@
+================================================================================
+Error Log for Go_NPM_PyPI
+================================================================================
+Total Errors: 10
+Generated: 2026-01-25 19:54:23
+================================================================================
+
+Error #1
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T19:32:52.308413
+Repository: https://github.com/cuemby/pulumi-ct
+Ecosystems: Go, NPM, PyPI
+Error Type: NOT_FOUND
+Error Message: Repository not found: cuemby/pulumi-ct
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #2
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T19:32:52.310214
+Repository: https://github.com/cuemby/pulumi-ct
+Ecosystems: Go, NPM, PyPI
+Error Type: TREE_FETCH_FAILED
+Error Message: Failed to fetch directory tree for cuemby/pulumi-ct
+
+Possible Reason:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+Suggested Solution:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+================================================================================
+
+Error #3
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T19:33:27.174640
+Repository: https://github.com/mbasadi/jsii-time-ago
+Ecosystems: Go, NPM, PyPI
+Error Type: NOT_FOUND
+Error Message: Repository not found: mbasadi/jsii-time-ago
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #4
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T19:33:27.176380
+Repository: https://github.com/mbasadi/jsii-time-ago
+Ecosystems: Go, NPM, PyPI
+Error Type: TREE_FETCH_FAILED
+Error Message: Failed to fetch directory tree for mbasadi/jsii-time-ago
+
+Possible Reason:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+Suggested Solution:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+================================================================================
+
+Error #5
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T19:33:27.413025
+Repository: https://github.com/mbasadi/jsiitestbagher
+Ecosystems: Go, NPM, PyPI
+Error Type: NOT_FOUND
+Error Message: Repository not found: mbasadi/jsiitestbagher
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #6
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T19:33:27.414881
+Repository: https://github.com/mbasadi/jsiitestbagher
+Ecosystems: Go, NPM, PyPI
+Error Type: TREE_FETCH_FAILED
+Error Message: Failed to fetch directory tree for mbasadi/jsiitestbagher
+
+Possible Reason:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+Suggested Solution:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+================================================================================
+
+Error #7
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T19:35:18.001404
+Repository: https://github.com/oss4u/pulumi-youtrack-native
+Ecosystems: Go, NPM, PyPI
+Error Type: NOT_FOUND
+Error Message: Repository not found: oss4u/pulumi-youtrack-native
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #8
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T19:35:18.003321
+Repository: https://github.com/oss4u/pulumi-youtrack-native
+Ecosystems: Go, NPM, PyPI
+Error Type: TREE_FETCH_FAILED
+Error Message: Failed to fetch directory tree for oss4u/pulumi-youtrack-native
+
+Possible Reason:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+Suggested Solution:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+================================================================================
+
+Error #9
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T19:38:32.885306
+Repository: https://github.com/kiali/kiali-mcp-server
+Ecosystems: Go, NPM, PyPI
+Error Type: NOT_FOUND
+Error Message: Repository not found: kiali/kiali-mcp-server
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #10
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T19:38:32.887102
+Repository: https://github.com/kiali/kiali-mcp-server
+Ecosystems: Go, NPM, PyPI
+Error Type: TREE_FETCH_FAILED
+Error Message: Failed to fetch directory tree for kiali/kiali-mcp-server
+
+Possible Reason:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+Suggested Solution:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+================================================================================
+

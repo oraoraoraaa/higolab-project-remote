@@ -1,0 +1,1511 @@
+================================================================================
+Error Log for Crates_PyPI
+================================================================================
+Total Errors: 94
+Generated: 2026-01-25 19:54:23
+================================================================================
+
+Error #1
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T09:06:02.329523
+Repository: https://github.com/paradigmxyz/lbl
+Ecosystems: Crates, PyPI
+Error Type: NOT_FOUND
+Error Message: Repository not found: paradigmxyz/lbl
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #2
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T09:06:02.330678
+Repository: https://github.com/paradigmxyz/lbl
+Ecosystems: Crates, PyPI
+Error Type: TREE_FETCH_FAILED
+Error Message: Failed to fetch directory tree for paradigmxyz/lbl
+
+Possible Reason:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+Suggested Solution:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+================================================================================
+
+Error #3
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T09:06:07.034260
+Repository: https://github.com/naluscientific/naluacq
+Ecosystems: Crates, PyPI
+Error Type: NOT_FOUND
+Error Message: Repository not found: naluscientific/naluacq
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #4
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T09:06:07.035329
+Repository: https://github.com/naluscientific/naluacq
+Ecosystems: Crates, PyPI
+Error Type: TREE_FETCH_FAILED
+Error Message: Failed to fetch directory tree for naluscientific/naluacq
+
+Possible Reason:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+Suggested Solution:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+================================================================================
+
+Error #5
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T09:06:42.267417
+Repository: https://github.com/ulagbulag/connected-data-lake
+Ecosystems: Crates, PyPI
+Error Type: NOT_FOUND
+Error Message: Repository not found: ulagbulag/connected-data-lake
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #6
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T09:06:42.268453
+Repository: https://github.com/ulagbulag/connected-data-lake
+Ecosystems: Crates, PyPI
+Error Type: TREE_FETCH_FAILED
+Error Message: Failed to fetch directory tree for ulagbulag/connected-data-lake
+
+Possible Reason:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+Suggested Solution:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+================================================================================
+
+Error #7
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T09:07:14.616631
+Repository: https://github.com/lbugdb/lbug
+Ecosystems: Crates, PyPI
+Error Type: NOT_FOUND
+Error Message: Repository not found: lbugdb/lbug
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #8
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T09:07:14.617746
+Repository: https://github.com/lbugdb/lbug
+Ecosystems: Crates, PyPI
+Error Type: TREE_FETCH_FAILED
+Error Message: Failed to fetch directory tree for lbugdb/lbug
+
+Possible Reason:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+Suggested Solution:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+================================================================================
+
+Error #9
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T09:07:16.605707
+Repository: https://github.com/hennzau/arrow-message
+Ecosystems: Crates, PyPI
+Error Type: NOT_FOUND
+Error Message: Repository not found: hennzau/arrow-message
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #10
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T09:07:16.606977
+Repository: https://github.com/hennzau/arrow-message
+Ecosystems: Crates, PyPI
+Error Type: TREE_FETCH_FAILED
+Error Message: Failed to fetch directory tree for hennzau/arrow-message
+
+Possible Reason:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+Suggested Solution:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+================================================================================
+
+Error #11
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T09:07:21.320613
+Repository: https://github.com/chinilla/chinillaclvm_tools_rs
+Ecosystems: Crates, PyPI
+Error Type: NOT_FOUND
+Error Message: Repository not found: chinilla/chinillaclvm_tools_rs
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #12
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T09:07:21.321708
+Repository: https://github.com/chinilla/chinillaclvm_tools_rs
+Ecosystems: Crates, PyPI
+Error Type: TREE_FETCH_FAILED
+Error Message: Failed to fetch directory tree for chinilla/chinillaclvm_tools_rs
+
+Possible Reason:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+Suggested Solution:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+================================================================================
+
+Error #13
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T09:07:35.829504
+Repository: https://github.com/ascpkg/asc
+Ecosystems: Crates, PyPI
+Error Type: NOT_FOUND
+Error Message: Repository not found: ascpkg/asc
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #14
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T09:07:35.830627
+Repository: https://github.com/ascpkg/asc
+Ecosystems: Crates, PyPI
+Error Type: TREE_FETCH_FAILED
+Error Message: Failed to fetch directory tree for ascpkg/asc
+
+Possible Reason:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+Suggested Solution:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+================================================================================
+
+Error #15
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T09:07:38.036072
+Repository: https://github.com/al8n/pyo3-io
+Ecosystems: Crates, PyPI
+Error Type: NOT_FOUND
+Error Message: Repository not found: al8n/pyo3-io
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #16
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T09:07:38.037149
+Repository: https://github.com/al8n/pyo3-io
+Ecosystems: Crates, PyPI
+Error Type: TREE_FETCH_FAILED
+Error Message: Failed to fetch directory tree for al8n/pyo3-io
+
+Possible Reason:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+Suggested Solution:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+================================================================================
+
+Error #17
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T09:07:49.903091
+Repository: https://github.com/kerryeon/mp
+Ecosystems: Crates, PyPI
+Error Type: NOT_FOUND
+Error Message: Repository not found: kerryeon/mp
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #18
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T09:07:49.904343
+Repository: https://github.com/kerryeon/mp
+Ecosystems: Crates, PyPI
+Error Type: TREE_FETCH_FAILED
+Error Message: Failed to fetch directory tree for kerryeon/mp
+
+Possible Reason:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+Suggested Solution:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+================================================================================
+
+Error #19
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T09:08:13.689076
+Repository: https://github.com/hivellm/compression-prompt
+Ecosystems: Crates, PyPI
+Error Type: NOT_FOUND
+Error Message: Repository not found: hivellm/compression-prompt
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #20
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T09:08:13.690736
+Repository: https://github.com/hivellm/compression-prompt
+Ecosystems: Crates, PyPI
+Error Type: TREE_FETCH_FAILED
+Error Message: Failed to fetch directory tree for hivellm/compression-prompt
+
+Possible Reason:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+Suggested Solution:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+================================================================================
+
+Error #21
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T09:08:24.071271
+Repository: https://github.com/chinilla/chinilla_rs
+Ecosystems: Crates, PyPI
+Error Type: NOT_FOUND
+Error Message: Repository not found: chinilla/chinilla_rs
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #22
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T09:08:24.072345
+Repository: https://github.com/chinilla/chinilla_rs
+Ecosystems: Crates, PyPI
+Error Type: TREE_FETCH_FAILED
+Error Message: Failed to fetch directory tree for chinilla/chinilla_rs
+
+Possible Reason:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+Suggested Solution:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+================================================================================
+
+Error #23
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T09:08:29.621217
+Repository: https://github.com/lightonai/next-plaid
+Ecosystems: Crates, PyPI
+Error Type: NOT_FOUND
+Error Message: Repository not found: lightonai/next-plaid
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #24
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T09:08:29.622304
+Repository: https://github.com/lightonai/next-plaid
+Ecosystems: Crates, PyPI
+Error Type: TREE_FETCH_FAILED
+Error Message: Failed to fetch directory tree for lightonai/next-plaid
+
+Possible Reason:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+Suggested Solution:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+================================================================================
+
+Error #25
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T09:08:29.889041
+Repository: https://github.com/rate-technology/rillrate-py
+Ecosystems: Crates, PyPI
+Error Type: NOT_FOUND
+Error Message: Repository not found: rate-technology/rillrate-py
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #26
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T09:08:29.890125
+Repository: https://github.com/rate-technology/rillrate-py
+Ecosystems: Crates, PyPI
+Error Type: TREE_FETCH_FAILED
+Error Message: Failed to fetch directory tree for rate-technology/rillrate-py
+
+Possible Reason:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+Suggested Solution:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+================================================================================
+
+Error #27
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T09:08:42.672947
+Repository: https://github.com/tellaro/tellaro-query-language
+Ecosystems: Crates, PyPI
+Error Type: NOT_FOUND
+Error Message: Repository not found: tellaro/tellaro-query-language
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #28
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T09:08:42.674095
+Repository: https://github.com/tellaro/tellaro-query-language
+Ecosystems: Crates, PyPI
+Error Type: TREE_FETCH_FAILED
+Error Message: Failed to fetch directory tree for tellaro/tellaro-query-language
+
+Possible Reason:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+Suggested Solution:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+================================================================================
+
+Error #29
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T09:08:51.035254
+Repository: https://github.com/seaplane-io/seaplane
+Ecosystems: Crates, PyPI
+Error Type: NOT_FOUND
+Error Message: Repository not found: seaplane-io/seaplane
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #30
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T09:08:51.036346
+Repository: https://github.com/seaplane-io/seaplane
+Ecosystems: Crates, PyPI
+Error Type: TREE_FETCH_FAILED
+Error Message: Failed to fetch directory tree for seaplane-io/seaplane
+
+Possible Reason:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+Suggested Solution:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+================================================================================
+
+Error #31
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T09:08:51.475617
+Repository: https://github.com/packetdb/packetdb
+Ecosystems: Crates, PyPI
+Error Type: NOT_FOUND
+Error Message: Repository not found: packetdb/packetdb
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #32
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T09:08:51.476679
+Repository: https://github.com/packetdb/packetdb
+Ecosystems: Crates, PyPI
+Error Type: TREE_FETCH_FAILED
+Error Message: Failed to fetch directory tree for packetdb/packetdb
+
+Possible Reason:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+Suggested Solution:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+================================================================================
+
+Error #33
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T09:08:56.311286
+Repository: https://github.com/casperlabs/casperlabs
+Ecosystems: Crates, PyPI
+Error Type: NOT_FOUND
+Error Message: Repository not found: casperlabs/casperlabs
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #34
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T09:08:56.312514
+Repository: https://github.com/casperlabs/casperlabs
+Ecosystems: Crates, PyPI
+Error Type: TREE_FETCH_FAILED
+Error Message: Failed to fetch directory tree for casperlabs/casperlabs
+
+Possible Reason:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+Suggested Solution:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+================================================================================
+
+Error #35
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T09:09:02.587737
+Repository: https://github.com/itt-ustutt/dualnum
+Ecosystems: Crates, PyPI
+Error Type: NOT_FOUND
+Error Message: Repository not found: itt-ustutt/dualnum
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #36
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T09:09:02.588861
+Repository: https://github.com/itt-ustutt/dualnum
+Ecosystems: Crates, PyPI
+Error Type: TREE_FETCH_FAILED
+Error Message: Failed to fetch directory tree for itt-ustutt/dualnum
+
+Possible Reason:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+Suggested Solution:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+================================================================================
+
+Error #37
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T09:09:04.389534
+Repository: https://github.com/iteralabs/molina
+Ecosystems: Crates, PyPI
+Error Type: NOT_FOUND
+Error Message: Repository not found: iteralabs/molina
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #38
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T09:09:04.390783
+Repository: https://github.com/iteralabs/molina
+Ecosystems: Crates, PyPI
+Error Type: TREE_FETCH_FAILED
+Error Message: Failed to fetch directory tree for iteralabs/molina
+
+Possible Reason:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+Suggested Solution:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+================================================================================
+
+Error #39
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T09:09:18.646426
+Repository: https://github.com/pybevy/pybevy
+Ecosystems: Crates, PyPI
+Error Type: NOT_FOUND
+Error Message: Repository not found: pybevy/pybevy
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #40
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T09:09:18.647515
+Repository: https://github.com/pybevy/pybevy
+Ecosystems: Crates, PyPI
+Error Type: TREE_FETCH_FAILED
+Error Message: Failed to fetch directory tree for pybevy/pybevy
+
+Possible Reason:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+Suggested Solution:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+================================================================================
+
+Error #41
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T09:09:40.848718
+Repository: https://github.com/hqsquantumsimulations/qoqo_qiskit
+Ecosystems: Crates, PyPI
+Error Type: NOT_FOUND
+Error Message: Repository not found: hqsquantumsimulations/qoqo_qiskit
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #42
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T09:09:40.849870
+Repository: https://github.com/hqsquantumsimulations/qoqo_qiskit
+Ecosystems: Crates, PyPI
+Error Type: TREE_FETCH_FAILED
+Error Message: Failed to fetch directory tree for hqsquantumsimulations/qoqo_qiskit
+
+Possible Reason:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+Suggested Solution:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+================================================================================
+
+Error #43
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T09:10:03.033528
+Repository: https://github.com/ra0x3/pyrs
+Ecosystems: Crates, PyPI
+Error Type: NOT_FOUND
+Error Message: Repository not found: ra0x3/pyrs
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #44
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T09:10:03.034661
+Repository: https://github.com/ra0x3/pyrs
+Ecosystems: Crates, PyPI
+Error Type: TREE_FETCH_FAILED
+Error Message: Failed to fetch directory tree for ra0x3/pyrs
+
+Possible Reason:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+Suggested Solution:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+================================================================================
+
+Error #45
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T09:10:13.080411
+Repository: https://github.com/lipicoder/rapidash
+Ecosystems: Crates, PyPI
+Error Type: NOT_FOUND
+Error Message: Repository not found: lipicoder/rapidash
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #46
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T09:10:13.081491
+Repository: https://github.com/lipicoder/rapidash
+Ecosystems: Crates, PyPI
+Error Type: TREE_FETCH_FAILED
+Error Message: Failed to fetch directory tree for lipicoder/rapidash
+
+Possible Reason:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+Suggested Solution:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+================================================================================
+
+Error #47
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T09:10:20.124222
+Repository: https://github.com/tyberiusprime/mbf_gtf
+Ecosystems: Crates, PyPI
+Error Type: NOT_FOUND
+Error Message: Repository not found: tyberiusprime/mbf_gtf
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #48
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T09:10:20.125332
+Repository: https://github.com/tyberiusprime/mbf_gtf
+Ecosystems: Crates, PyPI
+Error Type: TREE_FETCH_FAILED
+Error Message: Failed to fetch directory tree for tyberiusprime/mbf_gtf
+
+Possible Reason:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+Suggested Solution:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+================================================================================
+
+Error #49
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T09:10:28.535495
+Repository: https://github.com/wlanguage/python-core
+Ecosystems: Crates, PyPI
+Error Type: NOT_FOUND
+Error Message: Repository not found: wlanguage/python-core
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #50
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T09:10:28.536597
+Repository: https://github.com/wlanguage/python-core
+Ecosystems: Crates, PyPI
+Error Type: TREE_FETCH_FAILED
+Error Message: Failed to fetch directory tree for wlanguage/python-core
+
+Possible Reason:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+Suggested Solution:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+================================================================================
+
+Error #51
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T09:10:31.500893
+Repository: https://github.com/yourusername/crab-jwt
+Ecosystems: Crates, PyPI
+Error Type: NOT_FOUND
+Error Message: Repository not found: yourusername/crab-jwt
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #52
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T09:10:31.502045
+Repository: https://github.com/yourusername/crab-jwt
+Ecosystems: Crates, PyPI
+Error Type: TREE_FETCH_FAILED
+Error Message: Failed to fetch directory tree for yourusername/crab-jwt
+
+Possible Reason:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+Suggested Solution:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+================================================================================
+
+Error #53
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T09:10:32.338535
+Repository: https://github.com/open-aviation/jetsim
+Ecosystems: Crates, PyPI
+Error Type: NOT_FOUND
+Error Message: Repository not found: open-aviation/jetsim
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #54
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T09:10:32.339621
+Repository: https://github.com/open-aviation/jetsim
+Ecosystems: Crates, PyPI
+Error Type: TREE_FETCH_FAILED
+Error Message: Failed to fetch directory tree for open-aviation/jetsim
+
+Possible Reason:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+Suggested Solution:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+================================================================================
+
+Error #55
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T09:11:10.351352
+Repository: https://github.com/aareon/dance
+Ecosystems: Crates, PyPI
+Error Type: NOT_FOUND
+Error Message: Repository not found: aareon/dance
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #56
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T09:11:10.352485
+Repository: https://github.com/aareon/dance
+Ecosystems: Crates, PyPI
+Error Type: TREE_FETCH_FAILED
+Error Message: Failed to fetch directory tree for aareon/dance
+
+Possible Reason:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+Suggested Solution:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+================================================================================
+
+Error #57
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T09:11:12.687397
+Repository: https://github.com/leostera/solarchive.org
+Ecosystems: Crates, PyPI
+Error Type: NOT_FOUND
+Error Message: Repository not found: leostera/solarchive.org
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #58
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T09:11:12.688516
+Repository: https://github.com/leostera/solarchive.org
+Ecosystems: Crates, PyPI
+Error Type: TREE_FETCH_FAILED
+Error Message: Failed to fetch directory tree for leostera/solarchive.org
+
+Possible Reason:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+Suggested Solution:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+================================================================================
+
+Error #59
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T09:11:47.851054
+Repository: https://github.com/asuta274/loladb
+Ecosystems: Crates, PyPI
+Error Type: NOT_FOUND
+Error Message: Repository not found: asuta274/loladb
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #60
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T09:11:47.852151
+Repository: https://github.com/asuta274/loladb
+Ecosystems: Crates, PyPI
+Error Type: TREE_FETCH_FAILED
+Error Message: Failed to fetch directory tree for asuta274/loladb
+
+Possible Reason:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+Suggested Solution:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+================================================================================
+
+Error #61
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T09:11:53.050464
+Repository: https://github.com/paradigmxyz/jtool
+Ecosystems: Crates, PyPI
+Error Type: NOT_FOUND
+Error Message: Repository not found: paradigmxyz/jtool
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #62
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T09:11:53.051510
+Repository: https://github.com/paradigmxyz/jtool
+Ecosystems: Crates, PyPI
+Error Type: TREE_FETCH_FAILED
+Error Message: Failed to fetch directory tree for paradigmxyz/jtool
+
+Possible Reason:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+Suggested Solution:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+================================================================================
+
+Error #63
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T09:11:54.757764
+Repository: https://github.com/ofluffydev/metronome-rs
+Ecosystems: Crates, PyPI
+Error Type: NOT_FOUND
+Error Message: Repository not found: ofluffydev/metronome-rs
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #64
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T09:11:54.758902
+Repository: https://github.com/ofluffydev/metronome-rs
+Ecosystems: Crates, PyPI
+Error Type: TREE_FETCH_FAILED
+Error Message: Failed to fetch directory tree for ofluffydev/metronome-rs
+
+Possible Reason:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+Suggested Solution:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+================================================================================
+
+Error #65
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T09:12:04.267082
+Repository: https://github.com/gimpey-com/sol-gateway
+Ecosystems: Crates, PyPI
+Error Type: NOT_FOUND
+Error Message: Repository not found: gimpey-com/sol-gateway
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #66
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T09:12:04.268180
+Repository: https://github.com/gimpey-com/sol-gateway
+Ecosystems: Crates, PyPI
+Error Type: TREE_FETCH_FAILED
+Error Message: Failed to fetch directory tree for gimpey-com/sol-gateway
+
+Possible Reason:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+Suggested Solution:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+================================================================================
+
+Error #67
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T09:12:41.561428
+Repository: https://github.com/guangyuhe/simple_smtp_sender
+Ecosystems: Crates, PyPI
+Error Type: NOT_FOUND
+Error Message: Repository not found: guangyuhe/simple_smtp_sender
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #68
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T09:12:41.562607
+Repository: https://github.com/guangyuhe/simple_smtp_sender
+Ecosystems: Crates, PyPI
+Error Type: TREE_FETCH_FAILED
+Error Message: Failed to fetch directory tree for guangyuhe/simple_smtp_sender
+
+Possible Reason:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+Suggested Solution:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+================================================================================
+
+Error #69
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T09:12:47.350873
+Repository: https://github.com/nougat-dev/zopf
+Ecosystems: Crates, PyPI
+Error Type: NOT_FOUND
+Error Message: Repository not found: nougat-dev/zopf
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #70
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T09:12:47.351967
+Repository: https://github.com/nougat-dev/zopf
+Ecosystems: Crates, PyPI
+Error Type: TREE_FETCH_FAILED
+Error Message: Failed to fetch directory tree for nougat-dev/zopf
+
+Possible Reason:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+Suggested Solution:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+================================================================================
+
+Error #71
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T09:13:00.740177
+Repository: https://github.com/yourusername/feather-db
+Ecosystems: Crates, PyPI
+Error Type: NOT_FOUND
+Error Message: Repository not found: yourusername/feather-db
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #72
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T09:13:00.741275
+Repository: https://github.com/yourusername/feather-db
+Ecosystems: Crates, PyPI
+Error Type: TREE_FETCH_FAILED
+Error Message: Failed to fetch directory tree for yourusername/feather-db
+
+Possible Reason:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+Suggested Solution:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+================================================================================
+
+Error #73
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T09:14:35.870963
+Repository: https://github.com/tillbeemelmanns/ros2_tui
+Ecosystems: Crates, PyPI
+Error Type: NOT_FOUND
+Error Message: Repository not found: tillbeemelmanns/ros2_tui
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #74
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T09:14:35.872144
+Repository: https://github.com/tillbeemelmanns/ros2_tui
+Ecosystems: Crates, PyPI
+Error Type: TREE_FETCH_FAILED
+Error Message: Failed to fetch directory tree for tillbeemelmanns/ros2_tui
+
+Possible Reason:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+Suggested Solution:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+================================================================================
+
+Error #75
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T09:14:46.376794
+Repository: https://github.com/vexshield/vexshield
+Ecosystems: Crates, PyPI
+Error Type: NOT_FOUND
+Error Message: Repository not found: vexshield/vexshield
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #76
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T09:14:46.377902
+Repository: https://github.com/vexshield/vexshield
+Ecosystems: Crates, PyPI
+Error Type: TREE_FETCH_FAILED
+Error Message: Failed to fetch directory tree for vexshield/vexshield
+
+Possible Reason:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+Suggested Solution:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+================================================================================
+
+Error #77
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T09:14:50.871887
+Repository: https://github.com/hqsquantumsimulations/qoqo_quest
+Ecosystems: Crates, PyPI
+Error Type: NOT_FOUND
+Error Message: Repository not found: hqsquantumsimulations/qoqo_quest
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #78
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T09:14:50.873002
+Repository: https://github.com/hqsquantumsimulations/qoqo_quest
+Ecosystems: Crates, PyPI
+Error Type: TREE_FETCH_FAILED
+Error Message: Failed to fetch directory tree for hqsquantumsimulations/qoqo_quest
+
+Possible Reason:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+Suggested Solution:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+================================================================================
+
+Error #79
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T09:14:57.845114
+Repository: https://github.com/hessra/hessra-sdk.rs
+Ecosystems: Crates, PyPI
+Error Type: NOT_FOUND
+Error Message: Repository not found: hessra/hessra-sdk.rs
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #80
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T09:14:57.846290
+Repository: https://github.com/hessra/hessra-sdk.rs
+Ecosystems: Crates, PyPI
+Error Type: TREE_FETCH_FAILED
+Error Message: Failed to fetch directory tree for hessra/hessra-sdk.rs
+
+Possible Reason:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+Suggested Solution:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+================================================================================
+
+Error #81
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T09:15:00.386448
+Repository: https://github.com/psila-ai/basalt-protocol
+Ecosystems: Crates, PyPI
+Error Type: NOT_FOUND
+Error Message: Repository not found: psila-ai/basalt-protocol
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #82
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T09:15:00.387701
+Repository: https://github.com/psila-ai/basalt-protocol
+Ecosystems: Crates, PyPI
+Error Type: TREE_FETCH_FAILED
+Error Message: Failed to fetch directory tree for psila-ai/basalt-protocol
+
+Possible Reason:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+Suggested Solution:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+================================================================================
+
+Error #83
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T09:15:10.753180
+Repository: https://github.com/lipish/llm-link
+Ecosystems: Crates, PyPI
+Error Type: NOT_FOUND
+Error Message: Repository not found: lipish/llm-link
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #84
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T09:15:10.754388
+Repository: https://github.com/lipish/llm-link
+Ecosystems: Crates, PyPI
+Error Type: TREE_FETCH_FAILED
+Error Message: Failed to fetch directory tree for lipish/llm-link
+
+Possible Reason:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+Suggested Solution:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+================================================================================
+
+Error #85
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T09:15:18.084556
+Repository: https://github.com/devxpod/oauth42
+Ecosystems: Crates, PyPI
+Error Type: NOT_FOUND
+Error Message: Repository not found: devxpod/oauth42
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #86
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T09:15:18.085795
+Repository: https://github.com/devxpod/oauth42
+Ecosystems: Crates, PyPI
+Error Type: TREE_FETCH_FAILED
+Error Message: Failed to fetch directory tree for devxpod/oauth42
+
+Possible Reason:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+Suggested Solution:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+================================================================================
+
+Error #87
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T09:15:39.199637
+Repository: https://github.com/wjwillemse/selmr
+Ecosystems: Crates, PyPI
+Error Type: NOT_FOUND
+Error Message: Repository not found: wjwillemse/selmr
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #88
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T09:15:39.200769
+Repository: https://github.com/wjwillemse/selmr
+Ecosystems: Crates, PyPI
+Error Type: TREE_FETCH_FAILED
+Error Message: Failed to fetch directory tree for wjwillemse/selmr
+
+Possible Reason:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+Suggested Solution:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+================================================================================
+
+Error #89
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T09:15:48.308833
+Repository: https://github.com/automate-capture/hat
+Ecosystems: Crates, PyPI
+Error Type: NOT_FOUND
+Error Message: Repository not found: automate-capture/hat
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #90
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T09:15:48.309976
+Repository: https://github.com/automate-capture/hat
+Ecosystems: Crates, PyPI
+Error Type: TREE_FETCH_FAILED
+Error Message: Failed to fetch directory tree for automate-capture/hat
+
+Possible Reason:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+Suggested Solution:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+================================================================================
+
+Error #91
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T09:15:54.481702
+Repository: https://github.com/ekodb/ekodb
+Ecosystems: Crates, PyPI
+Error Type: NOT_FOUND
+Error Message: Repository not found: ekodb/ekodb
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #92
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T09:15:54.482868
+Repository: https://github.com/ekodb/ekodb
+Ecosystems: Crates, PyPI
+Error Type: TREE_FETCH_FAILED
+Error Message: Failed to fetch directory tree for ekodb/ekodb
+
+Possible Reason:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+Suggested Solution:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+================================================================================
+
+Error #93
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T09:15:56.638755
+Repository: https://github.com/holg/l3d-rs
+Ecosystems: Crates, PyPI
+Error Type: NOT_FOUND
+Error Message: Repository not found: holg/l3d-rs
+
+Possible Reason:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+Suggested Solution:
+  Verify the repository URL is correct and the repository still exists. It may have been deleted, made private, or renamed.
+
+================================================================================
+
+Error #94
+--------------------------------------------------------------------------------
+Timestamp: 2026-01-25T09:15:56.639901
+Repository: https://github.com/holg/l3d-rs
+Ecosystems: Crates, PyPI
+Error Type: TREE_FETCH_FAILED
+Error Message: Failed to fetch directory tree for holg/l3d-rs
+
+Possible Reason:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+Suggested Solution:
+  Repository may not exist, be private, or API may have failed. Check error logs for details.
+
+================================================================================
+
