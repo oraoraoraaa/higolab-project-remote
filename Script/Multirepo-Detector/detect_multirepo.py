@@ -570,6 +570,12 @@ def detect_multirepo(owner, repo_name, token_manager: TokenManager):
     Detect if a repository follows multi-repo pattern.
     Returns: (is_multirepo, separator, found_repos)
     Implements retry logic for transient network errors.
+    
+    New logic to handle mixed separators:
+    1. Add repo name itself as a candidate
+    2. Try removing <separator><suffix> from end or <suffix><separator> from start
+       (checking ALL separators)
+    3. Use each base candidate to construct patterns with ALL separators
     """
     # Get all repos from the owner (with retry logic built-in)
     all_repos = get_user_repos(owner, token_manager)
@@ -577,33 +583,35 @@ def detect_multirepo(owner, repo_name, token_manager: TokenManager):
     if not all_repos:
         return False, None, []
     
-    # Try each separator
+    # Step 1: Add repo name as a candidate
+    base_candidates = [repo_name]
+    
+    # Step 2: Check for ending <separator><suffix> and starting <suffix><separator>
+    # Try ALL separators to handle mixed separator cases
     for separator in SEPARATORS:
-        # Extract base name (everything before first separator + ecosystem suffix)
-        base_candidates = []
-        
-        # Try repo_name as base
-        base_candidates.append(repo_name)
-        
-        # Try removing common suffixes from repo_name
         for suffix in ECOSYSTEM_SUFFIXES:
+            # Check ending: <base><separator><suffix>
             if repo_name.endswith(f"{separator}{suffix}"):
                 base = repo_name[:-(len(separator) + len(suffix))]
-                base_candidates.append(base)
-            elif repo_name.startswith(f"{suffix}{separator}"):
-                base = repo_name[(len(suffix) + len(separator)):]
-                base_candidates.append(base)
-        
-        # Also try splitting on separator and taking first part
-        parts = repo_name.split(separator)
-        if len(parts) > 1:
-            base_candidates.append(parts[0])
-        
-        # Check each base candidate
-        for base_name in base_candidates:
-            if not base_name:
-                continue
+                if base:  # Only add non-empty bases
+                    base_candidates.append(base)
             
+            # Check starting: <suffix><separator><base>
+            if repo_name.startswith(f"{suffix}{separator}"):
+                base = repo_name[(len(suffix) + len(separator)):]
+                if base:  # Only add non-empty bases
+                    base_candidates.append(base)
+    
+    # Remove duplicates while preserving order
+    seen = set()
+    base_candidates = [x for x in base_candidates if not (x in seen or seen.add(x))]
+    
+    # Step 3: For each base candidate, try constructing patterns with ALL separators
+    for base_name in base_candidates:
+        if not base_name:
+            continue
+        
+        for separator in SEPARATORS:
             # Look for pattern: <base><separator><ecosystem>
             multi_repo_patterns = [f"{base_name}{separator}{suffix}" for suffix in ECOSYSTEM_SUFFIXES]
             found_multi_repos = [r for r in all_repos if r in multi_repo_patterns]
