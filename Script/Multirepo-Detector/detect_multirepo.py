@@ -565,6 +565,29 @@ def get_user_repos(owner, token_manager: TokenManager):
     return all_repos
 
 
+def matches_pattern(repo_name, pattern):
+    """
+    Check if a repo name matches a pattern.
+    Matches if:
+    - Exact match: repo_name == pattern
+    - Prefix match: repo_name starts with pattern followed by a separator
+    
+    Examples:
+    - matches_pattern("lib-rust", "lib-rust") -> True (exact)
+    - matches_pattern("lib-rust-core", "lib-rust") -> True (prefix with -)
+    - matches_pattern("lib-rusty", "lib-rust") -> False (not followed by separator)
+    """
+    if repo_name == pattern:
+        return True
+    
+    # Check if repo starts with pattern followed by any separator
+    for sep in SEPARATORS:
+        if repo_name.startswith(f"{pattern}{sep}"):
+            return True
+    
+    return False
+
+
 def detect_multirepo(owner, repo_name, token_manager: TokenManager):
     """
     Detect if a repository follows multi-repo pattern.
@@ -576,6 +599,7 @@ def detect_multirepo(owner, repo_name, token_manager: TokenManager):
     2. Try removing <separator><suffix> from end or <suffix><separator> from start
        (checking ALL separators)
     3. Use each base candidate to construct patterns with ALL separators
+    4. Support partial matches (e.g., lib-rust matches lib-rust-core)
     """
     # Get all repos from the owner (with retry logic built-in)
     all_repos = get_user_repos(owner, token_manager)
@@ -612,13 +636,31 @@ def detect_multirepo(owner, repo_name, token_manager: TokenManager):
             continue
         
         for separator in SEPARATORS:
-            # Look for pattern: <base><separator><ecosystem>
+            # Look for pattern: <base><separator><ecosystem> (suffix at end)
             multi_repo_patterns = [f"{base_name}{separator}{suffix}" for suffix in ECOSYSTEM_SUFFIXES]
-            found_multi_repos = [r for r in all_repos if r in multi_repo_patterns]
+            # Use partial matching - allows for additional suffixes like -core, -client, etc.
+            found_multi_repos = [r for r in all_repos 
+                                if any(matches_pattern(r, pattern) for pattern in multi_repo_patterns)]
+            
+            # Remove duplicates
+            found_multi_repos = list(set(found_multi_repos))
             
             # If we found at least 2 repos matching the pattern, it's a multi-repo
             if len(found_multi_repos) >= 2:
                 return True, separator, sorted(found_multi_repos)
+            
+            # Also look for pattern: <ecosystem><separator><base> (suffix at start)
+            multi_repo_patterns_start = [f"{suffix}{separator}{base_name}" for suffix in ECOSYSTEM_SUFFIXES]
+            # Use partial matching for prefix patterns too
+            found_multi_repos_start = [r for r in all_repos 
+                                       if any(matches_pattern(r, pattern) for pattern in multi_repo_patterns_start)]
+            
+            # Remove duplicates
+            found_multi_repos_start = list(set(found_multi_repos_start))
+            
+            # If we found at least 2 repos matching the pattern, it's a multi-repo
+            if len(found_multi_repos_start) >= 2:
+                return True, separator, sorted(found_multi_repos_start)
     
     return False, None, []
 
