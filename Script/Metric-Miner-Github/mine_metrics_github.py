@@ -18,7 +18,6 @@ import re
 import json
 import time
 import logging
-import shutil
 from pathlib import Path
 from typing import List, Dict, Optional, Tuple
 from datetime import datetime
@@ -36,11 +35,9 @@ DATASET_DIR = SCRIPT_DIR / "../../Resource/Dataset/"
 DEFAULT_INPUT_DIR = DATASET_DIR / "Multirepo-Common-Package-Filter"
 DEFAULT_OUTPUT_DIR = DATASET_DIR / "Metric-Miner-Github"
 DEFAULT_OUTPUT_FILE = "github_metrics.json"
-LOG_FILE = SCRIPT_DIR / "processing.log"
-
-# Cache configuration
 DEFAULT_CACHE_DIR = DATASET_DIR / "Cache/Metric-Miner-Github"
 DEFAULT_CACHE_FILE = "github_metrics.json"
+LOG_FILE = SCRIPT_DIR / "processing.log"
 
 # ============================================================================
 # PARALLEL PROCESSING CONFIGURATION
@@ -70,16 +67,11 @@ def setup_logging():
         level=logging.INFO,
         format='%(asctime)s - %(levelname)s - %(message)s',
         handlers=[
-            logging.FileHandler(LOG_FILE, mode='a', encoding='utf-8'),
+            logging.FileHandler(LOG_FILE, mode='w', encoding='utf-8'),
             logging.StreamHandler()
         ]
     )
-    logger = logging.getLogger(__name__)
-    # Log session start
-    logger.info("=" * 60)
-    logger.info("NEW MINING SESSION STARTED")
-    logger.info("=" * 60)
-    return logger
+    return logging.getLogger(__name__)
 
 
 def log_message(logger, level, message):
@@ -303,7 +295,7 @@ class TokenManager:
 # ============================================================================
 
 def save_progress(output_path: Path, processed_packages: Dict[str, Dict], last_index: int):
-    """Save progress directly to output JSON file and copy the processing log."""
+    """Save progress directly to output JSON file."""
     progress_data = {
         'last_index': last_index,
         'processed_count': len([v for v in processed_packages.values() if v is not None]),
@@ -312,14 +304,6 @@ def save_progress(output_path: Path, processed_packages: Dict[str, Dict], last_i
     }
     with open(output_path, 'w', encoding='utf-8') as f:
         json.dump(progress_data, f, indent=2)
-    
-    # Also save the processing log to the output directory
-    if LOG_FILE.exists():
-        output_log_path = output_path.parent / "processing.log"
-        try:
-            shutil.copy2(LOG_FILE, output_log_path)
-        except Exception:
-            pass  # Silently ignore log copy failures
 
 
 def load_progress(output_path: Path) -> Tuple[Dict[str, Dict], int]:
@@ -338,132 +322,170 @@ def load_progress(output_path: Path) -> Tuple[Dict[str, Dict], int]:
 # CACHE MANAGEMENT
 # ============================================================================
 
-class CacheManager:
-    """Manages cache for GitHub metrics to avoid redundant API calls."""
+def load_cache(cache_path: Path) -> Dict[str, Dict]:
+    """
+    Load cache from a previous metrics mining run.
     
-    def __init__(self, cache_dir: Path = None, cache_file: str = None):
-        """
-        Initialize cache manager.
+    Args:
+        cache_path: Path to the cache JSON file
         
-        Args:
-            cache_dir: Directory containing cache files
-            cache_file: Cache JSON filename
-        """
-        self.cache_dir = cache_dir or DEFAULT_CACHE_DIR
-        self.cache_file = cache_file or DEFAULT_CACHE_FILE
-        self.cache_path = self.cache_dir / self.cache_file
-        self.cache_data: Dict[str, Dict] = {}
-        self.owner_repo_index: Dict[str, str] = {}  # owner_repo -> full_key mapping
-        self.lock = Lock()
-        self._loaded = False
+    Returns:
+        Dictionary mapping package keys (owner_repo|repo_url) to cached metrics
+    """
+    if not cache_path.exists():
+        safe_print(f"Cache file not found: {cache_path}")
+        return {}
     
-    def load_cache(self) -> bool:
-        """
-        Load cache from file and build search index.
-        
-        Returns:
-            True if cache loaded successfully, False otherwise
-        """
-        if self._loaded:
-            return True
-        
-        if not self.cache_path.exists():
-            safe_print(f"Cache file not found: {self.cache_path}")
-            return False
-        
-        try:
-            safe_print(f"Loading cache from {self.cache_path}...")
-            with open(self.cache_path, 'r', encoding='utf-8') as f:
-                data = json.load(f)
-            
-            self.cache_data = data.get('packages', {})
-            self._build_index()
-            self._loaded = True
-            
-            # Count successful entries (without errors)
-            successful = len([v for v in self.cache_data.values() if v and "error" not in v])
-            safe_print(f"Cache loaded: {len(self.cache_data)} entries ({successful} successful)")
-            return True
-            
-        except (json.JSONDecodeError, KeyError) as e:
-            safe_print(f"Warning: Failed to load cache: {e}")
-            return False
+    try:
+        safe_print(f"Loading cache from: {cache_path}")
+        with open(cache_path, 'r', encoding='utf-8') as f:
+            data = json.load(f)
+            packages = data.get('packages', {})
+            safe_print(f"  Loaded {len(packages)} cached entries")
+            return packages
+    except (json.JSONDecodeError, KeyError) as e:
+        safe_print(f"Warning: Failed to load cache: {e}")
+        return {}
+
+
+def build_cache_index(cache: Dict[str, Dict]) -> Dict[str, str]:
+    """
+    Build a search index from cache for fast lookup.
+    Creates multiple lookup keys for each cached entry.
     
-    def _build_index(self):
-        """
-        Build search index for faster lookups.
-        Creates mapping from owner_repo to full cache key.
-        Uses lowercase keys for case-insensitive matching.
-        """
-        safe_print("Building cache search index...")
-        self.owner_repo_index.clear()
+    Args:
+        cache: Dictionary of cached packages (key -> metrics)
         
-        for full_key, value in self.cache_data.items():
-            if value is None:
-                continue
-            
-            # Extract owner_repo from the full key (format: owner_repo|repo_url)
-            owner_repo = value.get('owner_repo')
-            if owner_repo:
-                # Store mapping: owner_repo (lowercase) -> full_key
-                # If multiple entries exist for same owner_repo, keep the first one
-                owner_repo_lower = owner_repo.lower()
-                if owner_repo_lower not in self.owner_repo_index:
-                    self.owner_repo_index[owner_repo_lower] = full_key
-        
-        safe_print(f"Index built: {len(self.owner_repo_index)} unique repositories indexed")
+    Returns:
+        Dictionary mapping various lookup keys to the original cache key
+    """
+    index = {}
     
-    def lookup(self, owner_repo: str, repo_url: str = None) -> Optional[Dict]:
-        """
-        Look up cached metrics for a repository (case-insensitive).
+    for cache_key, metrics in cache.items():
+        if metrics is None:
+            continue
+            
+        # Primary key: owner_repo|repo_url (already the format used)
+        index[cache_key] = cache_key
         
-        Args:
-            owner_repo: Repository identifier (owner/repo)
-            repo_url: Full repository URL (optional, for exact match)
+        # Extract owner_repo and repo_url from cache key
+        parts = cache_key.split('|', 1)
+        if len(parts) == 2:
+            owner_repo, repo_url = parts
             
-        Returns:
-            Cached metrics dictionary or None if not found
-        """
-        with self.lock:
-            # Try exact match first if repo_url provided
-            if repo_url:
-                full_key = f"{owner_repo}|{repo_url}"
-                if full_key in self.cache_data:
-                    cached = self.cache_data[full_key]
-                    # Only return if it's a successful entry (no error)
-                    if cached and "error" not in cached:
-                        return cached
+            # Index by owner_repo only
+            if owner_repo not in index:
+                index[owner_repo] = cache_key
             
-            # Try case-insensitive index lookup by owner_repo
-            owner_repo_lower = owner_repo.lower()
-            if owner_repo_lower in self.owner_repo_index:
-                full_key = self.owner_repo_index[owner_repo_lower]
-                cached = self.cache_data.get(full_key)
-                # Only return if it's a successful entry (no error)
-                if cached and "error" not in cached:
-                    return cached
+            # Index by repo_url only
+            if repo_url not in index:
+                index[repo_url] = cache_key
             
-            return None
+            # Index by normalized repo_url (lowercase, no trailing slash)
+            normalized_url = repo_url.lower().rstrip('/')
+            if normalized_url not in index:
+                index[normalized_url] = cache_key
+                
+            # Index by owner_repo from metrics if present
+            if 'owner_repo' in metrics and metrics['owner_repo']:
+                metrics_owner_repo = metrics['owner_repo']
+                if metrics_owner_repo not in index:
+                    index[metrics_owner_repo] = cache_key
+                # Also lowercase version
+                if metrics_owner_repo.lower() not in index:
+                    index[metrics_owner_repo.lower()] = cache_key
     
-    def get_cache_stats(self) -> Dict:
-        """
-        Get cache statistics.
+    return index
+
+
+def lookup_in_cache(pkg: Dict, cache: Dict[str, Dict], cache_index: Dict[str, str]) -> Optional[Dict]:
+    """
+    Look up a package in the cache using multiple strategies.
+    
+    Args:
+        pkg: Package dictionary with 'owner_repo' and 'repo_url'
+        cache: The full cache dictionary
+        cache_index: The search index built from cache
         
-        Returns:
-            Dictionary with cache statistics
-        """
-        total = len(self.cache_data)
-        successful = len([v for v in self.cache_data.values() if v and "error" not in v])
-        errors = len([v for v in self.cache_data.values() if v and "error" in v])
-        indexed = len(self.owner_repo_index)
+    Returns:
+        Cached metrics if found, None otherwise
+    """
+    owner_repo = pkg.get('owner_repo', '')
+    repo_url = pkg.get('repo_url', '')
+    
+    # Try primary key format first
+    primary_key = f"{owner_repo}|{repo_url}"
+    if primary_key in cache_index:
+        cache_key = cache_index[primary_key]
+        return cache.get(cache_key)
+    
+    # Try owner_repo only
+    if owner_repo and owner_repo in cache_index:
+        cache_key = cache_index[owner_repo]
+        return cache.get(cache_key)
+    
+    # Try owner_repo lowercase
+    if owner_repo and owner_repo.lower() in cache_index:
+        cache_key = cache_index[owner_repo.lower()]
+        return cache.get(cache_key)
+    
+    # Try repo_url
+    if repo_url and repo_url in cache_index:
+        cache_key = cache_index[repo_url]
+        return cache.get(cache_key)
+    
+    # Try normalized repo_url
+    if repo_url:
+        normalized_url = repo_url.lower().rstrip('/')
+        if normalized_url in cache_index:
+            cache_key = cache_index[normalized_url]
+            return cache.get(cache_key)
+    
+    return None
+
+
+def transfer_from_cache(
+    all_packages: List[Dict],
+    cache: Dict[str, Dict],
+    cache_index: Dict[str, str],
+    processed_packages: Dict[str, Dict]
+) -> Tuple[Dict[str, Dict], List[Dict], int]:
+    """
+    Transfer cached packages to processed_packages and identify remaining packages.
+    
+    Args:
+        all_packages: List of all packages to process
+        cache: The full cache dictionary
+        cache_index: The search index built from cache
+        processed_packages: Dictionary to store results
         
-        return {
-            "total_entries": total,
-            "successful_entries": successful,
-            "error_entries": errors,
-            "indexed_repos": indexed,
-            "cache_path": str(self.cache_path)
-        }
+    Returns:
+        Tuple of (updated processed_packages, remaining packages list, cache hit count)
+    """
+    remaining_packages = []
+    cache_hits = 0
+    
+    for pkg in all_packages:
+        pkg_key = f"{pkg['owner_repo']}|{pkg['repo_url']}"
+        
+        # Skip if already processed
+        if pkg_key in processed_packages:
+            continue
+        
+        # Try to find in cache
+        cached_result = lookup_in_cache(pkg, cache, cache_index)
+        
+        if cached_result:
+            # Update ecosystems from current package (may differ from cache)
+            result = cached_result.copy()
+            result['ecosystems'] = pkg.get('ecosystems', cached_result.get('ecosystems', ''))
+            result['from_cache'] = True
+            processed_packages[pkg_key] = result
+            cache_hits += 1
+        else:
+            remaining_packages.append(pkg)
+    
+    return processed_packages, remaining_packages, cache_hits
 
 
 # ============================================================================
@@ -586,16 +608,10 @@ class GitHubMetricsMiner:
                 retry_count += 1
                 if retry_count <= MAX_RETRIES:
                     wait_time = RETRY_DELAY ** retry_count
-                    if self.logger:
-                        log_message(self.logger, 'debug', f"Network error on {url}: {type(e).__name__}. Retry {retry_count}/{MAX_RETRIES} in {wait_time}s")
                     time.sleep(wait_time)
                 else:
-                    if self.logger:
-                        log_message(self.logger, 'warning', f"Network error on {url} after {MAX_RETRIES} retries: {type(e).__name__}: {str(e)}")
                     return None
-            except Exception as e:
-                if self.logger:
-                    log_message(self.logger, 'error', f"Unexpected error on {url}: {type(e).__name__}: {str(e)}")
+            except Exception:
                 return None
         
         return None
@@ -1259,82 +1275,29 @@ def parse_csv_file(csv_path: str) -> List[Dict[str, str]]:
 # PARALLEL PROCESSING
 # ============================================================================
 
-# Common placeholder/invalid repository patterns to skip
-INVALID_REPO_PATTERNS = [
-    'username', 'yourusername', 'your-username', 'user-name',
-    'yourname', 'your-name', 'myusername', 'my-username',
-    'owner', 'yourowner', 'your-owner', 'repo-owner',
-    'project', 'yourproject', 'your-project', 'myproject', 'my-project',
-    'repository', 'yourrepository', 'your-repository', 'repo',
-    'example', 'your-example', 'sample', 'test', 'demo',
-    'xxx', 'xxxx', 'xxxxx', 'yyy', 'yyyy', 'zzz', 'zzzz',
-    'placeholder', 'changeme', 'replace-me', 'todo',
-    'foo', 'bar', 'baz', 'foobar',
-]
-
-
-def is_invalid_repo_name(owner_repo: str) -> bool:
-    """Check if the repository name appears to be a placeholder/invalid."""
-    if not owner_repo or '/' not in owner_repo:
-        return True
-    
-    owner, repo = owner_repo.lower().split('/', 1)
-    
-    # Check if owner or repo matches common placeholder patterns
-    for pattern in INVALID_REPO_PATTERNS:
-        if owner == pattern or repo == pattern:
-            return True
-        # Also check if owner/repo is exactly a pattern combination
-        if f"{owner}/{repo}" in [f"{p1}/{p2}" for p1 in INVALID_REPO_PATTERNS for p2 in INVALID_REPO_PATTERNS]:
-            return True
-    
-    return False
-
-
-def process_single_package(package: Dict, miner: GitHubMetricsMiner, cache_manager: CacheManager = None) -> Tuple[Optional[Dict], bool]:
+def process_single_package(package: Dict, miner: GitHubMetricsMiner) -> Optional[Dict]:
     """
-    Process a single package to get metrics, checking cache first.
+    Process a single package to get metrics.
     
     Args:
         package: Dictionary with 'owner_repo', 'repo_url', and 'ecosystems'
         miner: GitHubMetricsMiner instance
-        cache_manager: Optional CacheManager for looking up cached metrics
         
     Returns:
-        Tuple of (metrics dictionary or None, from_cache boolean)
+        Dictionary with metrics or None if failed
     """
     owner_repo = package["owner_repo"]
     repo_url = package["repo_url"]
     ecosystems = package.get("ecosystems", "")
     
-    # Skip obviously invalid/placeholder repository names
-    if is_invalid_repo_name(owner_repo):
-        return {
-            "owner_repo": owner_repo,
-            "repo_url": repo_url,
-            "ecosystems": ecosystems,
-            "error": "INVALID_REPO_NAME",
-            "error_detail": "Repository name appears to be a placeholder"
-        }, False
-    
-    # Check cache first if available
-    if cache_manager:
-        cached = cache_manager.lookup(owner_repo, repo_url)
-        if cached:
-            # Return cached data with updated ecosystems
-            result = cached.copy()
-            result["ecosystems"] = ecosystems  # Use current ecosystems
-            result["from_cache"] = True
-            return result, True
-    
     # Parse GitHub URL
     parsed = miner.parse_github_url(repo_url)
     if not parsed:
-        return None, False
+        return None
     
     owner, repo_name = parsed
     
-    # Get metrics from API
+    # Get metrics
     metrics = miner.get_metrics(owner, repo_name)
     
     if metrics:
@@ -1343,10 +1306,10 @@ def process_single_package(package: Dict, miner: GitHubMetricsMiner, cache_manag
             "repo_url": repo_url,
             "ecosystems": ecosystems,
             **metrics
-        }, False
+        }
     
     # Should not reach here, but just in case
-    return {"owner_repo": owner_repo, "repo_url": repo_url, "ecosystems": ecosystems, "error": "UNKNOWN", "error_detail": "No metrics returned"}, False
+    return {"owner_repo": owner_repo, "repo_url": repo_url, "ecosystems": ecosystems, "error": "UNKNOWN", "error_detail": "No metrics returned"}
 
 
 def process_packages_parallel(
@@ -1355,11 +1318,9 @@ def process_packages_parallel(
     processed_packages: Dict,
     output_path: Path,
     max_workers: int = MAX_WORKERS,
-    cache_manager: CacheManager = None,
-    logger = None,
 ) -> Dict[str, Dict]:
     """
-    Process all packages using parallel workers with cache support.
+    Process all packages using parallel workers.
 
     Args:
         all_packages: List of all packages to process
@@ -1367,8 +1328,6 @@ def process_packages_parallel(
         processed_packages: Dictionary of already processed packages
         output_path: Path to output JSON file for saving progress
         max_workers: Number of parallel workers
-        cache_manager: Optional CacheManager for looking up cached metrics
-        logger: Logger instance for logging
         
     Returns:
         Dictionary mapping package keys to results
@@ -1382,27 +1341,16 @@ def process_packages_parallel(
 
     if not packages_to_process:
         safe_print(f"All packages already processed")
-        if logger:
-            log_message(logger, 'info', "All packages already processed - nothing to do")
         return processed_packages
 
     safe_print(f"Packages to process: {len(packages_to_process)}")
-    safe_print(f"Using {max_workers} parallel workers")
-    if cache_manager:
-        safe_print(f"Cache enabled: will check cache before API calls\n")
-    else:
-        safe_print(f"Cache disabled: all packages will use API\n")
-    
-    if logger:
-        log_message(logger, 'info', f"Starting processing: {len(packages_to_process)} packages, {max_workers} workers, cache={'enabled' if cache_manager else 'disabled'}")
+    safe_print(f"Using {max_workers} parallel workers\n")
 
     # Process packages in parallel with progress bar
     results_lock = Lock()
     save_interval = 10  # Save progress every 10 packages
     processed_count = 0
     error_count = 0
-    cache_hit_count = 0
-    api_call_count = 0
     warning_shown = False
     error_stats = {}  # Track error types and counts
 
@@ -1410,7 +1358,7 @@ def process_packages_parallel(
         with ThreadPoolExecutor(max_workers=max_workers) as executor:
             # Submit all tasks
             future_to_pkg = {
-                executor.submit(process_single_package, pkg, miner, cache_manager): (idx, pkg)
+                executor.submit(process_single_package, pkg, miner): (idx, pkg)
                 for idx, pkg in packages_to_process
             }
 
@@ -1419,16 +1367,10 @@ def process_packages_parallel(
                 pkg_key = f"{pkg['owner_repo']}|{pkg['repo_url']}"
                 
                 try:
-                    result, from_cache = future.result()
+                    result = future.result()
                     
                     with results_lock:
                         if result:
-                            # Track cache vs API usage
-                            if from_cache:
-                                cache_hit_count += 1
-                            else:
-                                api_call_count += 1
-                            
                             # Check if result contains error
                             if "error" in result:
                                 error_type = result.get("error", "UNKNOWN")
@@ -1442,9 +1384,6 @@ def process_packages_parallel(
                                 # HTTP 404 is expected (deleted/private repos) - don't count as critical error
                                 if error_type != "HTTP_404":
                                     error_count += 1
-                                    # Log non-404 errors to file
-                                    if logger:
-                                        log_message(logger, 'warning', f"Error mining {pkg['owner_repo']}: {error_type} - {error_detail}")
                                 
                                 # Store result with error info
                                 processed_packages[pkg_key] = result
@@ -1458,14 +1397,10 @@ def process_packages_parallel(
                                     safe_print("⚠️  Check processing.log for detailed error messages")
                                     safe_print("⚠️  Common causes: authentication issues, rate limits, network errors")
                                     safe_print("!" * 80 + "\n")
-                                    if logger:
-                                        log_message(logger, 'warning', f"Error threshold exceeded: {error_count} errors so far")
                                 
                                 # Continue showing periodic warnings every 100 errors after threshold
                                 elif error_count > 50 and error_count % 100 == 0:
                                     safe_print("\n⚠️  Error count: {} (check processing.log)\n".format(error_count))
-                                    if logger:
-                                        log_message(logger, 'warning', f"Error count milestone: {error_count} errors")
                             else:
                                 # Success
                                 processed_packages[pkg_key] = result
@@ -1476,8 +1411,6 @@ def process_packages_parallel(
                             if "NO_RESULT" not in error_stats:
                                 error_stats["NO_RESULT"] = 0
                             error_stats["NO_RESULT"] += 1
-                            if logger:
-                                log_message(logger, 'warning', f"No result returned for {pkg['owner_repo']}")
                         
                         processed_count += 1
                         
@@ -1488,8 +1421,6 @@ def process_packages_parallel(
                 except Exception as e:
                     with results_lock:
                         processed_packages[pkg_key] = {"error": "PROCESSING_EXCEPTION", "error_detail": str(e)}
-                        if logger:
-                            log_message(logger, 'error', f"Exception processing {pkg['owner_repo']}: {str(e)}")
                         error_count += 1
                         
                         # Track error
@@ -1516,17 +1447,7 @@ def process_packages_parallel(
     # Save final progress
     save_progress(output_path, processed_packages, len(all_packages) - 1)
     
-    # Report cache statistics
-    if cache_manager:
-        safe_print(f"\nCache statistics: {cache_hit_count} cache hits, {api_call_count} API calls")
-    
-    # Log final statistics
-    if logger:
-        log_message(logger, 'info', f"Processing complete: {processed_count} packages processed")
-        log_message(logger, 'info', f"Cache hits: {cache_hit_count}, API calls: {api_call_count}")
-        log_message(logger, 'info', f"Errors: {error_count} (breakdown: {error_stats})")
-    
-    return processed_packages, error_stats, {"cache_hits": cache_hit_count, "api_calls": api_call_count}
+    return processed_packages, error_stats
 
 
 def count_successful_packages(processed_packages: Dict) -> int:
@@ -1542,20 +1463,49 @@ def count_successful_packages(processed_packages: Dict) -> int:
     return len([v for v in processed_packages.values() if v and "error" not in v])
 
 
-def generate_summary_stats(processed_packages: Dict, error_stats: Dict) -> Dict:
+def generate_summary_stats(processed_packages: Dict, error_stats: Dict = None) -> Dict:
     """
     Generate summary statistics for the mining process.
     
     Args:
         processed_packages: Dictionary of processed results
-        error_stats: Dictionary of error type counts
+        error_stats: Dictionary of error type counts (optional, will be computed if not provided)
         
     Returns:
         Dictionary with summary statistics
     """
     total = len(processed_packages)
     success = count_successful_packages(processed_packages)
-    total_errors = sum(error_stats.values())
+    
+    # Count errors directly from processed_packages to ensure accuracy
+    computed_error_stats = {}
+    forked_count = 0
+    archived_count = 0
+    
+    for pkg_key, result in processed_packages.items():
+        if result:
+            if "error" in result:
+                error_type = result.get("error", "UNKNOWN")
+                if error_type not in computed_error_stats:
+                    computed_error_stats[error_type] = 0
+                computed_error_stats[error_type] += 1
+            else:
+                # Count forked and archived repos (only for successfully mined packages)
+                if result.get("is_fork", False):
+                    forked_count += 1
+                if result.get("is_archived", False):
+                    archived_count += 1
+    
+    # Use computed stats, merge with provided stats if any
+    if error_stats:
+        for error_type, count in error_stats.items():
+            if error_type not in computed_error_stats:
+                computed_error_stats[error_type] = count
+    
+    total_errors = sum(computed_error_stats.values())
+    
+    # Combined count: forked + archived + errors (for exclusion analysis)
+    excluded_count = forked_count + archived_count + total_errors
     
     return {
         "total": total,
@@ -1563,8 +1513,155 @@ def generate_summary_stats(processed_packages: Dict, error_stats: Dict) -> Dict:
         "success_rate": (success / total * 100) if total > 0 else 0,
         "total_errors": total_errors,
         "error_rate": (total_errors / total * 100) if total > 0 else 0,
-        "error_breakdown": error_stats
+        "error_breakdown": computed_error_stats,
+        "forked_count": forked_count,
+        "forked_rate": (forked_count / total * 100) if total > 0 else 0,
+        "archived_count": archived_count,
+        "archived_rate": (archived_count / total * 100) if total > 0 else 0,
+        "excluded_count": excluded_count,
+        "excluded_rate": (excluded_count / total * 100) if total > 0 else 0,
     }
+
+
+def get_packages_with_errors(processed_packages: Dict) -> List[Dict]:
+    """
+    Get list of packages that have errors and should be retried.
+    
+    Args:
+        processed_packages: Dictionary of processed results
+        
+    Returns:
+        List of package dictionaries with errors (excluding HTTP_404 which are permanent)
+    """
+    packages_to_retry = []
+    
+    # Error types that should NOT be retried (permanent failures)
+    permanent_errors = {"HTTP_404", "HTTP_451"}  # Not found, legally restricted
+    
+    for pkg_key, result in processed_packages.items():
+        if result and "error" in result:
+            error_type = result.get("error", "UNKNOWN")
+            
+            # Skip permanent errors
+            if error_type in permanent_errors:
+                continue
+            
+            # Extract owner_repo and repo_url from the key
+            parts = pkg_key.split('|', 1)
+            if len(parts) == 2:
+                owner_repo, repo_url = parts
+                packages_to_retry.append({
+                    "owner_repo": owner_repo,
+                    "repo_url": repo_url,
+                    "ecosystems": result.get("ecosystems", ""),
+                    "previous_error": error_type,
+                    "previous_error_detail": result.get("error_detail", "")
+                })
+    
+    return packages_to_retry
+
+
+def retry_failed_packages(
+    processed_packages: Dict,
+    miner: 'GitHubMetricsMiner',
+    output_path: Path,
+    max_workers: int,
+    max_retry_rounds: int,
+    logger
+) -> Tuple[Dict, Dict, int]:
+    """
+    Retry packages that have errors.
+    
+    Args:
+        processed_packages: Dictionary of processed results
+        miner: GitHubMetricsMiner instance
+        output_path: Path to output JSON file
+        max_workers: Number of parallel workers
+        max_retry_rounds: Maximum retry rounds
+        logger: Logger instance
+        
+    Returns:
+        Tuple of (updated processed_packages, error_stats, total_retried)
+    """
+    total_retried = 0
+    all_error_stats = {}
+    
+    for retry_round in range(1, max_retry_rounds + 1):
+        # Get packages with errors that can be retried
+        packages_to_retry = get_packages_with_errors(processed_packages)
+        
+        if not packages_to_retry:
+            safe_print(f"\n✓ No more packages to retry")
+            break
+        
+        safe_print(f"\n{'=' * 80}")
+        safe_print(f"Retry Round {retry_round}/{max_retry_rounds}")
+        safe_print(f"{'=' * 80}")
+        safe_print(f"Packages to retry: {len(packages_to_retry)}")
+        
+        # Log packages being retried
+        if logger:
+            log_message(logger, 'info', f"Retry round {retry_round}: {len(packages_to_retry)} packages")
+            for pkg in packages_to_retry[:10]:  # Log first 10
+                log_message(logger, 'info', f"  Retrying: {pkg['owner_repo']} (previous error: {pkg['previous_error']})")
+            if len(packages_to_retry) > 10:
+                log_message(logger, 'info', f"  ... and {len(packages_to_retry) - 10} more")
+        
+        # Remove error entries from processed_packages so they can be reprocessed
+        for pkg in packages_to_retry:
+            pkg_key = f"{pkg['owner_repo']}|{pkg['repo_url']}"
+            if pkg_key in processed_packages:
+                del processed_packages[pkg_key]
+        
+        # Process with parallel workers
+        try:
+            processed_packages, error_stats = process_packages_parallel(
+                packages_to_retry,
+                miner,
+                processed_packages,
+                output_path,
+                max_workers=max_workers,
+            )
+            
+            # Merge error stats
+            for error_type, count in error_stats.items():
+                if error_type not in all_error_stats:
+                    all_error_stats[error_type] = 0
+                all_error_stats[error_type] += count
+            
+            total_retried += len(packages_to_retry)
+            
+            # Count how many were successful in this round
+            successful_this_round = 0
+            for pkg in packages_to_retry:
+                pkg_key = f"{pkg['owner_repo']}|{pkg['repo_url']}"
+                result = processed_packages.get(pkg_key)
+                if result and "error" not in result:
+                    successful_this_round += 1
+            
+            safe_print(f"\n✓ Retry round {retry_round} complete:")
+            safe_print(f"  Retried: {len(packages_to_retry)}")
+            safe_print(f"  Successful: {successful_this_round}")
+            safe_print(f"  Still failing: {len(packages_to_retry) - successful_this_round}")
+            
+            if logger:
+                log_message(logger, 'info', f"Retry round {retry_round} complete: {successful_this_round}/{len(packages_to_retry)} successful")
+            
+            # If no improvements, stop retrying
+            if successful_this_round == 0:
+                safe_print(f"\n⚠ No improvements in this retry round, stopping retries")
+                break
+                
+        except KeyboardInterrupt:
+            safe_print(f"\n\n⚠ Retry interrupted by user. Progress has been saved.")
+            break
+        except Exception as e:
+            safe_print(f"\n✗ Error during retry round {retry_round}: {e}")
+            if logger:
+                log_message(logger, 'error', f"Retry round {retry_round} failed: {e}")
+            break
+    
+    return processed_packages, all_error_stats, total_retried
 
 
 def write_summary_file(output_dir: Path, stats: Dict, all_packages: List[Dict]):
@@ -1588,6 +1685,28 @@ def write_summary_file(output_dir: Path, stats: Dict, all_packages: List[Dict]):
         f.write(f"Total Input Repositories: {stats['total']:,}\n")
         f.write(f"Successfully Mined: {stats['success']:,} ({stats['success_rate']:.2f}%)\n")
         f.write(f"Errors: {stats['total_errors']:,} ({stats['error_rate']:.2f}%)\n\n")
+        
+        # Repository status breakdown
+        f.write("REPOSITORY STATUS\n")
+        f.write("=" * 80 + "\n")
+        f.write(f"Forked Repositories: {stats.get('forked_count', 0):,} ({stats.get('forked_rate', 0):.2f}%)\n")
+        f.write(f"Archived Repositories: {stats.get('archived_count', 0):,} ({stats.get('archived_rate', 0):.2f}%)\n")
+        f.write(f"Forked + Archived + Errors: {stats.get('excluded_count', 0):,} ({stats.get('excluded_rate', 0):.2f}%)\n")
+        f.write(f"  → These may need to be excluded from analysis\n\n")
+        
+        # Cache statistics
+        if 'cache_hits' in stats:
+            f.write("SOURCE BREAKDOWN\n")
+            f.write("=" * 80 + "\n")
+            cache_hits = stats.get('cache_hits', 0)
+            api_calls = stats.get('api_calls', 0)
+            total_retried = stats.get('total_retried', 0)
+            total = stats['total']
+            f.write(f"From Cache: {cache_hits:,} ({cache_hits / total * 100:.2f}%)\n" if total > 0 else f"From Cache: {cache_hits:,}\n")
+            f.write(f"From API: {api_calls:,} ({api_calls / total * 100:.2f}%)\n" if total > 0 else f"From API: {api_calls:,}\n")
+            if total_retried > 0:
+                f.write(f"Retried: {total_retried:,}\n")
+            f.write("\n")
         
         if stats['error_breakdown']:
             f.write("ERROR BREAKDOWN\n")
@@ -1671,7 +1790,18 @@ def main():
     parser.add_argument(
         "--no-cache",
         action="store_true",
-        help="Disable cache lookup (always use API)",
+        help="Disable cache lookup, mine all packages via API",
+    )
+    parser.add_argument(
+        "--no-retry",
+        action="store_true",
+        help="Disable retry for packages with errors",
+    )
+    parser.add_argument(
+        "--max-retry-rounds",
+        type=int,
+        default=1,
+        help="Maximum number of retry rounds for failed packages (default: 1)",
     )
 
     args = parser.parse_args()
@@ -1772,27 +1902,6 @@ def main():
     
     # Initialize miner
     miner = GitHubMetricsMiner(token_manager, logger)
-    
-    # Initialize cache manager
-    cache_manager = None
-    if not args.no_cache:
-        cache_dir = (script_dir / args.cache_dir).resolve()
-        cache_manager = CacheManager(cache_dir, args.cache_file)
-        if cache_manager.load_cache():
-            stats = cache_manager.get_cache_stats()
-            print(f"\nCache Configuration:")
-            print(f"  Cache path: {stats['cache_path']}")
-            print(f"  Total entries: {stats['total_entries']:,}")
-            print(f"  Successful entries: {stats['successful_entries']:,}")
-            print(f"  Indexed repositories: {stats['indexed_repos']:,}")
-            log_message(logger, 'info', f"Cache loaded: {stats['total_entries']} entries, {stats['successful_entries']} successful, {stats['indexed_repos']} indexed")
-        else:
-            safe_print("Cache not available, will use API for all requests")
-            log_message(logger, 'info', "Cache not available, will use API for all requests")
-            cache_manager = None
-    else:
-        print("\nCache disabled by --no-cache flag")
-        log_message(logger, 'info', "Cache disabled by --no-cache flag")
 
     # Get input directory
     input_dir = (script_dir / args.input_dir).resolve()
@@ -1920,50 +2029,150 @@ def main():
         stats = files_by_count_stats[count]
         safe_print(f"  {count}-ecosystems: {stats['packages']} packages from {stats['files']} files")
 
-    # Process all packages
-    try:
+    # ========================================================================
+    # CACHE LOADING AND TRANSFER
+    # ========================================================================
+    cache = {}
+    cache_index = {}
+    cache_hits = 0
+    remaining_packages = all_packages
+    
+    if not args.no_cache:
         safe_print(f"\n{'=' * 80}")
-        safe_print("Mining GitHub metrics...")
-        safe_print(f"{'=' * 80}\n")
+        safe_print("Loading and indexing cache...")
+        safe_print(f"{'=' * 80}")
         
-        log_message(logger, 'info', f"Input: {len(all_packages)} unique repositories from {len(csv_files)} CSV files")
+        # Resolve cache path
+        cache_dir = (script_dir / args.cache_dir).resolve()
+        cache_path = cache_dir / args.cache_file
         
-        processed_packages, error_stats, cache_stats = process_packages_parallel(
-            all_packages,
-            miner,
-            processed_packages,
-            output_path,
-            max_workers=args.workers,
-            cache_manager=cache_manager,
-            logger=logger,
-        )
+        safe_print(f"Cache directory: {cache_dir}")
+        safe_print(f"Cache file: {cache_path}")
         
-        successful_count = count_successful_packages(processed_packages)
+        # Load cache
+        cache = load_cache(cache_path)
         
-        # Generate summary statistics
-        summary_stats = generate_summary_stats(processed_packages, error_stats)
+        if cache:
+            # Build search index
+            safe_print("\nBuilding cache index...")
+            cache_index = build_cache_index(cache)
+            safe_print(f"  Index contains {len(cache_index)} lookup keys")
+            
+            # Transfer cached packages
+            safe_print(f"\n{'=' * 80}")
+            safe_print("Transferring cached packages...")
+            safe_print(f"{'=' * 80}")
+            
+            processed_packages, remaining_packages, cache_hits = transfer_from_cache(
+                all_packages, cache, cache_index, processed_packages
+            )
+            
+            safe_print(f"\n✓ Cache lookup complete:")
+            safe_print(f"  Total packages to process: {len(all_packages)}")
+            safe_print(f"  Found in cache: {cache_hits} ({cache_hits / len(all_packages) * 100:.2f}%)")
+            safe_print(f"  Remaining to mine via API: {len(remaining_packages)} ({len(remaining_packages) / len(all_packages) * 100:.2f}%)")
+            
+            # Save progress after cache transfer
+            if cache_hits > 0:
+                save_progress(output_path, processed_packages, cache_hits - 1)
+                safe_print(f"  Progress saved after cache transfer")
+        else:
+            safe_print("\nNo valid cache found, will mine all packages via API")
+    else:
+        safe_print(f"\n⚠ Cache disabled (--no-cache flag), will mine all packages via API")
+
+    # Process remaining packages via API
+    error_stats = {}
+    
+    if remaining_packages:
+        try:
+            safe_print(f"\n{'=' * 80}")
+            safe_print("Mining GitHub metrics via API...")
+            safe_print(f"{'=' * 80}\n")
+            
+            processed_packages, error_stats = process_packages_parallel(
+                remaining_packages,
+                miner,
+                processed_packages,
+                output_path,
+                max_workers=args.workers,
+            )
+            
+        except KeyboardInterrupt:
+            print("\n\n⚠ Interrupted by user. Progress has been saved.")
+            print("Run the script again to resume from checkpoint.")
+            return
+        except Exception as e:
+            safe_print(f"\n✗ Error during processing: {e}")
+            import traceback
+            traceback.print_exc()
+            return
+    else:
+        safe_print(f"\n✓ All packages found in cache, no API calls needed!")
+        # Save final state
+        save_progress(output_path, processed_packages, len(all_packages) - 1)
+    
+    # ========================================================================
+    # RETRY PHASE: Retry packages with errors
+    # ========================================================================
+    total_retried = 0
+    
+    if not args.no_retry:
+        # Check if there are packages with retryable errors
+        packages_with_errors = get_packages_with_errors(processed_packages)
         
-        # Add cache stats to summary
-        summary_stats["cache_hits"] = cache_stats.get("cache_hits", 0)
-        summary_stats["api_calls"] = cache_stats.get("api_calls", 0)
-        
-        safe_print(f"\n✓ Results saved to {output_path}")
-        safe_print(f"  Successfully mined: {successful_count}/{len(all_packages)} repositories")
-        if cache_manager:
-            safe_print(f"  Cache hits: {cache_stats['cache_hits']}, API calls: {cache_stats['api_calls']}")
-        
-        # Write summary file
-        write_summary_file(output_dir, summary_stats, all_packages)
-        
-    except KeyboardInterrupt:
-        print("\n\n⚠ Interrupted by user. Progress has been saved.")
-        print("Run the script again to resume from checkpoint.")
-        return
-    except Exception as e:
-        safe_print(f"\n✗ Error during processing: {e}")
-        import traceback
-        traceback.print_exc()
-        return
+        if packages_with_errors:
+            safe_print(f"\n{'=' * 80}")
+            safe_print(f"Found {len(packages_with_errors)} packages with retryable errors")
+            safe_print(f"{'=' * 80}")
+            
+            # Log the error types
+            error_type_counts = {}
+            for pkg in packages_with_errors:
+                error_type = pkg.get('previous_error', 'UNKNOWN')
+                if error_type not in error_type_counts:
+                    error_type_counts[error_type] = 0
+                error_type_counts[error_type] += 1
+            
+            safe_print("Error types to retry:")
+            for error_type, count in sorted(error_type_counts.items(), key=lambda x: x[1], reverse=True):
+                safe_print(f"  • {error_type}: {count}")
+            
+            # Perform retries
+            processed_packages, retry_error_stats, total_retried = retry_failed_packages(
+                processed_packages,
+                miner,
+                output_path,
+                max_workers=args.workers,
+                max_retry_rounds=args.max_retry_rounds,
+                logger=logger
+            )
+            
+            # Merge retry error stats
+            for error_type, count in retry_error_stats.items():
+                if error_type not in error_stats:
+                    error_stats[error_type] = 0
+                error_stats[error_type] += count
+        else:
+            safe_print(f"\n✓ No packages with retryable errors")
+    else:
+        safe_print(f"\n⚠ Retry disabled (--no-retry flag)")
+    
+    successful_count = count_successful_packages(processed_packages)
+    
+    # Generate summary statistics (this computes error stats from processed_packages)
+    summary_stats = generate_summary_stats(processed_packages)
+    
+    # Add cache stats to summary
+    summary_stats['cache_hits'] = cache_hits
+    summary_stats['api_calls'] = len(remaining_packages)
+    summary_stats['total_retried'] = total_retried
+    
+    safe_print(f"\n✓ Results saved to {output_path}")
+    safe_print(f"  Successfully mined: {successful_count}/{len(all_packages)} repositories")
+    
+    # Write summary file
+    write_summary_file(output_dir, summary_stats, all_packages)
 
     # Summary
     print(f"\n{'=' * 80}")
@@ -1972,29 +2181,21 @@ def main():
     print(f"Output file: {output_path}")
     print(f"Summary file: {output_dir / 'summary.txt'}")
     print(f"\nTotal repositories processed: {len(all_packages)}")
+    print(f"  From cache: {cache_hits} ({cache_hits / len(all_packages) * 100:.2f}%)" if len(all_packages) > 0 else "  From cache: 0")
+    print(f"  From API: {len(remaining_packages)} ({len(remaining_packages) / len(all_packages) * 100:.2f}%)" if len(all_packages) > 0 else "  From API: 0")
+    if total_retried > 0:
+        print(f"  Retried: {total_retried}")
     print(f"Successfully mined: {successful_count} ({summary_stats['success_rate']:.2f}%)")
     print(f"Errors: {summary_stats['total_errors']} ({summary_stats['error_rate']:.2f}%)")
     
-    if cache_manager:
-        print(f"\nCache performance:")
-        print(f"  Cache hits: {cache_stats['cache_hits']}")
-        print(f"  API calls: {cache_stats['api_calls']}")
-        if cache_stats['cache_hits'] + cache_stats['api_calls'] > 0:
-            hit_rate = cache_stats['cache_hits'] / (cache_stats['cache_hits'] + cache_stats['api_calls']) * 100
-            print(f"  Hit rate: {hit_rate:.2f}%")
-    
-    if error_stats:
+    if summary_stats['error_breakdown']:
         print(f"\nTop error types:")
-        sorted_errors = sorted(error_stats.items(), key=lambda x: x[1], reverse=True)
+        sorted_errors = sorted(summary_stats['error_breakdown'].items(), key=lambda x: x[1], reverse=True)
         for error_type, count in sorted_errors[:5]:  # Show top 5
             percentage = (count / len(all_packages) * 100) if len(all_packages) > 0 else 0
             print(f"  • {error_type}: {count} ({percentage:.2f}%)")
     
     print(f"{'=' * 80}\n")
-    
-    # Log session completion
-    log_message(logger, 'info', f"Session completed: {successful_count}/{len(all_packages)} successful ({summary_stats['success_rate']:.2f}%)")
-    log_message(logger, 'info', "=" * 60)
 
 
 if __name__ == "__main__":
