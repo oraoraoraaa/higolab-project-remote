@@ -1,113 +1,14 @@
-2026-02-01 02:01:22,767 - INFO - ============================================================
-2026-02-01 02:01:22,767 - INFO - NEW MINING SESSION STARTED
-2026-02-01 02:01:22,767 - INFO - ============================================================
-2026-02-01 02:01:22,920 - INFO - Cache loaded: 51859 entries, 50682 successful, 51859 indexed
-2026-02-01 02:01:23,084 - INFO - Input: 51090 unique repositories from 90 CSV files
-2026-02-01 02:01:23,103 - INFO - Starting processing: 51090 packages, 2 workers, cache=enabled
-2026-02-01 02:04:42,917 - INFO - ============================================================
-2026-02-01 02:04:42,917 - INFO - NEW MINING SESSION STARTED
-2026-02-01 02:04:42,917 - INFO - ============================================================
-2026-02-01 02:04:43,123 - INFO - Cache loaded: 51859 entries, 50682 successful, 51859 indexed
-2026-02-01 02:04:43,358 - INFO - Input: 51090 unique repositories from 90 CSV files
-2026-02-01 02:04:43,383 - INFO - Starting processing: 44990 packages, 2 workers, cache=enabled
-2026-02-01 02:05:14,319 - INFO - ============================================================
-2026-02-01 02:05:14,320 - INFO - NEW MINING SESSION STARTED
-2026-02-01 02:05:14,320 - INFO - ============================================================
-2026-02-01 02:05:14,525 - INFO - Cache loaded: 51859 entries, 50682 successful, 51859 indexed
-2026-02-01 02:05:14,749 - INFO - Input: 51090 unique repositories from 90 CSV files
-2026-02-01 02:05:14,773 - INFO - Starting processing: 51090 packages, 2 workers, cache=enabled
-2026-02-01 02:05:15,379 - WARNING - Error mining username/project: API_REQUEST_FAILED - No response from API
-2026-02-01 02:05:15,428 - WARNING - Error mining yourusername/yourproject: API_REQUEST_FAILED - No response from API
-2026-02-01 02:05:15,865 - WARNING - Error mining aws/asset-node-proxy-agent-v6: API_REQUEST_FAILED - No response from API
-2026-02-01 02:05:15,916 - WARNING - Error mining xxx/xxxx: API_REQUEST_FAILED - No response from API
-2026-02-01 02:05:16,388 - WARNING - Error mining magistvan/match-predicting-ann-server-client: API_REQUEST_FAILED - No response from API
-2026-02-01 02:05:16,451 - WARNING - Error mining floydpink/jsii-code-samples: API_REQUEST_FAILED - No response from API
-2026-02-01 02:05:16,920 - WARNING - Error mining cubedm/jwt-auth-modules: API_REQUEST_FAILED - No response from API
-2026-02-01 02:05:17,343 - WARNING - Error mining cdklabs/cdk-pipelines-codecatalyst: API_REQUEST_FAILED - No response from API
-2026-02-01 02:05:17,465 - WARNING - Error mining blinq-io/selenium-session-manager: API_REQUEST_FAILED - No response from API
-2026-02-01 02:05:17,887 - WARNING - Error mining snowflakedb/snowflake-ingest-sdk: API_REQUEST_FAILED - No response from API
-2026-02-01 02:05:18,193 - WARNING - Error mining nebraska-dev/cronk: API_REQUEST_FAILED - No response from API
-2026-02-01 02:05:19,296 - WARNING - Error mining infrmods/xbus-client: API_REQUEST_FAILED - No response from API
-2026-02-01 02:05:19,716 - WARNING - Error mining th2-net/th2-grpc-books-validation: API_REQUEST_FAILED - No response from API
-2026-02-01 02:05:20,164 - WARNING - Error mining 4paradigm/sparkfe: API_REQUEST_FAILED - No response from API
-2026-02-01 02:05:20,168 - WARNING - Error mining xiangxinai/xiangxin-guardrails: API_REQUEST_FAILED - No response from API
-2026-02-01 02:05:20,557 - WARNING - Error mining echosistema/echointel-sdk: API_REQUEST_FAILED - No response from API
-2026-02-01 02:05:20,563 - WARNING - Error mining buoysoftware/anchor_view_components: API_REQUEST_FAILED - No response from API
-2026-02-01 02:05:20,566 - WARNING - Error mining shopify/sewing-kit: API_REQUEST_FAILED - No response from API
-2026-02-01 02:05:20,605 - WARNING - Error mining figurepos/dev-tool-configuration: API_REQUEST_FAILED - No response from API
-2026-02-01 02:05:20,994 - WARNING - Error mining rainforestapp/wisp: API_REQUEST_FAILED - No response from API
-2026-02-01 02:05:21,125 - WARNING - Error mining trailervote/trailervote-api-clients: API_REQUEST_FAILED - No response from API
-2026-02-01 02:05:21,526 - WARNING - Error mining watermarkchurch/paper-signs: API_REQUEST_FAILED - No response from API
-2026-02-01 02:05:21,652 - WARNING - Error mining wikipaddle/protobuf: API_REQUEST_FAILED - No response from API
-2026-02-01 02:05:22,021 - WARNING - Error mining markusbansky/afgor-framework: API_REQUEST_FAILED - No response from API
-2026-02-01 02:05:22,129 - WARNING - Error mining finelineprototyping/angularjs-rails-resource: API_REQUEST_FAILED - No response from API
-2026-02-01 02:05:22,525 - WARNING - Error mining username/bridgetown-avatar: API_REQUEST_FAILED - No response from API
-2026-02-01 02:05:23,362 - WARNING - Error mining crown-commercial-service/cmp-design-prototype: API_REQUEST_FAILED - No response from API
-2026-02-01 02:05:23,798 - WARNING - Error mining gbarctester2/dpltest: API_REQUEST_FAILED - No response from API
-2026-02-01 02:05:24,912 - WARNING - Error mining netguru/react_webpack_rails: API_REQUEST_FAILED - No response from API
-2026-02-01 02:05:25,271 - WARNING - Error mining llskin/rubyfacialmassage: API_REQUEST_FAILED - No response from API
-2026-02-01 02:05:25,282 - WARNING - Error mining powa/gtin: API_REQUEST_FAILED - No response from API
-2026-02-01 02:05:25,282 - WARNING - Error mining marcoroth/herbst: API_REQUEST_FAILED - No response from API
-2026-02-01 02:05:25,582 - WARNING - Error mining insiting/headmin: API_REQUEST_FAILED - No response from API
-2026-02-01 02:05:25,602 - WARNING - Error mining jcaru/pigman: API_REQUEST_FAILED - No response from API
-2026-02-01 02:05:25,620 - WARNING - Error mining abd3lraouf/jekyll-theme-abd3lraouf: API_REQUEST_FAILED - No response from API
-2026-02-01 02:05:25,620 - WARNING - Error mining netguru/rwr-redux: API_REQUEST_FAILED - No response from API
-2026-02-01 02:05:25,620 - WARNING - Error mining netguru/rwr-alt: API_REQUEST_FAILED - No response from API
-2026-02-01 02:05:26,005 - WARNING - Error mining netguru/rwr-view_helpers: API_REQUEST_FAILED - No response from API
-2026-02-01 02:05:26,067 - WARNING - Error mining s6kpay/s6kpay-sdks: API_REQUEST_FAILED - No response from API
-2026-02-01 02:05:26,557 - WARNING - Error mining heroku/shibori: API_REQUEST_FAILED - No response from API
-2026-02-01 02:05:27,069 - WARNING - Error mining fesuydev/tamem-scss: API_REQUEST_FAILED - No response from API
-2026-02-01 02:05:27,474 - WARNING - Error mining louiswdavis/utility_components: API_REQUEST_FAILED - No response from API
-2026-02-01 02:05:27,958 - WARNING - Error mining louiswdavis/utility_forms: API_REQUEST_FAILED - No response from API
-2026-02-01 02:05:27,989 - WARNING - Error mining louiswdavis/utility_styles: API_REQUEST_FAILED - No response from API
-2026-02-01 02:08:16,211 - INFO - ============================================================
-2026-02-01 02:08:16,211 - INFO - NEW MINING SESSION STARTED
-2026-02-01 02:08:16,211 - INFO - ============================================================
-2026-02-01 02:08:16,369 - INFO - Cache loaded: 51859 entries, 50682 successful, 51859 indexed
-2026-02-01 02:08:16,532 - INFO - Input: 51090 unique repositories from 90 CSV files
-2026-02-01 02:08:16,552 - INFO - Starting processing: 51090 packages, 2 workers, cache=enabled
-2026-02-01 02:08:17,952 - WARNING - Error mining yourusername/yourproject: INVALID_REPO_NAME - Repository name appears to be a placeholder
-2026-02-01 02:08:18,461 - WARNING - Error mining xxx/xxxx: INVALID_REPO_NAME - Repository name appears to be a placeholder
-2026-02-01 02:08:18,461 - WARNING - Error mining username/project: INVALID_REPO_NAME - Repository name appears to be a placeholder
-2026-02-01 02:08:18,898 - WARNING - Error mining aws/asset-node-proxy-agent-v6: API_REQUEST_FAILED - No response from API
-2026-02-01 02:08:18,982 - WARNING - Error mining magistvan/match-predicting-ann-server-client: API_REQUEST_FAILED - No response from API
-2026-02-01 02:08:18,982 - WARNING - Error mining floydpink/jsii-code-samples: API_REQUEST_FAILED - No response from API
-2026-02-01 02:08:18,982 - WARNING - Error mining cubedm/jwt-auth-modules: API_REQUEST_FAILED - No response from API
-2026-02-01 02:08:18,983 - WARNING - Error mining cdklabs/cdk-pipelines-codecatalyst: API_REQUEST_FAILED - No response from API
-2026-02-01 02:08:19,524 - WARNING - Error mining blinq-io/selenium-session-manager: API_REQUEST_FAILED - No response from API
-2026-02-01 02:08:20,111 - WARNING - Error mining nebraska-dev/cronk: API_REQUEST_FAILED - No response from API
-2026-02-01 02:08:20,117 - WARNING - Error mining snowflakedb/snowflake-ingest-sdk: API_REQUEST_FAILED - No response from API
-2026-02-01 02:08:20,125 - WARNING - Error mining th2-net/th2-grpc-books-validation: API_REQUEST_FAILED - No response from API
-2026-02-01 02:08:20,131 - WARNING - Error mining infrmods/xbus-client: API_REQUEST_FAILED - No response from API
-2026-02-01 02:08:20,502 - WARNING - Error mining 4paradigm/sparkfe: API_REQUEST_FAILED - No response from API
-2026-02-01 02:08:20,587 - WARNING - Error mining xiangxinai/xiangxin-guardrails: API_REQUEST_FAILED - No response from API
-2026-02-01 02:08:21,051 - WARNING - Error mining echosistema/echointel-sdk: API_REQUEST_FAILED - No response from API
-2026-02-01 02:08:21,136 - WARNING - Error mining buoysoftware/anchor_view_components: API_REQUEST_FAILED - No response from API
-2026-02-01 02:08:21,633 - WARNING - Error mining figurepos/dev-tool-configuration: API_REQUEST_FAILED - No response from API
-2026-02-01 02:08:21,777 - WARNING - Error mining shopify/sewing-kit: API_REQUEST_FAILED - No response from API
-2026-02-01 02:08:22,270 - WARNING - Error mining rainforestapp/wisp: API_REQUEST_FAILED - No response from API
-2026-02-01 02:08:22,642 - WARNING - Error mining trailervote/trailervote-api-clients: API_REQUEST_FAILED - No response from API
-2026-02-01 02:08:22,820 - WARNING - Error mining watermarkchurch/paper-signs: API_REQUEST_FAILED - No response from API
-2026-02-01 02:08:23,121 - WARNING - Error mining wikipaddle/protobuf: API_REQUEST_FAILED - No response from API
-2026-02-01 02:08:23,333 - WARNING - Error mining finelineprototyping/angularjs-rails-resource: API_REQUEST_FAILED - No response from API
-2026-02-01 02:08:23,645 - WARNING - Error mining markusbansky/afgor-framework: API_REQUEST_FAILED - No response from API
-2026-02-01 02:08:25,431 - WARNING - Error mining username/bridgetown-avatar: INVALID_REPO_NAME - Repository name appears to be a placeholder
-2026-02-01 02:08:26,434 - WARNING - Error mining crown-commercial-service/cmp-design-prototype: API_REQUEST_FAILED - No response from API
-2026-02-01 02:08:26,439 - WARNING - Error mining gbarctester2/dpltest: API_REQUEST_FAILED - No response from API
-2026-02-01 02:08:26,454 - WARNING - Error mining netguru/react_webpack_rails: API_REQUEST_FAILED - No response from API
-2026-02-01 02:08:26,459 - WARNING - Error mining llskin/rubyfacialmassage: API_REQUEST_FAILED - No response from API
-2026-02-01 02:08:26,465 - WARNING - Error mining powa/gtin: API_REQUEST_FAILED - No response from API
-2026-02-01 02:08:26,465 - WARNING - Error mining insiting/headmin: API_REQUEST_FAILED - No response from API
-2026-02-01 02:08:26,470 - WARNING - Error mining marcoroth/herbst: API_REQUEST_FAILED - No response from API
-2026-02-01 02:08:26,487 - WARNING - Error mining abd3lraouf/jekyll-theme-abd3lraouf: API_REQUEST_FAILED - No response from API
-2026-02-01 02:08:26,513 - WARNING - Error mining jcaru/pigman: API_REQUEST_FAILED - No response from API
-2026-02-01 02:08:26,557 - WARNING - Error mining netguru/rwr-redux: API_REQUEST_FAILED - No response from API
-2026-02-01 02:08:27,083 - WARNING - Error mining netguru/rwr-view_helpers: API_REQUEST_FAILED - No response from API
-2026-02-01 02:08:27,175 - WARNING - Error mining netguru/rwr-alt: API_REQUEST_FAILED - No response from API
-2026-02-01 02:08:27,573 - WARNING - Error mining s6kpay/s6kpay-sdks: API_REQUEST_FAILED - No response from API
-2026-02-01 02:08:27,754 - WARNING - Error mining heroku/shibori: API_REQUEST_FAILED - No response from API
-2026-02-01 02:08:27,759 - WARNING - Error mining gaborbata/todo: INVALID_REPO_NAME - Repository name appears to be a placeholder
-2026-02-01 02:08:28,329 - WARNING - Error mining louiswdavis/utility_components: API_REQUEST_FAILED - No response from API
-2026-02-01 02:08:28,403 - WARNING - Error mining fesuydev/tamem-scss: API_REQUEST_FAILED - No response from API
-2026-02-01 02:08:28,872 - WARNING - Error mining louiswdavis/utility_forms: API_REQUEST_FAILED - No response from API
-2026-02-01 02:08:29,232 - WARNING - Error mining louiswdavis/utility_styles: API_REQUEST_FAILED - No response from API
+2026-02-01 03:31:37,601 - INFO - Retry round 1: 1164 packages
+2026-02-01 03:31:37,602 - INFO -   Retrying: yourusername/yourproject (previous error: API_REQUEST_FAILED)
+2026-02-01 03:31:37,602 - INFO -   Retrying: username/project (previous error: API_REQUEST_FAILED)
+2026-02-01 03:31:37,602 - INFO -   Retrying: aws/asset-node-proxy-agent-v6 (previous error: API_REQUEST_FAILED)
+2026-02-01 03:31:37,602 - INFO -   Retrying: xxx/xxxx (previous error: API_REQUEST_FAILED)
+2026-02-01 03:31:37,602 - INFO -   Retrying: magistvan/match-predicting-ann-server-client (previous error: API_REQUEST_FAILED)
+2026-02-01 03:31:37,602 - INFO -   Retrying: floydpink/jsii-code-samples (previous error: API_REQUEST_FAILED)
+2026-02-01 03:31:37,602 - INFO -   Retrying: cubedm/jwt-auth-modules (previous error: API_REQUEST_FAILED)
+2026-02-01 03:31:37,602 - INFO -   Retrying: cdklabs/cdk-pipelines-codecatalyst (previous error: API_REQUEST_FAILED)
+2026-02-01 03:31:37,602 - INFO -   Retrying: blinq-io/selenium-session-manager (previous error: API_REQUEST_FAILED)
+2026-02-01 03:31:37,602 - INFO -   Retrying: snowflakedb/snowflake-ingest-sdk (previous error: API_REQUEST_FAILED)
+2026-02-01 03:31:37,602 - INFO -   ... and 1154 more
+2026-02-01 03:32:53,816 - WARNING - Error getting dependents for hypertekorg/hyperstack (attempt 1): HTTPSConnectionPool(host='github.com', port=443): Max retries exceeded with url: /hypertekorg/hyperstack/network/dependents (Caused by ConnectTimeoutError(<HTTPSConnection(host='github.com', port=443) at 0x7f3585a66490>, 'Connection to github.com timed out. (connect timeout=10)')). Retrying...
+2026-02-01 03:37:27,651 - INFO - Retry round 1 complete: 3/1164 successful
