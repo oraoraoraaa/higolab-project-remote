@@ -18,6 +18,7 @@ import re
 import json
 import time
 import logging
+import shutil
 from pathlib import Path
 from typing import List, Dict, Optional, Tuple
 from datetime import datetime
@@ -32,10 +33,14 @@ from threading import Lock
 
 SCRIPT_DIR = Path(__file__).parent
 DATASET_DIR = SCRIPT_DIR / "../../Resource/Dataset/"
-DEFAULT_INPUT_DIR = DATASET_DIR / "Common-Package-Filter"
+DEFAULT_INPUT_DIR = DATASET_DIR / "Multirepo-Common-Package-Filter"
 DEFAULT_OUTPUT_DIR = DATASET_DIR / "Metric-Miner-Github"
 DEFAULT_OUTPUT_FILE = "github_metrics.json"
 LOG_FILE = SCRIPT_DIR / "processing.log"
+
+# Cache configuration
+DEFAULT_CACHE_DIR = DATASET_DIR / "Cache/Metric-Miner-Github"
+DEFAULT_CACHE_FILE = "github_metrics.json"
 
 # ============================================================================
 # PARALLEL PROCESSING CONFIGURATION
@@ -65,11 +70,16 @@ def setup_logging():
         level=logging.INFO,
         format='%(asctime)s - %(levelname)s - %(message)s',
         handlers=[
-            logging.FileHandler(LOG_FILE, mode='w', encoding='utf-8'),
+            logging.FileHandler(LOG_FILE, mode='a', encoding='utf-8'),
             logging.StreamHandler()
         ]
     )
-    return logging.getLogger(__name__)
+    logger = logging.getLogger(__name__)
+    # Log session start
+    logger.info("=" * 60)
+    logger.info("NEW MINING SESSION STARTED")
+    logger.info("=" * 60)
+    return logger
 
 
 def log_message(logger, level, message):
@@ -293,7 +303,7 @@ class TokenManager:
 # ============================================================================
 
 def save_progress(output_path: Path, processed_packages: Dict[str, Dict], last_index: int):
-    """Save progress directly to output JSON file."""
+    """Save progress directly to output JSON file and copy the processing log."""
     progress_data = {
         'last_index': last_index,
         'processed_count': len([v for v in processed_packages.values() if v is not None]),
@@ -302,6 +312,14 @@ def save_progress(output_path: Path, processed_packages: Dict[str, Dict], last_i
     }
     with open(output_path, 'w', encoding='utf-8') as f:
         json.dump(progress_data, f, indent=2)
+    
+    # Also save the processing log to the output directory
+    if LOG_FILE.exists():
+        output_log_path = output_path.parent / "processing.log"
+        try:
+            shutil.copy2(LOG_FILE, output_log_path)
+        except Exception:
+            pass  # Silently ignore log copy failures
 
 
 def load_progress(output_path: Path) -> Tuple[Dict[str, Dict], int]:
@@ -314,6 +332,138 @@ def load_progress(output_path: Path) -> Tuple[Dict[str, Dict], int]:
         except (json.JSONDecodeError, KeyError) as e:
             safe_print(f"Warning: Failed to load progress: {e}")
     return {}, 0
+
+
+# ============================================================================
+# CACHE MANAGEMENT
+# ============================================================================
+
+class CacheManager:
+    """Manages cache for GitHub metrics to avoid redundant API calls."""
+    
+    def __init__(self, cache_dir: Path = None, cache_file: str = None):
+        """
+        Initialize cache manager.
+        
+        Args:
+            cache_dir: Directory containing cache files
+            cache_file: Cache JSON filename
+        """
+        self.cache_dir = cache_dir or DEFAULT_CACHE_DIR
+        self.cache_file = cache_file or DEFAULT_CACHE_FILE
+        self.cache_path = self.cache_dir / self.cache_file
+        self.cache_data: Dict[str, Dict] = {}
+        self.owner_repo_index: Dict[str, str] = {}  # owner_repo -> full_key mapping
+        self.lock = Lock()
+        self._loaded = False
+    
+    def load_cache(self) -> bool:
+        """
+        Load cache from file and build search index.
+        
+        Returns:
+            True if cache loaded successfully, False otherwise
+        """
+        if self._loaded:
+            return True
+        
+        if not self.cache_path.exists():
+            safe_print(f"Cache file not found: {self.cache_path}")
+            return False
+        
+        try:
+            safe_print(f"Loading cache from {self.cache_path}...")
+            with open(self.cache_path, 'r', encoding='utf-8') as f:
+                data = json.load(f)
+            
+            self.cache_data = data.get('packages', {})
+            self._build_index()
+            self._loaded = True
+            
+            # Count successful entries (without errors)
+            successful = len([v for v in self.cache_data.values() if v and "error" not in v])
+            safe_print(f"Cache loaded: {len(self.cache_data)} entries ({successful} successful)")
+            return True
+            
+        except (json.JSONDecodeError, KeyError) as e:
+            safe_print(f"Warning: Failed to load cache: {e}")
+            return False
+    
+    def _build_index(self):
+        """
+        Build search index for faster lookups.
+        Creates mapping from owner_repo to full cache key.
+        Uses lowercase keys for case-insensitive matching.
+        """
+        safe_print("Building cache search index...")
+        self.owner_repo_index.clear()
+        
+        for full_key, value in self.cache_data.items():
+            if value is None:
+                continue
+            
+            # Extract owner_repo from the full key (format: owner_repo|repo_url)
+            owner_repo = value.get('owner_repo')
+            if owner_repo:
+                # Store mapping: owner_repo (lowercase) -> full_key
+                # If multiple entries exist for same owner_repo, keep the first one
+                owner_repo_lower = owner_repo.lower()
+                if owner_repo_lower not in self.owner_repo_index:
+                    self.owner_repo_index[owner_repo_lower] = full_key
+        
+        safe_print(f"Index built: {len(self.owner_repo_index)} unique repositories indexed")
+    
+    def lookup(self, owner_repo: str, repo_url: str = None) -> Optional[Dict]:
+        """
+        Look up cached metrics for a repository (case-insensitive).
+        
+        Args:
+            owner_repo: Repository identifier (owner/repo)
+            repo_url: Full repository URL (optional, for exact match)
+            
+        Returns:
+            Cached metrics dictionary or None if not found
+        """
+        with self.lock:
+            # Try exact match first if repo_url provided
+            if repo_url:
+                full_key = f"{owner_repo}|{repo_url}"
+                if full_key in self.cache_data:
+                    cached = self.cache_data[full_key]
+                    # Only return if it's a successful entry (no error)
+                    if cached and "error" not in cached:
+                        return cached
+            
+            # Try case-insensitive index lookup by owner_repo
+            owner_repo_lower = owner_repo.lower()
+            if owner_repo_lower in self.owner_repo_index:
+                full_key = self.owner_repo_index[owner_repo_lower]
+                cached = self.cache_data.get(full_key)
+                # Only return if it's a successful entry (no error)
+                if cached and "error" not in cached:
+                    return cached
+            
+            return None
+    
+    def get_cache_stats(self) -> Dict:
+        """
+        Get cache statistics.
+        
+        Returns:
+            Dictionary with cache statistics
+        """
+        total = len(self.cache_data)
+        successful = len([v for v in self.cache_data.values() if v and "error" not in v])
+        errors = len([v for v in self.cache_data.values() if v and "error" in v])
+        indexed = len(self.owner_repo_index)
+        
+        return {
+            "total_entries": total,
+            "successful_entries": successful,
+            "error_entries": errors,
+            "indexed_repos": indexed,
+            "cache_path": str(self.cache_path)
+        }
 
 
 # ============================================================================
@@ -436,10 +586,16 @@ class GitHubMetricsMiner:
                 retry_count += 1
                 if retry_count <= MAX_RETRIES:
                     wait_time = RETRY_DELAY ** retry_count
+                    if self.logger:
+                        log_message(self.logger, 'debug', f"Network error on {url}: {type(e).__name__}. Retry {retry_count}/{MAX_RETRIES} in {wait_time}s")
                     time.sleep(wait_time)
                 else:
+                    if self.logger:
+                        log_message(self.logger, 'warning', f"Network error on {url} after {MAX_RETRIES} retries: {type(e).__name__}: {str(e)}")
                     return None
-            except Exception:
+            except Exception as e:
+                if self.logger:
+                    log_message(self.logger, 'error', f"Unexpected error on {url}: {type(e).__name__}: {str(e)}")
                 return None
         
         return None
@@ -1103,29 +1259,82 @@ def parse_csv_file(csv_path: str) -> List[Dict[str, str]]:
 # PARALLEL PROCESSING
 # ============================================================================
 
-def process_single_package(package: Dict, miner: GitHubMetricsMiner) -> Optional[Dict]:
+# Common placeholder/invalid repository patterns to skip
+INVALID_REPO_PATTERNS = [
+    'username', 'yourusername', 'your-username', 'user-name',
+    'yourname', 'your-name', 'myusername', 'my-username',
+    'owner', 'yourowner', 'your-owner', 'repo-owner',
+    'project', 'yourproject', 'your-project', 'myproject', 'my-project',
+    'repository', 'yourrepository', 'your-repository', 'repo',
+    'example', 'your-example', 'sample', 'test', 'demo',
+    'xxx', 'xxxx', 'xxxxx', 'yyy', 'yyyy', 'zzz', 'zzzz',
+    'placeholder', 'changeme', 'replace-me', 'todo',
+    'foo', 'bar', 'baz', 'foobar',
+]
+
+
+def is_invalid_repo_name(owner_repo: str) -> bool:
+    """Check if the repository name appears to be a placeholder/invalid."""
+    if not owner_repo or '/' not in owner_repo:
+        return True
+    
+    owner, repo = owner_repo.lower().split('/', 1)
+    
+    # Check if owner or repo matches common placeholder patterns
+    for pattern in INVALID_REPO_PATTERNS:
+        if owner == pattern or repo == pattern:
+            return True
+        # Also check if owner/repo is exactly a pattern combination
+        if f"{owner}/{repo}" in [f"{p1}/{p2}" for p1 in INVALID_REPO_PATTERNS for p2 in INVALID_REPO_PATTERNS]:
+            return True
+    
+    return False
+
+
+def process_single_package(package: Dict, miner: GitHubMetricsMiner, cache_manager: CacheManager = None) -> Tuple[Optional[Dict], bool]:
     """
-    Process a single package to get metrics.
+    Process a single package to get metrics, checking cache first.
     
     Args:
         package: Dictionary with 'owner_repo', 'repo_url', and 'ecosystems'
         miner: GitHubMetricsMiner instance
+        cache_manager: Optional CacheManager for looking up cached metrics
         
     Returns:
-        Dictionary with metrics or None if failed
+        Tuple of (metrics dictionary or None, from_cache boolean)
     """
     owner_repo = package["owner_repo"]
     repo_url = package["repo_url"]
     ecosystems = package.get("ecosystems", "")
     
+    # Skip obviously invalid/placeholder repository names
+    if is_invalid_repo_name(owner_repo):
+        return {
+            "owner_repo": owner_repo,
+            "repo_url": repo_url,
+            "ecosystems": ecosystems,
+            "error": "INVALID_REPO_NAME",
+            "error_detail": "Repository name appears to be a placeholder"
+        }, False
+    
+    # Check cache first if available
+    if cache_manager:
+        cached = cache_manager.lookup(owner_repo, repo_url)
+        if cached:
+            # Return cached data with updated ecosystems
+            result = cached.copy()
+            result["ecosystems"] = ecosystems  # Use current ecosystems
+            result["from_cache"] = True
+            return result, True
+    
     # Parse GitHub URL
     parsed = miner.parse_github_url(repo_url)
     if not parsed:
-        return None
+        return None, False
     
     owner, repo_name = parsed
     
-    # Get metrics
+    # Get metrics from API
     metrics = miner.get_metrics(owner, repo_name)
     
     if metrics:
@@ -1134,10 +1343,10 @@ def process_single_package(package: Dict, miner: GitHubMetricsMiner) -> Optional
             "repo_url": repo_url,
             "ecosystems": ecosystems,
             **metrics
-        }
+        }, False
     
     # Should not reach here, but just in case
-    return {"owner_repo": owner_repo, "repo_url": repo_url, "ecosystems": ecosystems, "error": "UNKNOWN", "error_detail": "No metrics returned"}
+    return {"owner_repo": owner_repo, "repo_url": repo_url, "ecosystems": ecosystems, "error": "UNKNOWN", "error_detail": "No metrics returned"}, False
 
 
 def process_packages_parallel(
@@ -1146,9 +1355,11 @@ def process_packages_parallel(
     processed_packages: Dict,
     output_path: Path,
     max_workers: int = MAX_WORKERS,
+    cache_manager: CacheManager = None,
+    logger = None,
 ) -> Dict[str, Dict]:
     """
-    Process all packages using parallel workers.
+    Process all packages using parallel workers with cache support.
 
     Args:
         all_packages: List of all packages to process
@@ -1156,6 +1367,8 @@ def process_packages_parallel(
         processed_packages: Dictionary of already processed packages
         output_path: Path to output JSON file for saving progress
         max_workers: Number of parallel workers
+        cache_manager: Optional CacheManager for looking up cached metrics
+        logger: Logger instance for logging
         
     Returns:
         Dictionary mapping package keys to results
@@ -1169,16 +1382,27 @@ def process_packages_parallel(
 
     if not packages_to_process:
         safe_print(f"All packages already processed")
+        if logger:
+            log_message(logger, 'info', "All packages already processed - nothing to do")
         return processed_packages
 
     safe_print(f"Packages to process: {len(packages_to_process)}")
-    safe_print(f"Using {max_workers} parallel workers\n")
+    safe_print(f"Using {max_workers} parallel workers")
+    if cache_manager:
+        safe_print(f"Cache enabled: will check cache before API calls\n")
+    else:
+        safe_print(f"Cache disabled: all packages will use API\n")
+    
+    if logger:
+        log_message(logger, 'info', f"Starting processing: {len(packages_to_process)} packages, {max_workers} workers, cache={'enabled' if cache_manager else 'disabled'}")
 
     # Process packages in parallel with progress bar
     results_lock = Lock()
     save_interval = 10  # Save progress every 10 packages
     processed_count = 0
     error_count = 0
+    cache_hit_count = 0
+    api_call_count = 0
     warning_shown = False
     error_stats = {}  # Track error types and counts
 
@@ -1186,7 +1410,7 @@ def process_packages_parallel(
         with ThreadPoolExecutor(max_workers=max_workers) as executor:
             # Submit all tasks
             future_to_pkg = {
-                executor.submit(process_single_package, pkg, miner): (idx, pkg)
+                executor.submit(process_single_package, pkg, miner, cache_manager): (idx, pkg)
                 for idx, pkg in packages_to_process
             }
 
@@ -1195,10 +1419,16 @@ def process_packages_parallel(
                 pkg_key = f"{pkg['owner_repo']}|{pkg['repo_url']}"
                 
                 try:
-                    result = future.result()
+                    result, from_cache = future.result()
                     
                     with results_lock:
                         if result:
+                            # Track cache vs API usage
+                            if from_cache:
+                                cache_hit_count += 1
+                            else:
+                                api_call_count += 1
+                            
                             # Check if result contains error
                             if "error" in result:
                                 error_type = result.get("error", "UNKNOWN")
@@ -1212,6 +1442,9 @@ def process_packages_parallel(
                                 # HTTP 404 is expected (deleted/private repos) - don't count as critical error
                                 if error_type != "HTTP_404":
                                     error_count += 1
+                                    # Log non-404 errors to file
+                                    if logger:
+                                        log_message(logger, 'warning', f"Error mining {pkg['owner_repo']}: {error_type} - {error_detail}")
                                 
                                 # Store result with error info
                                 processed_packages[pkg_key] = result
@@ -1225,10 +1458,14 @@ def process_packages_parallel(
                                     safe_print("⚠️  Check processing.log for detailed error messages")
                                     safe_print("⚠️  Common causes: authentication issues, rate limits, network errors")
                                     safe_print("!" * 80 + "\n")
+                                    if logger:
+                                        log_message(logger, 'warning', f"Error threshold exceeded: {error_count} errors so far")
                                 
                                 # Continue showing periodic warnings every 100 errors after threshold
                                 elif error_count > 50 and error_count % 100 == 0:
                                     safe_print("\n⚠️  Error count: {} (check processing.log)\n".format(error_count))
+                                    if logger:
+                                        log_message(logger, 'warning', f"Error count milestone: {error_count} errors")
                             else:
                                 # Success
                                 processed_packages[pkg_key] = result
@@ -1239,6 +1476,8 @@ def process_packages_parallel(
                             if "NO_RESULT" not in error_stats:
                                 error_stats["NO_RESULT"] = 0
                             error_stats["NO_RESULT"] += 1
+                            if logger:
+                                log_message(logger, 'warning', f"No result returned for {pkg['owner_repo']}")
                         
                         processed_count += 1
                         
@@ -1249,6 +1488,8 @@ def process_packages_parallel(
                 except Exception as e:
                     with results_lock:
                         processed_packages[pkg_key] = {"error": "PROCESSING_EXCEPTION", "error_detail": str(e)}
+                        if logger:
+                            log_message(logger, 'error', f"Exception processing {pkg['owner_repo']}: {str(e)}")
                         error_count += 1
                         
                         # Track error
@@ -1275,7 +1516,17 @@ def process_packages_parallel(
     # Save final progress
     save_progress(output_path, processed_packages, len(all_packages) - 1)
     
-    return processed_packages, error_stats
+    # Report cache statistics
+    if cache_manager:
+        safe_print(f"\nCache statistics: {cache_hit_count} cache hits, {api_call_count} API calls")
+    
+    # Log final statistics
+    if logger:
+        log_message(logger, 'info', f"Processing complete: {processed_count} packages processed")
+        log_message(logger, 'info', f"Cache hits: {cache_hit_count}, API calls: {api_call_count}")
+        log_message(logger, 'info', f"Errors: {error_count} (breakdown: {error_stats})")
+    
+    return processed_packages, error_stats, {"cache_hits": cache_hit_count, "api_calls": api_call_count}
 
 
 def count_successful_packages(processed_packages: Dict) -> int:
@@ -1407,6 +1658,21 @@ def main():
         default=MAX_WORKERS,
         help=f"Number of parallel workers (default: {MAX_WORKERS})",
     )
+    parser.add_argument(
+        "--cache-dir",
+        default=DEFAULT_CACHE_DIR,
+        help=f"Directory containing cache files (default: {DEFAULT_CACHE_DIR})",
+    )
+    parser.add_argument(
+        "--cache-file",
+        default=DEFAULT_CACHE_FILE,
+        help=f"Cache JSON filename (default: {DEFAULT_CACHE_FILE})",
+    )
+    parser.add_argument(
+        "--no-cache",
+        action="store_true",
+        help="Disable cache lookup (always use API)",
+    )
 
     args = parser.parse_args()
 
@@ -1506,6 +1772,27 @@ def main():
     
     # Initialize miner
     miner = GitHubMetricsMiner(token_manager, logger)
+    
+    # Initialize cache manager
+    cache_manager = None
+    if not args.no_cache:
+        cache_dir = (script_dir / args.cache_dir).resolve()
+        cache_manager = CacheManager(cache_dir, args.cache_file)
+        if cache_manager.load_cache():
+            stats = cache_manager.get_cache_stats()
+            print(f"\nCache Configuration:")
+            print(f"  Cache path: {stats['cache_path']}")
+            print(f"  Total entries: {stats['total_entries']:,}")
+            print(f"  Successful entries: {stats['successful_entries']:,}")
+            print(f"  Indexed repositories: {stats['indexed_repos']:,}")
+            log_message(logger, 'info', f"Cache loaded: {stats['total_entries']} entries, {stats['successful_entries']} successful, {stats['indexed_repos']} indexed")
+        else:
+            safe_print("Cache not available, will use API for all requests")
+            log_message(logger, 'info', "Cache not available, will use API for all requests")
+            cache_manager = None
+    else:
+        print("\nCache disabled by --no-cache flag")
+        log_message(logger, 'info', "Cache disabled by --no-cache flag")
 
     # Get input directory
     input_dir = (script_dir / args.input_dir).resolve()
@@ -1639,12 +1926,16 @@ def main():
         safe_print("Mining GitHub metrics...")
         safe_print(f"{'=' * 80}\n")
         
-        processed_packages, error_stats = process_packages_parallel(
+        log_message(logger, 'info', f"Input: {len(all_packages)} unique repositories from {len(csv_files)} CSV files")
+        
+        processed_packages, error_stats, cache_stats = process_packages_parallel(
             all_packages,
             miner,
             processed_packages,
             output_path,
             max_workers=args.workers,
+            cache_manager=cache_manager,
+            logger=logger,
         )
         
         successful_count = count_successful_packages(processed_packages)
@@ -1652,8 +1943,14 @@ def main():
         # Generate summary statistics
         summary_stats = generate_summary_stats(processed_packages, error_stats)
         
+        # Add cache stats to summary
+        summary_stats["cache_hits"] = cache_stats.get("cache_hits", 0)
+        summary_stats["api_calls"] = cache_stats.get("api_calls", 0)
+        
         safe_print(f"\n✓ Results saved to {output_path}")
         safe_print(f"  Successfully mined: {successful_count}/{len(all_packages)} repositories")
+        if cache_manager:
+            safe_print(f"  Cache hits: {cache_stats['cache_hits']}, API calls: {cache_stats['api_calls']}")
         
         # Write summary file
         write_summary_file(output_dir, summary_stats, all_packages)
@@ -1678,6 +1975,14 @@ def main():
     print(f"Successfully mined: {successful_count} ({summary_stats['success_rate']:.2f}%)")
     print(f"Errors: {summary_stats['total_errors']} ({summary_stats['error_rate']:.2f}%)")
     
+    if cache_manager:
+        print(f"\nCache performance:")
+        print(f"  Cache hits: {cache_stats['cache_hits']}")
+        print(f"  API calls: {cache_stats['api_calls']}")
+        if cache_stats['cache_hits'] + cache_stats['api_calls'] > 0:
+            hit_rate = cache_stats['cache_hits'] / (cache_stats['cache_hits'] + cache_stats['api_calls']) * 100
+            print(f"  Hit rate: {hit_rate:.2f}%")
+    
     if error_stats:
         print(f"\nTop error types:")
         sorted_errors = sorted(error_stats.items(), key=lambda x: x[1], reverse=True)
@@ -1686,6 +1991,10 @@ def main():
             print(f"  • {error_type}: {count} ({percentage:.2f}%)")
     
     print(f"{'=' * 80}\n")
+    
+    # Log session completion
+    log_message(logger, 'info', f"Session completed: {successful_count}/{len(all_packages)} successful ({summary_stats['success_rate']:.2f}%)")
+    log_message(logger, 'info', "=" * 60)
 
 
 if __name__ == "__main__":

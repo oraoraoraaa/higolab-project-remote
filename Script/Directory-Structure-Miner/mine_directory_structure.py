@@ -6,7 +6,9 @@ Outputs directory trees similar to the flatbuffers_analysis.md format.
 """
 
 import os
+import sys
 import csv
+import json
 import requests
 import base64
 import time
@@ -25,9 +27,10 @@ from tqdm import tqdm
 
 # Default relative paths (relative to script location)
 DATASET_DIR = Path(__file__).parent / "../../Resource/Dataset/"
-DEFAULT_INPUT_DIR = DATASET_DIR / "Common-Package-Filter"
-DEFAULT_OUTPUT_DIR = DATASET_DIR / "Directory-Structure-Miner"
+DEFAULT_INPUT_DIR = DATASET_DIR / "Multirepo-Common-Package-Filter"
+DEFAULT_OUTPUT_FILE = DATASET_DIR / "Directory-Structure-Miner/directory_structures.json"
 DEFAULT_ERROR_LOG_DIR = DATASET_DIR / "Directory-Structure-Miner/error-log"
+DEFAULT_TEMP_DIR = Path(__file__).parent / "../../Temp/Directory-Structure-Miner"
 
 # ============================================================================
 
@@ -75,11 +78,236 @@ def normalize_github_url(url):
     return None
 
 
+class GlobalCacheIndex:
+    """
+    Global search index for cached directory structures.
+    Builds an efficient lookup index from all temp files at startup.
+    """
+    
+    def __init__(self, temp_dir: Optional[str] = None):
+        """
+        Initialize the global cache index.
+        
+        Args:
+            temp_dir: Directory containing cached directory structures
+        """
+        self.temp_dir = Path(temp_dir) if temp_dir else None
+        self.index: Dict[str, Dict] = {}  # normalized_url -> {paths, ecosystems, source_file}
+        self.loaded = False
+        self.stats = {
+            "total_entries": 0,
+            "files_parsed": 0,
+            "parse_errors": 0,
+        }
+    
+    @staticmethod
+    def _visual_tree_to_paths(tree_str: str) -> List[str]:
+        """
+        Convert a visual tree string to a list of paths.
+        
+        Args:
+            tree_str: Visual tree representation with ├──, │, └── etc.
+            
+        Returns:
+            List of file/directory paths (without the root repo name prefix)
+        """
+        paths = []
+        path_stack = []
+        root_name = None
+        
+        for line in tree_str.split('\n'):
+            if not line.strip():
+                continue
+            
+            clean_line = line.rstrip()
+            
+            # Find tree branch indicators (├── or └──)
+            branch_pos = max(clean_line.rfind('├── '), clean_line.rfind('└── '))
+            
+            if branch_pos >= 0:
+                # Regular tree item with branch indicator
+                name = clean_line[branch_pos + 4:].strip()
+                # Calculate depth: each level adds 4 characters of prefix (│   or    )
+                # Plus the branch itself at this level
+                depth = branch_pos // 4
+            else:
+                # Root directory line (no tree characters) - e.g., "repo-name/"
+                name = clean_line.strip().rstrip('/')
+                if not name:
+                    continue
+                # Store root name but don't add to paths (we exclude repo name from paths)
+                root_name = name
+                path_stack = []
+                continue
+            
+            # Skip empty names
+            if not name:
+                continue
+            
+            # Remove trailing slash (directory indicator)
+            name = name.rstrip('/')
+            
+            # Adjust path stack to current depth
+            path_stack = path_stack[:depth]
+            
+            # Add current item to stack
+            path_stack.append(name)
+            
+            # Build full path (without root repo name, matching GitHub API format)
+            full_path = '/'.join(path_stack)
+            if full_path:
+                paths.append(full_path)
+        
+        return paths
+    
+    def build_index(self) -> None:
+        """
+        Build the global search index from all temp files.
+        Parses all ecosystem combination files and creates a unified lookup index.
+        """
+        if not self.temp_dir or not self.temp_dir.exists():
+            print(f"⚠ Temp directory not found: {self.temp_dir}")
+            self.loaded = True
+            return
+        
+        print(f"\n{'=' * 80}")
+        print("Building Global Cache Index")
+        print(f"{'=' * 80}")
+        print(f"Scanning: {self.temp_dir}")
+        
+        # Find all ecosystem subdirectories
+        ecosystem_dirs = [
+            d for d in self.temp_dir.iterdir()
+            if d.is_dir() and d.name.endswith("_ecosystems")
+        ]
+        
+        if not ecosystem_dirs:
+            print("⚠ No ecosystem directories found in temp dir")
+            self.loaded = True
+            return
+        
+        # Collect all txt files from all ecosystem dirs
+        all_txt_files = []
+        for ecosystem_dir in sorted(ecosystem_dirs):
+            txt_files = list(ecosystem_dir.glob("*.txt"))
+            all_txt_files.extend(txt_files)
+        
+        print(f"Found {len(all_txt_files)} cache files to index")
+        
+        # Parse each file with progress bar
+        with tqdm(total=len(all_txt_files), desc="Building index", unit="file") as pbar:
+            for txt_file in all_txt_files:
+                pbar.set_postfix_str(txt_file.name)
+                try:
+                    self._parse_and_index_file(txt_file)
+                    self.stats["files_parsed"] += 1
+                except Exception as e:
+                    tqdm.write(f"⚠ Failed to parse {txt_file.name}: {e}")
+                    self.stats["parse_errors"] += 1
+                pbar.update(1)
+        
+        self.loaded = True
+        
+        print(f"\n✓ Index built successfully!")
+        print(f"  • Total entries: {self.stats['total_entries']:,}")
+        print(f"  • Files parsed: {self.stats['files_parsed']}")
+        print(f"  • Parse errors: {self.stats['parse_errors']}")
+        print(f"{'=' * 80}\n")
+    
+    def _parse_and_index_file(self, file_path: Path) -> None:
+        """
+        Parse a single temp file and add entries to the index.
+        
+        Args:
+            file_path: Path to the temp file
+        """
+        with open(file_path, "r", encoding="utf-8") as f:
+            content = f.read()
+        
+        # Split by package boundaries (80 = signs followed by Package X/Y)
+        # Pattern: empty line, 80 equals, newline, "Package X/Y", newline, 80 equals
+        package_blocks = re.split(r'\n={80}\nPackage \d+/\d+\n={80}\n', content)
+        
+        # Skip the header block (first split result)
+        for block in package_blocks[1:]:
+            if not block.strip():
+                continue
+            
+            # Extract repository URL
+            repo_match = re.search(r'^Repository: (.+)$', block, re.MULTILINE)
+            if not repo_match:
+                continue
+            
+            repo_url = repo_match.group(1).strip()
+            normalized_url = normalize_github_url(repo_url)
+            
+            if not normalized_url:
+                continue
+            
+            # Extract ecosystems
+            ecosystems_match = re.search(r'^Ecosystems: (.+)$', block, re.MULTILINE)
+            ecosystems = []
+            if ecosystems_match:
+                ecosystems = [e.strip() for e in ecosystems_match.group(1).split(',')]
+            
+            # Extract directory structure (everything after the dashed line)
+            tree_match = re.search(r'Directory Structure:\n-{80}\n\n(.+?)(?=\n\n={80}|\Z)', block, re.DOTALL)
+            
+            if tree_match:
+                tree_str = tree_match.group(1).strip()
+                
+                # Convert visual tree to path list (efficient format)
+                paths = self._visual_tree_to_paths(tree_str)
+                
+                # Only add to index if not already present (first occurrence wins)
+                if normalized_url not in self.index:
+                    self.index[normalized_url] = {
+                        "paths": paths,
+                        "ecosystems": ecosystems,
+                        "source_file": file_path.name,
+                    }
+                    self.stats["total_entries"] += 1
+    
+    def lookup(self, normalized_url: str) -> Optional[List[str]]:
+        """
+        Look up a repository in the index.
+        
+        Args:
+            normalized_url: Normalized GitHub URL (github.com/owner/repo)
+            
+        Returns:
+            List of paths if found, None otherwise
+        """
+        if not self.loaded:
+            self.build_index()
+        
+        entry = self.index.get(normalized_url)
+        return entry["paths"] if entry else None
+    
+    def contains(self, normalized_url: str) -> bool:
+        """
+        Check if a repository is in the index.
+        
+        Args:
+            normalized_url: Normalized GitHub URL
+            
+        Returns:
+            True if found in index
+        """
+        if not self.loaded:
+            self.build_index()
+        return normalized_url in self.index
+    
+    def get_stats(self) -> Dict:
+        """Get index statistics."""
+        return self.stats.copy()
+
+
 class GitHubDirectoryMiner:
     """Mines directory structures from GitHub repositories."""
 
     def __init__(
-        self, github_tokens: List[str] = None, error_log_dir: Optional[str] = None
+        self, github_tokens: List[str] = None, error_log_dir: Optional[str] = None, temp_dir: Optional[str] = None
     ):
         """
         Initialize the miner.
@@ -87,6 +315,7 @@ class GitHubDirectoryMiner:
         Args:
             github_tokens: List of GitHub personal access tokens
             error_log_dir: Directory to save error logs
+            temp_dir: Directory to look for cached directory structures
         """
         self.tokens = github_tokens or []
         # Fallback to env var if no tokens provided
@@ -101,8 +330,12 @@ class GitHubDirectoryMiner:
         self.base_url = "https://api.github.com"
         self.rate_limit_remaining = 60  # Default for unauthenticated requests
         self.error_log_dir = error_log_dir
+        self.temp_dir = temp_dir
         self.error_logs = {}  # Store errors by ecosystem combination
         self.error_stats = {}  # Track error types and counts globally
+        
+        # Global cache index for efficient lookups
+        self.global_cache = GlobalCacheIndex(temp_dir)
 
     @property
     def current_token(self) -> Optional[str]:
@@ -348,9 +581,9 @@ class GitHubDirectoryMiner:
         ecosystems: List[str] = None,
         ecosystem_combination: str = "",
         retry_count: int = 0,
-    ) -> Optional[str]:
+    ) -> Optional[List[str]]:
         """
-        Get directory tree structure from GitHub repository.
+        Get directory tree structure from GitHub repository as a list of paths.
 
         Args:
             owner: Repository owner
@@ -362,7 +595,7 @@ class GitHubDirectoryMiner:
             retry_count: Number of retries attempted (for rate limit handling)
 
         Returns:
-            Formatted directory tree string or None if failed
+            List of file/directory paths or None if failed
         """
         ecosystems = ecosystems or []
 
@@ -450,15 +683,10 @@ class GitHubDirectoryMiner:
                 )
                 return None
 
-            # Build tree structure
+            # Build tree structure and return as path list (efficient format)
             tree_items = tree_data["tree"]
-            tree_dict = self._build_tree_dict(tree_items, max_depth)
-
-            # Format as tree string
-            tree_str = f"{repo}/\n"
-            tree_str += self._format_tree(tree_dict, "", max_depth)
-
-            return tree_str
+            paths = [item["path"] for item in tree_items]
+            return paths
 
         except requests.exceptions.Timeout as e:
             self.log_error(
@@ -491,95 +719,148 @@ class GitHubDirectoryMiner:
             )
             return None
 
-    def _build_tree_dict(self, items: List[Dict], max_depth: Optional[int]) -> Dict:
-        """Build a nested dictionary representing the tree structure."""
-        tree = {}
+    def lookup_cache(self, normalized_url: str) -> Optional[List[str]]:
+        """
+        Look up a repository in the global cache index.
+        
+        Args:
+            normalized_url: Normalized GitHub URL (github.com/owner/repo)
+            
+        Returns:
+            List of paths if found in cache, None otherwise
+        """
+        return self.global_cache.lookup(normalized_url)
+    
+    def is_cached(self, normalized_url: str) -> bool:
+        """
+        Check if a repository is in the global cache.
+        
+        Args:
+            normalized_url: Normalized GitHub URL
+            
+        Returns:
+            True if found in cache
+        """
+        return self.global_cache.contains(normalized_url)
 
-        for item in items:
-            path = item["path"]
-            parts = path.split("/")
 
-            # Skip if exceeds max depth
-            if max_depth is not None and len(parts) > max_depth:
-                continue
+def save_checkpoint(output_file: Path, all_results: List[Dict], all_packages: List[Dict], total_processed: int, total_mined: int, total_cache_hits: int):
+    """
+    Save current progress to JSON file as a checkpoint.
+    
+    Args:
+        output_file: Path to output JSON file
+        all_results: List of combination results
+        all_packages: List of all package data
+        total_processed: Total packages processed so far
+        total_mined: Total packages successfully mined
+        total_cache_hits: Total cache hits
+    """
+    json_output = {
+        "metadata": {
+            "generated": datetime.now().isoformat(),
+            "total_combinations": len(all_results),
+            "total_packages_processed": total_processed,
+            "total_packages_mined": total_mined,
+            "total_cache_hits": total_cache_hits,
+            "cache_hit_rate": f"{total_cache_hits/total_processed*100:.2f}%" if total_processed > 0 else "0%",
+            "status": "in_progress",
+        },
+        "combinations": all_results,
+        "packages": all_packages,
+    }
+    
+    with open(output_file, "w", encoding="utf-8") as f:
+        json.dump(json_output, f, indent=2, ensure_ascii=False)
 
-            current = tree
-            for i, part in enumerate(parts):
-                if i == len(parts) - 1:
-                    # Leaf node
-                    if item["type"] == "tree":
-                        current[part + "/"] = {}
-                    else:
-                        current[part] = None
-                else:
-                    # Directory node
-                    if part + "/" not in current:
-                        current[part + "/"] = {}
-                    current = current[part + "/"]
 
-        return tree
+def load_checkpoint(output_file: Path) -> Optional[Dict]:
+    """
+    Load existing checkpoint from output file.
+    
+    Args:
+        output_file: Path to output JSON file
+        
+    Returns:
+        Checkpoint data if exists and valid, None otherwise
+    """
+    if not output_file.exists():
+        return None
+    
+    try:
+        with open(output_file, "r", encoding="utf-8") as f:
+            data = json.load(f)
+        
+        # Validate checkpoint structure
+        if "metadata" not in data or "packages" not in data:
+            return None
+        
+        return data
+    except (json.JSONDecodeError, IOError) as e:
+        tqdm.write(f"⚠ Failed to load checkpoint: {e}")
+        return None
 
-    def _format_tree(
-        self,
-        tree_dict: Dict,
-        prefix: str,
-        max_depth: Optional[int],
-        current_depth: int = 0,
-    ) -> str:
-        """Format tree dictionary as a string with proper indentation."""
-        if max_depth is not None and current_depth >= max_depth:
-            return ""
 
-        lines = []
-        items = sorted(
-            tree_dict.items(), key=lambda x: (0 if x[0].endswith("/") else 1, x[0])
-        )
-
-        for i, (name, subtree) in enumerate(items):
-            is_last = i == len(items) - 1
-            connector = "└── " if is_last else "├── "
-            extension = "    " if is_last else "│   "
-
-            lines.append(f"{prefix}{connector}{name}")
-
-            if subtree is not None and isinstance(subtree, dict):
-                lines.append(
-                    self._format_tree(
-                        subtree, prefix + extension, max_depth, current_depth + 1
-                    )
-                )
-
-        return "\n".join(lines)
+def get_processed_repos_from_checkpoint(checkpoint_data: Optional[Dict]) -> set:
+    """
+    Extract set of already processed repository URLs from checkpoint.
+    
+    Args:
+        checkpoint_data: Loaded checkpoint data
+        
+    Returns:
+        Set of normalized repository URLs that have been processed
+    """
+    if not checkpoint_data:
+        return set()
+    
+    processed = set()
+    for package in checkpoint_data.get("packages", []):
+        repo = package.get("repository", "")
+        if repo:
+            processed.add(repo)
+    
+    return processed
 
 
 def process_csv_file(
     csv_path: str,
-    output_dir: str,
     miner: GitHubDirectoryMiner,
-    skip_existing: bool = False,
+    output_file: Path,
+    all_results: List[Dict],
+    all_packages: List[Dict],
+    total_processed: int,
+    total_mined: int,
+    total_cache_hits: int,
+    processed_repos: set,
     max_depth: Optional[int] = None,
-):
+) -> Dict:
     """
-    Process a CSV file and generate directory structure output.
+    Process a CSV file and return structured directory data.
+    Saves checkpoints every 10 packages. Skips already processed repositories.
 
     Args:
         csv_path: Path to input CSV file
-        output_dir: Directory to save output files
         miner: GitHubDirectoryMiner instance
-        skip_existing: If True, skip processing if output file already exists
+        output_file: Path to output JSON file for checkpoints
+        all_results: List of all combination results (modified in place)
+        all_packages: List of all package data (modified in place)
+        total_processed: Running total of packages processed
+        total_mined: Running total of packages mined
+        total_cache_hits: Running total of cache hits
+        processed_repos: Set of already processed repository URLs (for checkpoint resume)
         max_depth: Maximum depth to traverse (None for unlimited)
+        
+    Returns:
+        Dictionary containing processing results and package data
     """
     csv_filename = os.path.basename(csv_path)
-    output_filename = csv_filename.replace(".csv", ".txt")
-    output_path = os.path.join(output_dir, output_filename)
-
-    # Check if output file already exists
-    if skip_existing and os.path.exists(output_path):
-        tqdm.write(f"⊘ Skipping {csv_filename} (output already exists)")
-        return {"skipped": True, "filename": csv_filename, "count": 0}
-
+    
     # Get ecosystem combination from filename (e.g., 'Maven_PyPI' from 'Maven_PyPI.csv')
     ecosystem_combination = csv_filename.replace(".csv", "")
+    
+    # Extract claimed ecosystems from filename
+    claimed_ecosystems = ecosystem_combination.split("_")
 
     tqdm.write(f"\n{'=' * 80}")
     tqdm.write(f"Processing {csv_filename}")
@@ -592,16 +873,37 @@ def process_csv_file(
 
     if not rows:
         tqdm.write(f"No data in {csv_filename}")
-        return
+        return None
 
-    # Extract ecosystems from CSV filename
-    csv_ecosystems = csv_filename.replace(".csv", "").split("_")
+    # Count how many need to be processed (excluding already processed and those in global cache)
+    repos_to_process = []
+    repos_from_checkpoint = []
+    repos_from_cache = []
+    
+    for row in rows:
+        normalized_url = row.get("Normalized_URL", "").strip()
+        if not normalized_url:
+            continue
+        
+        if normalized_url in processed_repos:
+            repos_from_checkpoint.append(normalized_url)
+        elif miner.is_cached(normalized_url):
+            repos_from_cache.append(normalized_url)
+        else:
+            repos_to_process.append(normalized_url)
 
     tqdm.write(f"Total packages: {len(rows)}")
-    tqdm.write(f"Ecosystems: {', '.join(csv_ecosystems)}\n")
+    tqdm.write(f"  • Already processed (checkpoint): {len(repos_from_checkpoint)}")
+    tqdm.write(f"  • Available in cache: {len(repos_from_cache)}")
+    tqdm.write(f"  • Need API mining: {len(repos_to_process)}")
+    tqdm.write(f"Claimed Ecosystems: {', '.join(claimed_ecosystems)}\n")
 
     # Process each row with progress bar
-    results = []
+    packages_data = []
+    local_processed = 0
+    local_mined = 0
+    local_cache_hits = 0
+    skipped_checkpoint = 0
 
     with tqdm(total=len(rows), desc=f"Mining {csv_filename}", unit="pkg") as pbar:
         for idx, row in enumerate(rows, 1):
@@ -612,11 +914,18 @@ def process_csv_file(
                 miner.log_error(
                     ecosystem_combination=ecosystem_combination,
                     repo_url="Missing",
-                    ecosystems=csv_ecosystems,
+                    ecosystems=claimed_ecosystems,
                     error_type="MISSING_NORMALIZED_URL",
                     error_msg="Normalized_URL column is missing or empty",
                     solution="Ensure the CSV file was generated with the updated find_cross_ecosystem_packages.py that includes Normalized_URL column.",
                 )
+                pbar.update(1)
+                continue
+            
+            # Skip already processed repositories (from checkpoint)
+            if normalized_url in processed_repos:
+                skipped_checkpoint += 1
+                pbar.set_postfix_str(f"[SKIP] {normalized_url.split('/')[-1]}")
                 pbar.update(1)
                 continue
             
@@ -628,7 +937,7 @@ def process_csv_file(
                 miner.log_error(
                     ecosystem_combination=ecosystem_combination,
                     repo_url=full_url,
-                    ecosystems=csv_ecosystems,
+                    ecosystems=claimed_ecosystems,
                     error_type="PARSE_ERROR",
                     error_msg=f"Could not parse normalized URL: {normalized_url}",
                     solution="Check if the normalized URL format is correct (should be github.com/owner/repo).",
@@ -639,78 +948,112 @@ def process_csv_file(
             owner, repo_name = parsed
             pbar.set_postfix_str(f"{owner}/{repo_name}")
             
-            # Get directory tree
-            tree = miner.get_tree(
-                owner,
-                repo_name,
-                max_depth=max_depth,
-                repo_url=full_url,
-                ecosystems=csv_ecosystems,
-                ecosystem_combination=ecosystem_combination,
-            )
+            # Check if already cached in global cache index (from Temp directory)
+            paths = None
+            cached_from_index = False
             
-            if tree:
-                results.append(
-                    {
-                        "repo_url": full_url,
-                        "owner": owner,
-                        "repo": repo_name,
-                        "tree": tree,
-                        "ecosystems": csv_ecosystems,
-                    }
+            cached_paths = miner.lookup_cache(normalized_url)
+            if cached_paths:
+                paths = cached_paths
+                cached_from_index = True
+                local_cache_hits += 1
+                pbar.set_postfix_str(f"{owner}/{repo_name} [CACHED]")
+            else:
+                # Get directory tree from GitHub API
+                paths = miner.get_tree(
+                    owner,
+                    repo_name,
+                    max_depth=max_depth,
+                    repo_url=full_url,
+                    ecosystems=claimed_ecosystems,
+                    ecosystem_combination=ecosystem_combination,
                 )
+            
+            if paths:
+                package_entry = {
+                    "repository": normalized_url,
+                    "claimed_ecosystems": claimed_ecosystems,
+                    "directory_structure": paths,
+                    "cached": cached_from_index,
+                }
+                packages_data.append(package_entry)
+                all_packages.append(package_entry)
+                local_mined += 1
+                
+                # Add to processed repos to avoid re-processing
+                processed_repos.add(normalized_url)
             else:
                 miner.log_error(
                     ecosystem_combination=ecosystem_combination,
                     repo_url=full_url,
-                    ecosystems=csv_ecosystems,
+                    ecosystems=claimed_ecosystems,
                     error_type="TREE_FETCH_FAILED",
                     error_msg=f"Failed to fetch directory tree for {owner}/{repo_name}",
                     solution="Repository may not exist, be private, or API may have failed. Check error logs for details.",
                 )
 
+            local_processed += 1
             pbar.update(1)
 
-            # Rate limiting check
-            if idx % 10 == 0:
+            # Save checkpoint every 10 packages (only for non-skipped packages)
+            if local_processed % 10 == 0 and local_mined > 0:
+                # Update running totals
+                current_total_processed = total_processed + local_processed
+                current_total_mined = total_mined + local_mined
+                current_total_cache_hits = total_cache_hits + local_cache_hits
+                
+                # Update this combination's stats in all_results
+                current_result = {
+                    "combination": ecosystem_combination,
+                    "claimed_ecosystems": claimed_ecosystems,
+                    "total_packages": len(rows),
+                    "mined_packages": local_mined,
+                    "cache_hits": local_cache_hits,
+                    "skipped_checkpoint": skipped_checkpoint,
+                }
+                
+                # Update or add to all_results
+                existing_idx = None
+                for i, r in enumerate(all_results):
+                    if r.get("combination") == ecosystem_combination:
+                        existing_idx = i
+                        break
+                
+                if existing_idx is not None:
+                    all_results[existing_idx] = current_result
+                else:
+                    all_results.append(current_result)
+                
+                save_checkpoint(output_file, all_results, all_packages, 
+                               current_total_processed, current_total_mined, current_total_cache_hits)
+                tqdm.write(f"  💾 Checkpoint saved: {local_processed}/{len(rows)} packages from {csv_filename}")
+            
+            # Rate limiting check (only for API calls, not cached entries)
+            if idx % 10 == 0 and not cached_from_index:
                 miner.check_rate_limit(show_output=False)
                 if miner.rate_limit_remaining < 10:
                     pbar.set_postfix_str("Rate limit low, waiting...")
                     time.sleep(60)
 
-    # Write results to output file
-    tqdm.write(f"\nWriting results to {output_path}...")
-
-    with open(output_path, "w", encoding="utf-8") as f:
-        f.write(f"Directory Structure Mining Results\n")
-        f.write(f"{'=' * 80}\n\n")
-        f.write(f"Source CSV: {csv_filename}\n")
-        f.write(f"Total Packages: {len(rows)}\n")
-        f.write(f"Successfully Mined: {len(results)}\n")
-        f.write(f"{'=' * 80}\n\n")
-
-        for i, result in enumerate(results, 1):
-            f.write(f"\n{'=' * 80}\n")
-            f.write(f"Package {i}/{len(results)}\n")
-            f.write(f"{'=' * 80}\n\n")
-            f.write(f"Repository: {result['repo_url']}\n")
-            f.write(f"Owner/Repo: {result['owner']}/{result['repo']}\n")
-            f.write(f"Ecosystems: {', '.join(result['ecosystems'])}\n\n")
-            f.write(f"Directory Structure:\n")
-            f.write(f"{'-' * 80}\n\n")
-            f.write(result["tree"])
-            f.write(f"\n\n")
-
-    tqdm.write(f"✓ Results saved to {output_path}")
-    tqdm.write(f"  Successfully mined: {len(results)}/{len(rows)} packages\n")
+    # Report results
+    tqdm.write(f"\n✓ Completed {csv_filename}:")
+    tqdm.write(f"  • Processed: {local_processed}")
+    tqdm.write(f"  • Mined: {local_mined}")
+    tqdm.write(f"  • Cache hits: {local_cache_hits}")
+    tqdm.write(f"  • Skipped (checkpoint): {skipped_checkpoint}")
+    if local_cache_hits > 0 and local_processed > 0:
+        tqdm.write(f"  • Cache hit rate: {local_cache_hits/local_processed*100:.1f}%")
 
     return {
-        "skipped": False,
-        "filename": csv_filename,
-        "total": len(rows),
-        "mined": len(results),
-        "ecosystems": csv_ecosystems,
-        "ecosystem_count": len(csv_ecosystems),
+        "combination": ecosystem_combination,
+        "claimed_ecosystems": claimed_ecosystems,
+        "total_packages": len(rows),
+        "mined_packages": local_mined,
+        "cache_hits": local_cache_hits,
+        "skipped_checkpoint": skipped_checkpoint,
+        "local_processed": local_processed,
+        "local_mined": local_mined,
+        "local_cache_hits": local_cache_hits,
     }
 
 
@@ -811,14 +1154,19 @@ def main():
         help=f"Directory containing CSV input files (default: {DEFAULT_INPUT_DIR})",
     )
     parser.add_argument(
-        "--output-dir",
-        default=DEFAULT_OUTPUT_DIR,
-        help=f"Directory to save output files (default: {DEFAULT_OUTPUT_DIR})",
+        "--output-file",
+        default=DEFAULT_OUTPUT_FILE,
+        help=f"Output JSON file path (default: {DEFAULT_OUTPUT_FILE})",
     )
     parser.add_argument(
         "--error-log-dir",
         default=DEFAULT_ERROR_LOG_DIR,
         help=f"Directory to save error logs (default: {DEFAULT_ERROR_LOG_DIR})",
+    )
+    parser.add_argument(
+        "--temp-dir",
+        default=DEFAULT_TEMP_DIR,
+        help=f"Directory containing cached directory structures (default: {DEFAULT_TEMP_DIR})",
     )
     parser.add_argument(
         "--token",
@@ -841,27 +1189,45 @@ def main():
         type=int,
         help="Maximum depth for directory structure (default: unlimited)",
     )
+    parser.add_argument(
+        "--no-resume",
+        action="store_true",
+        help="Start fresh, ignoring any existing checkpoint",
+    )
+    parser.add_argument(
+        "--no-cache",
+        action="store_true",
+        help="Disable cache lookup, always fetch from API",
+    )
 
     args = parser.parse_args()
 
     # Setup paths
     script_dir = Path(__file__).parent
-    output_dir = (script_dir / args.output_dir).resolve()
+    output_file = (script_dir / args.output_file).resolve()
     error_log_dir = (script_dir / args.error_log_dir).resolve()
+    temp_dir = (script_dir / args.temp_dir).resolve()
 
-    # Create output directories
-    output_dir.mkdir(parents=True, exist_ok=True)
+    # Create output directory
+    output_file.parent.mkdir(parents=True, exist_ok=True)
     error_log_dir.mkdir(parents=True, exist_ok=True)
 
     print(f"\n{'=' * 80}")
     print(f"Directory Structure Miner")
     print(f"{'=' * 80}")
-    print(f"Output directory: {output_dir}")
+    print(f"Output file: {output_file}")
     print(f"Error log directory: {error_log_dir}")
-
-    # Initialize miner
+    print(f"Cache directory: {temp_dir}")
+    if args.no_resume:
+        print(f"Resume mode: DISABLED (--no-resume)")
+    if args.no_cache:
+        print(f"Cache mode: DISABLED (--no-cache)")
+    
+    # Initialize miner (use None for temp_dir if cache is disabled)
     miner = GitHubDirectoryMiner(
-        github_tokens=args.token, error_log_dir=str(error_log_dir)
+        github_tokens=args.token, 
+        error_log_dir=str(error_log_dir), 
+        temp_dir=None if args.no_cache else str(temp_dir)
     )
 
     # Prompt for tokens if not provided
@@ -953,35 +1319,11 @@ def main():
 
     # Check if URL mode is enabled
     if args.url:
-        # Require output-dir to be explicitly specified in URL mode
-        if args.output_dir == "results":  # default value
-            print("\n" + "!" * 80)
-            print("ERROR: --output-dir is required when using --url mode")
-            print("!" * 80)
-            print("\nPlease specify where to save the results:")
-            print(
-                "  python mine_directory_structure.py --url <URL> --output-dir <directory>"
-            )
-            print("\nExample:")
-            print(
-                "  python mine_directory_structure.py --url https://github.com/owner/repo --output-dir url_results"
-            )
-            print("=" * 80 + "\n")
-            return
-
-        mine_urls(args.url, str(output_dir), miner, max_depth=args.max_depth)
-
-        # Write error logs
-        tqdm.write(f"\n{'=' * 80}")
-        tqdm.write("Writing error logs...")
-        miner.write_error_logs()
-
-        print(f"\n{'=' * 80}")
-        print("URL Mining Complete!")
-        print(f"{'=' * 80}")
-        print(f"Results saved in: {output_dir}")
-        print(f"Error logs saved in: {error_log_dir}")
-        print(f"{'=' * 80}\n")
+        print("\n" + "!" * 80)
+        print("ERROR: URL mode is not yet supported with JSON output")
+        print("!" * 80)
+        print("\nPlease use CSV mode instead.")
+        print("=" * 80 + "\n")
         return
 
     # CSV mode (original functionality)
@@ -1087,6 +1429,96 @@ def main():
         stats = counts_by_ecosystem[count]
         print(f"  {count}-ecosystems: {stats['packages']:,} packages from {stats['files']} files")
     
+    # Build global cache index from temp directory (unless --no-cache is set)
+    if not args.no_cache:
+        print(f"\n{'=' * 80}")
+        print("Building Global Cache Index...")
+        print(f"{'=' * 80}")
+        miner.global_cache.build_index()
+    else:
+        print(f"\n{'=' * 80}")
+        print("Cache disabled (--no-cache). Skipping cache index build.")
+        print(f"{'=' * 80}")
+    
+    # Check for existing checkpoint and load resume state (unless --no-resume is set)
+    processed_repos = set()
+    
+    if not args.no_resume:
+        checkpoint_data = load_checkpoint(output_file)
+        processed_repos = get_processed_repos_from_checkpoint(checkpoint_data)
+        
+        if checkpoint_data:
+            checkpoint_status = checkpoint_data.get("metadata", {}).get("status", "unknown")
+            checkpoint_processed = checkpoint_data.get("metadata", {}).get("total_packages_processed", 0)
+            checkpoint_mined = checkpoint_data.get("metadata", {}).get("total_packages_mined", 0)
+            
+            print(f"\n{'=' * 80}")
+            print("Checkpoint Found!")
+            print(f"{'=' * 80}")
+            print(f"  • Status: {checkpoint_status}")
+            print(f"  • Already processed: {checkpoint_processed:,} packages")
+            print(f"  • Already mined: {checkpoint_mined:,} packages")
+            print(f"  • Unique repos in checkpoint: {len(processed_repos):,}")
+            
+            if checkpoint_status == "completed":
+                print(f"\n⚠ Previous run was marked as completed.")
+                try:
+                    response = input("Do you want to re-run anyway? (y/n): ").strip().lower()
+                    if response not in ['y', 'yes']:
+                        print("\n✓ Exiting. Previous results are already complete.")
+                        sys.exit(0)
+                    # Clear checkpoint to start fresh
+                    processed_repos = set()
+                    print("\n✓ Starting fresh run (ignoring checkpoint)...")
+                except (KeyboardInterrupt, EOFError):
+                    print("\n\n⚠ Cancelled by user. Exiting...")
+                    sys.exit(0)
+            else:
+                try:
+                    response = input("\nResume from checkpoint? (y/n): ").strip().lower()
+                    if response in ['y', 'yes']:
+                        print(f"\n✓ Resuming from checkpoint. Will skip {len(processed_repos):,} already processed repos.")
+                    else:
+                        processed_repos = set()
+                        print("\n✓ Starting fresh run (ignoring checkpoint)...")
+                except (KeyboardInterrupt, EOFError):
+                    print("\n\n⚠ Cancelled by user. Exiting...")
+                    sys.exit(0)
+    else:
+        print(f"\n{'=' * 80}")
+        print("Resume disabled (--no-resume). Starting fresh.")
+        print(f"{'=' * 80}")
+    
+    # Calculate how many can be served from cache vs need API
+    cache_available = 0
+    need_api = 0
+    already_processed = 0
+    
+    for csv_file, count in files_package_counts.items():
+        with open(csv_file, "r", encoding="utf-8") as f:
+            reader = csv.DictReader(f)
+            for row in reader:
+                normalized_url = row.get("Normalized_URL", "").strip()
+                if normalized_url:
+                    if normalized_url in processed_repos:
+                        already_processed += 1
+                    elif miner.is_cached(normalized_url):
+                        cache_available += 1
+                    else:
+                        need_api += 1
+    
+    print(f"\n{'=' * 80}")
+    print("Processing Plan")
+    print(f"{'=' * 80}")
+    print(f"  • Total packages: {total_packages:,}")
+    print(f"  • Already processed (checkpoint): {already_processed:,}")
+    print(f"  • Available in cache: {cache_available:,}")
+    print(f"  • Need API mining: {need_api:,}")
+    
+    if need_api > 0:
+        estimated_api_time = need_api * 2  # ~2 seconds per API call
+        print(f"  • Estimated API time: ~{estimated_api_time // 60} min {estimated_api_time % 60} sec")
+    
     # Ask for confirmation
     print(f"\n{'=' * 80}")
     try:
@@ -1103,30 +1535,45 @@ def main():
     print("Starting mining process...")
     print(f"{'=' * 80}")
 
-    # Process each CSV file and organize output by ecosystem count
-    results_summary = []
+    # Process each CSV file and collect all results
+    all_results = []
+    all_packages = []
+    total_processed = 0
+    total_mined = 0
+    total_cache_hits = 0
 
     for csv_file in csv_files:
         try:
-            # Determine ecosystem count from filename
-            ecosystems = csv_file.stem.split("_")
-            count = len(ecosystems)
-
-            # Create subfolder for this ecosystem count
-            subfolder = output_dir / f"{count}_ecosystems"
-            subfolder.mkdir(parents=True, exist_ok=True)
-
-            # Process the file
             result = process_csv_file(
                 str(csv_file),
-                str(subfolder),
                 miner,
-                skip_existing=True,
+                output_file,
+                all_results,
+                all_packages,
+                total_processed,
+                total_mined,
+                total_cache_hits,
+                processed_repos,
                 max_depth=args.max_depth,
             )
-
+            
             if result:
-                results_summary.append(result)
+                # Update or replace result for this combination
+                existing_idx = None
+                for i, r in enumerate(all_results):
+                    if r.get("combination") == result["combination"]:
+                        existing_idx = i
+                        break
+                
+                if existing_idx is not None:
+                    all_results[existing_idx] = result
+                else:
+                    all_results.append(result)
+                
+                # Update totals
+                total_processed += result["local_processed"]
+                total_mined += result["local_mined"]
+                total_cache_hits += result["local_cache_hits"]
 
         except Exception as e:
             tqdm.write(f"\n✗ Error processing {csv_file.name}: {e}")
@@ -1137,154 +1584,42 @@ def main():
     tqdm.write("Writing error logs...")
     miner.write_error_logs()
 
-    # Generate summary file
+    # Write final JSON output
     tqdm.write(f"\n{'=' * 80}")
-    tqdm.write("Generating summary file...")
-    summary_path = output_dir / "summary.txt"
-
-    with open(summary_path, "w", encoding="utf-8") as f:
-        f.write("Directory Structure Mining Summary\n")
-        f.write("=" * 80 + "\n\n")
-        f.write(f"Generated: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n")
-        f.write(f"Total Files Processed: {len(results_summary)}\n\n")
-        
-        # Calculate overall statistics
-        total_packages = sum(r.get("total", 0) for r in results_summary if not r.get("skipped"))
-        mined_packages = sum(r.get("mined", 0) for r in results_summary if not r.get("skipped"))
-        failed_packages = total_packages - mined_packages
-        success_rate = (mined_packages / total_packages * 100) if total_packages > 0 else 0
-        error_rate = (failed_packages / total_packages * 100) if total_packages > 0 else 0
-        
-        # Overall statistics section
-        f.write("=" * 80 + "\n")
-        f.write("OVERALL STATISTICS\n")
-        f.write("=" * 80 + "\n")
-        f.write(f"Total Input Repositories: {total_packages:,}\n")
-        f.write(f"Successfully Mined: {mined_packages:,} ({success_rate:.2f}%)\n")
-        f.write(f"Errors: {failed_packages:,} ({error_rate:.2f}%)\n\n")
-        
-        # Error breakdown section
-        if miner.error_stats:
-            f.write("ERROR BREAKDOWN\n")
-            f.write("=" * 80 + "\n")
-            
-            # Sort errors by count descending
-            sorted_errors = sorted(miner.error_stats.items(), key=lambda x: x[1], reverse=True)
-            
-            for error_type, count in sorted_errors:
-                percentage = (count / total_packages * 100) if total_packages > 0 else 0
-                f.write(f"{error_type}: {count:,} ({percentage:.2f}%)\n")
-                
-                # Add explanation for common error types
-                if error_type == "NOT_FOUND":
-                    f.write("  → Repository not found (deleted or made private)\n")
-                elif error_type == "ACCESS_DENIED":
-                    f.write("  → Access forbidden (private repository or rate limit)\n")
-                elif error_type == "MISSING_NORMALIZED_URL":
-                    f.write("  → Normalized_URL column is missing or empty in CSV\n")
-                elif error_type == "PARSE_ERROR":
-                    f.write("  → Could not parse GitHub URL from normalized URL\n")
-                elif error_type == "TREE_FETCH_FAILED":
-                    f.write("  → Failed to fetch directory tree (API error)\n")
-                elif error_type == "TREE_ERROR":
-                    f.write("  → Error getting repository tree structure\n")
-                elif error_type == "TREE_EMPTY":
-                    f.write("  → Repository tree is empty or malformed\n")
-                elif error_type == "API_ERROR":
-                    f.write("  → GitHub API returned an error\n")
-                elif error_type == "TIMEOUT":
-                    f.write("  → Request timed out\n")
-                elif error_type == "NETWORK_ERROR":
-                    f.write("  → Network or connection error\n")
-                f.write("\n")
-            
-            f.write("\n")
-
-        # Group by ecosystem count
-        summary_by_count = {}
-        for result in results_summary:
-            if result.get("skipped"):
-                continue
-            count = result.get("ecosystem_count", 0)
-            if count not in summary_by_count:
-                summary_by_count[count] = []
-            summary_by_count[count].append(result)
-
-        # Statistics by ecosystem count
-        f.write("Statistics by Ecosystem Count\n")
-        f.write("-" * 80 + "\n")
-        f.write(
-            f"{'Count':<10} {'Files':<10} {'Total Pkgs':<15} {'Mined Pkgs':<15} {'Success Rate':<15}\n"
-        )
-        f.write("-" * 80 + "\n")
-
-        for count in sorted(summary_by_count.keys()):
-            files = summary_by_count[count]
-            total_packages = sum(r.get("total", 0) for r in files)
-            mined_packages = sum(r.get("mined", 0) for r in files)
-            success_rate = (
-                f"{(mined_packages/total_packages*100):.1f}%"
-                if total_packages > 0
-                else "N/A"
-            )
-
-            f.write(
-                f"{count:<10} {len(files):<10} {total_packages:<15} {mined_packages:<15} {success_rate:<15}\n"
-            )
-
-        f.write("\n\n")
-
-        # Detailed results by ecosystem count
-        f.write("Detailed Results\n")
-        f.write("=" * 80 + "\n\n")
-
-        for count in sorted(summary_by_count.keys()):
-            f.write(f"\n{count}-Ecosystem Combinations\n")
-            f.write("-" * 80 + "\n")
-
-            files = summary_by_count[count]
-            for result in sorted(files, key=lambda x: x.get("filename", "")):
-                filename = result.get("filename", "Unknown")
-                total = result.get("total", 0)
-                mined = result.get("mined", 0)
-                ecosystems = " + ".join(result.get("ecosystems", []))
-                success_rate = f"{(mined/total*100):.1f}%" if total > 0 else "N/A"
-
-                f.write(f"\nFile: {filename}\n")
-                f.write(f"  Ecosystems: {ecosystems}\n")
-                f.write(f"  Total Packages: {total}\n")
-                f.write(f"  Mined Packages: {mined}\n")
-                f.write(f"  Success Rate: {success_rate}\n")
-                f.write(
-                    f"  Output: {count}_ecosystems/{filename.replace('.csv', '.txt')}\n"
-                )
-
-        # Skipped files
-        skipped = [r for r in results_summary if r.get("skipped")]
-        if skipped:
-            f.write(f"\n\nSkipped Files (Already Exist)\n")
-            f.write("-" * 80 + "\n")
-            for result in skipped:
-                f.write(f"  • {result.get('filename', 'Unknown')}\n")
-
-    tqdm.write(f"✓ Summary saved to {summary_path}")
+    tqdm.write(f"Writing final results to {output_file}...")
+    
+    json_output = {
+        "metadata": {
+            "generated": datetime.now().isoformat(),
+            "total_combinations": len(all_results),
+            "total_packages_processed": total_processed,
+            "total_packages_mined": total_mined,
+            "total_cache_hits": total_cache_hits,
+            "cache_hit_rate": f"{total_cache_hits/total_processed*100:.2f}%" if total_processed > 0 else "0%",
+            "status": "completed",
+        },
+        "combinations": all_results,
+        "packages": all_packages,
+    }
+    
+    with open(output_file, "w", encoding="utf-8") as f:
+        json.dump(json_output, f, indent=2, ensure_ascii=False)
+    
+    tqdm.write(f"✓ Saved {len(all_packages)} packages to {output_file} (FINAL)")
 
     # Summary
     print(f"\n{'=' * 80}")
     print("Processing Complete!")
     print(f"{'=' * 80}")
-    print(f"Results saved in: {output_dir}")
+    print(f"Results saved in: {output_file}")
     print(f"Error logs saved in: {error_log_dir}")
-    print(f"Summary saved in: {summary_path}")
 
     # Print statistics
-    total_files = len([r for r in results_summary if not r.get("skipped")])
-    skipped_files = len([r for r in results_summary if r.get("skipped")])
-
     print(f"\nProcessing Statistics:")
-    print(f"  • Total files processed: {total_files}")
-    if skipped_files > 0:
-        print(f"  • Files skipped (already exist): {skipped_files}")
+    print(f"  • Total combinations processed: {len(all_results)}")
+    print(f"  • Total packages processed: {total_processed:,}")
+    print(f"  • Successfully mined: {total_mined:,} ({total_mined/total_processed*100:.1f}%)" if total_processed > 0 else "  • Successfully mined: 0")
+    print(f"  • Cache hits: {total_cache_hits:,} ({total_cache_hits/total_processed*100:.1f}%)" if total_processed > 0 else "  • Cache hits: 0")
 
     if miner.error_logs:
         print(f"\nError Summary:")
