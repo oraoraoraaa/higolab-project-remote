@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """
 GitHub Metrics Miner
-Mines GitHub repository metrics from Common-Package-Filter CSV results.
-Outputs CSV files with stars, commits, PRs, issues, contributors, and language proportions.
+Mines GitHub repository metrics from Common-Package-Filter JSON results.
+Outputs JSON file with stars, commits, PRs, issues, contributors, and language proportions.
 
 Features:
 - Parallel processing with configurable workers
@@ -11,7 +11,6 @@ Features:
 - Language proportion analysis
 """
 import os
-import csv
 import argparse
 import requests
 import re
@@ -33,6 +32,7 @@ from threading import Lock
 SCRIPT_DIR = Path(__file__).parent
 DATASET_DIR = SCRIPT_DIR / "../../Resource/Dataset/"
 DEFAULT_INPUT_DIR = DATASET_DIR / "Multirepo-Common-Package-Filter"
+DEFAULT_INPUT_FILE = "cross_ecosystem_packages.json"
 DEFAULT_OUTPUT_DIR = DATASET_DIR / "Metric-Miner-Github"
 DEFAULT_OUTPUT_FILE = "github_metrics.json"
 DEFAULT_CACHE_DIR = DATASET_DIR / "Cache/Metric-Miner-Github"
@@ -43,9 +43,10 @@ LOG_FILE = SCRIPT_DIR / "processing.log"
 # PARALLEL PROCESSING CONFIGURATION
 # ============================================================================
 
-MAX_WORKERS = 2  # Number of concurrent threads for API calls (reduced to avoid rate limits)
+MAX_WORKERS = 10  # Number of concurrent threads for API calls (5000 requests/hr allows ~83/min)
 MAX_RETRIES = 3   # Maximum number of retry attempts for network errors
 RETRY_DELAY = 2   # Initial delay in seconds before retry (exponential backoff)
+USE_GRAPHQL = True  # Use GraphQL API for faster batch queries
 
 # ============================================================================
 # THREAD-SAFE UTILITIES
@@ -88,7 +89,7 @@ def log_message(logger, level, message):
 
 
 # ============================================================================
-# TOKEN MANAGER (from detect_multirepo.py)
+# TOKEN MANAGER
 # ============================================================================
 
 class TokenManager:
@@ -295,27 +296,32 @@ class TokenManager:
 # ============================================================================
 
 def save_progress(output_path: Path, processed_packages: Dict[str, Dict], last_index: int):
-    """Save progress directly to output JSON file."""
+    """
+    Save progress to output JSON file atomically.
+    
+    Uses a temporary file and atomic rename to prevent corruption
+    if the process is interrupted during write.
+    """
     progress_data = {
         'last_index': last_index,
         'processed_count': len([v for v in processed_packages.values() if v is not None]),
         'timestamp': time.time(),
         'packages': processed_packages
     }
-    with open(output_path, 'w', encoding='utf-8') as f:
-        json.dump(progress_data, f, indent=2)
-
-
-def load_progress(output_path: Path) -> Tuple[Dict[str, Dict], int]:
-    """Load progress from output JSON file. Returns (processed_packages, last_index)."""
-    if output_path.exists():
-        try:
-            with open(output_path, 'r', encoding='utf-8') as f:
-                data = json.load(f)
-                return data.get('packages', {}), data.get('last_index', 0)
-        except (json.JSONDecodeError, KeyError) as e:
-            safe_print(f"Warning: Failed to load progress: {e}")
-    return {}, 0
+    
+    # Write to temporary file first, then atomically rename
+    temp_path = output_path.with_suffix('.json.tmp')
+    try:
+        with open(temp_path, 'w', encoding='utf-8') as f:
+            json.dump(progress_data, f, indent=2)
+        
+        # Atomic rename (on POSIX systems, this replaces the target atomically)
+        temp_path.replace(output_path)
+    except Exception as e:
+        # Clean up temp file if rename failed
+        if temp_path.exists():
+            temp_path.unlink()
+        raise e
 
 
 # ============================================================================
@@ -505,7 +511,182 @@ class GitHubMetricsMiner:
         """
         self.token_manager = token_manager
         self.base_url = "https://api.github.com"
+        self.graphql_url = "https://api.github.com/graphql"
         self.logger = logger
+
+    def get_metrics_graphql(self, owner: str, repo: str) -> Optional[Dict]:
+        """
+        Get metrics using GraphQL API (faster - single request for most data).
+        
+        Args:
+            owner: Repository owner
+            repo: Repository name
+            
+        Returns:
+            Dictionary with metrics or None if failed
+        """
+        query = """
+        query($owner: String!, $repo: String!) {
+          repository(owner: $owner, name: $repo) {
+            stargazerCount
+            forkCount
+            isFork
+            isArchived
+            
+            defaultBranchRef {
+              target {
+                ... on Commit {
+                  history {
+                    totalCount
+                  }
+                }
+              }
+            }
+            
+            pullRequests {
+              totalCount
+            }
+            openPRs: pullRequests(states: OPEN) {
+              totalCount
+            }
+            closedPRs: pullRequests(states: [CLOSED, MERGED]) {
+              totalCount
+            }
+            
+            issues {
+              totalCount
+            }
+            openIssues: issues(states: OPEN) {
+              totalCount
+            }
+            closedIssues: issues(states: CLOSED) {
+              totalCount
+            }
+            
+            mentionableUsers {
+              totalCount
+            }
+            
+            languages(first: 10, orderBy: {field: SIZE, direction: DESC}) {
+              edges {
+                size
+                node {
+                  name
+                }
+              }
+              totalSize
+            }
+            
+            primaryLanguage {
+              name
+            }
+          }
+        }
+        """
+        
+        variables = {"owner": owner, "repo": repo}
+        
+        try:
+            response = self._make_request(
+                self.graphql_url, 
+                method='POST', 
+                json_data={"query": query, "variables": variables},
+                timeout=15
+            )
+            
+            if not response:
+                return None
+            
+            if response.status_code != 200:
+                # Fall back to REST API
+                return None
+            
+            data = response.json()
+            
+            if 'errors' in data:
+                # GraphQL error (e.g., repo not found, rate limit)
+                error_msg = data['errors'][0].get('message', 'Unknown error')
+                error_type = data['errors'][0].get('type', '')
+                
+                # Check for rate limit error in GraphQL response
+                if 'rate limit' in error_msg.lower() or error_type == 'RATE_LIMITED':
+                    # Return special marker to trigger rate limit handling
+                    return {"error": "RATE_LIMITED", "error_detail": error_msg}
+                
+                if 'Could not resolve' in error_msg or 'not found' in error_msg.lower():
+                    return {"error": "HTTP_404", "error_detail": "Repository not found"}
+                return None
+            
+            repo_data = data.get('data', {}).get('repository')
+            if not repo_data:
+                return {"error": "HTTP_404", "error_detail": "Repository not found"}
+            
+            # Extract metrics
+            stars = repo_data.get('stargazerCount', 0)
+            forks = repo_data.get('forkCount', 0)
+            is_fork = repo_data.get('isFork', False)
+            is_archived = repo_data.get('isArchived', False)
+            
+            # Commits
+            commits = 0
+            default_branch = repo_data.get('defaultBranchRef')
+            if default_branch and default_branch.get('target'):
+                history = default_branch['target'].get('history', {})
+                commits = history.get('totalCount', 0)
+            
+            # PRs
+            all_prs = repo_data.get('pullRequests', {}).get('totalCount', 0)
+            open_prs = repo_data.get('openPRs', {}).get('totalCount', 0)
+            closed_prs = repo_data.get('closedPRs', {}).get('totalCount', 0)
+            
+            # Issues
+            all_issues = repo_data.get('issues', {}).get('totalCount', 0)
+            open_issues = repo_data.get('openIssues', {}).get('totalCount', 0)
+            closed_issues = repo_data.get('closedIssues', {}).get('totalCount', 0)
+            
+            # Contributors (mentionableUsers is an approximation)
+            contributors = repo_data.get('mentionableUsers', {}).get('totalCount', 0)
+            
+            # Languages
+            languages = {}
+            lang_data = repo_data.get('languages', {})
+            for edge in lang_data.get('edges', []):
+                lang_name = edge.get('node', {}).get('name', '')
+                lang_size = edge.get('size', 0)
+                if lang_name:
+                    languages[lang_name] = lang_size
+            
+            # Format language string
+            language_string = self.format_language_string(languages)
+            top_language = repo_data.get('primaryLanguage', {})
+            top_language = top_language.get('name', '') if top_language else ''
+            
+            metrics = {
+                "stars": stars,
+                "forks": forks,
+                "is_fork": is_fork,
+                "is_archived": is_archived,
+                "commits": commits,
+                "active_pull_requests": open_prs,
+                "closed_pull_requests": closed_prs,
+                "all_pull_requests": all_prs,
+                "contributors": contributors,
+                "active_issues": open_issues,
+                "closed_issues": closed_issues,
+                "all_issues": all_issues,
+                "dependencies": 0,  # Not available via GraphQL easily
+                "dependents": 0,    # Not available via GraphQL easily
+                "top_language": top_language,
+                "language_proportions": language_string,
+            }
+            
+            return metrics
+            
+        except Exception as e:
+            if self.logger:
+                log_message(self.logger, 'warning',
+                           f"GraphQL error for {owner}/{repo}: {str(e)}, falling back to REST")
+            return None
 
     def parse_github_url(self, url: str) -> Optional[Tuple[str, str]]:
         """
@@ -675,19 +856,10 @@ class GitHubMetricsMiner:
             return ""
         return max(languages.keys(), key=lambda k: languages[k])
 
-    def is_forked(self, owner: str, repo: str) -> bool:
-        """Check if a repository is forked."""
-        url = f"{self.base_url}/repos/{owner}/{repo}"
-        response = self._make_request(url)
-        
-        if response and response.status_code == 200:
-            repo_data = response.json()
-            return repo_data.get("fork", False)
-        return False
-
     def get_metrics(self, owner: str, repo: str) -> Optional[Dict]:
         """
         Get metrics for a GitHub repository including language proportions.
+        Uses GraphQL API first for speed, falls back to REST API if needed.
 
         Args:
             owner: Repository owner
@@ -696,6 +868,34 @@ class GitHubMetricsMiner:
         Returns:
             Dictionary with metrics or None if failed
         """
+        # Try GraphQL first (single request for most data)
+        if USE_GRAPHQL and self.token_manager.tokens:
+            # Retry loop for rate limit handling
+            for attempt in range(MAX_RETRIES + 1):
+                graphql_result = self.get_metrics_graphql(owner, repo)
+                
+                if graphql_result is not None:
+                    # Check if it's a rate limit error
+                    if isinstance(graphql_result, dict) and graphql_result.get("error") == "RATE_LIMITED":
+                        if self.logger:
+                            log_message(self.logger, 'warning', 
+                                       f"Rate limit hit for {owner}/{repo}, attempting token rotation...")
+                        
+                        # Try to rotate token
+                        if self.token_manager.rotate_token():
+                            time.sleep(1)  # Brief pause after rotation
+                            continue  # Retry with new token
+                        else:
+                            # No other tokens available, wait for reset
+                            self.token_manager.wait_for_rate_limit_reset()
+                            continue  # Retry after waiting
+                    
+                    return graphql_result
+                else:
+                    # GraphQL failed for other reason, fall back to REST
+                    break
+        
+        # Fall back to REST API
         try:
             # Get repository info (stars, fork status)
             repo_url = f"{self.base_url}/repos/{owner}/{repo}"
@@ -772,7 +972,6 @@ class GitHubMetricsMiner:
         """Get total commits count for a repository using GraphQL API with retry logic."""
         for attempt in range(MAX_RETRIES + 1):
             try:
-                graphql_url = "https://api.github.com/graphql"
                 query = """
                 query($owner: String!, $repo: String!) {
                   repository(owner: $owner, name: $repo) {
@@ -790,7 +989,7 @@ class GitHubMetricsMiner:
                 """
                 
                 response = self._make_request(
-                    graphql_url,
+                    self.graphql_url,
                     method='POST',
                     json_data={"query": query, "variables": {"owner": owner, "repo": repo}}
                 )
@@ -845,11 +1044,11 @@ class GitHubMetricsMiner:
                     return 0
         
         return 0
+
     def _get_pull_requests(self, owner: str, repo: str) -> Dict[str, int]:
         """Get pull request counts for a repository using GraphQL API with retry logic."""
         for attempt in range(MAX_RETRIES + 1):
             try:
-                graphql_url = "https://api.github.com/graphql"
                 query = """
                 query($owner: String!, $repo: String!) {
                   repository(owner: $owner, name: $repo) {
@@ -864,7 +1063,7 @@ class GitHubMetricsMiner:
                 """
                 
                 response = self._make_request(
-                    graphql_url,
+                    self.graphql_url,
                     method='POST',
                     json_data={"query": query, "variables": {"owner": owner, "repo": repo}}
                 )
@@ -925,7 +1124,6 @@ class GitHubMetricsMiner:
         """Get issue counts for a repository using GraphQL API (excludes PRs) with retry logic."""
         for attempt in range(MAX_RETRIES + 1):
             try:
-                graphql_url = "https://api.github.com/graphql"
                 query = """
                 query($owner: String!, $repo: String!) {
                   repository(owner: $owner, name: $repo) {
@@ -940,7 +1138,7 @@ class GitHubMetricsMiner:
                 """
                 
                 response = self._make_request(
-                    graphql_url,
+                    self.graphql_url,
                     method='POST',
                     json_data={"query": query, "variables": {"owner": owner, "repo": repo}}
                 )
@@ -1224,35 +1422,76 @@ class GitHubMetricsMiner:
 # FILE PARSING
 # ============================================================================
 
-def parse_csv_file(csv_path: str) -> List[Dict[str, str]]:
+def parse_json_input(json_path: str, include_multirepo: bool = True) -> Tuple[List[Dict[str, str]], Dict]:
     """
-    Parse a CSV file from Common-Package-Filter results.
+    Parse the cross_ecosystem_packages.json file from Common-Package-Filter results.
 
     Args:
-        csv_path: Path to the CSV file
+        json_path: Path to the JSON file
+        include_multirepo: Whether to include multirepo packages from metadata
 
     Returns:
-        List of dictionaries with normalized_url and ecosystems
+        Tuple of (list of package dictionaries, metadata dictionary)
     """
     packages = []
+    seen_urls = set()  # Track already added URLs to avoid duplicates
     
-    # Extract ecosystems from CSV filename
-    csv_filename = os.path.basename(csv_path)
-    ecosystems = csv_filename.replace(".csv", "").split("_")
-    ecosystems_str = ", ".join(ecosystems)
-
-    with open(csv_path, "r", encoding="utf-8") as f:
-        reader = csv.DictReader(f)
+    with open(json_path, "r", encoding="utf-8") as f:
+        data = json.load(f)
+    
+    metadata = data.get("metadata", {})
+    packages_data = data.get("packages", [])
+    
+    # Process monorepo cross-ecosystem packages
+    for pkg in packages_data:
+        normalized_url = pkg.get("normalized_url", "").strip()
         
-        for row in reader:
-            # Only use Normalized_URL column - no fallback
-            normalized_url = row.get("Normalized_URL", "").strip()
+        if not normalized_url:
+            continue  # Skip packages without normalized URL
+        
+        # Convert normalized URL (github.com/owner/repo) to full URL and owner/repo
+        # normalized_url format: github.com/owner/repo
+        parts = normalized_url.replace("github.com/", "").split("/")
+        if len(parts) != 2:
+            continue  # Invalid format
+        
+        owner, repo_name = parts[0], parts[1]
+        owner_repo = f"{owner}/{repo_name}"
+        full_url = f"https://{normalized_url}"
+        
+        # Get ecosystems list and convert to string
+        ecosystems = pkg.get("ecosystems", [])
+        ecosystems_str = ", ".join(ecosystems)
+        ecosystem_count = pkg.get("ecosystem_count", len(ecosystems))
+        
+        # Store the full package info for reference
+        packages.append({
+            "owner_repo": owner_repo,
+            "repo_url": full_url,
+            "normalized_url": normalized_url,
+            "ecosystems": ecosystems_str,
+            "ecosystem_count": ecosystem_count,
+            "package_details": pkg.get("packages", {}),
+            "source": "monorepo"
+        })
+        seen_urls.add(normalized_url.lower())
+    
+    # Process multirepo packages from metadata
+    if include_multirepo:
+        multirepo_data = metadata.get("cross_ecosystem_summary", {}).get("multirepo_packages", {})
+        multirepo_urls = multirepo_data.get("urls", [])
+        
+        for normalized_url in multirepo_urls:
+            normalized_url = normalized_url.strip()
             
             if not normalized_url:
-                continue  # Skip rows without normalized URL
+                continue
+            
+            # Skip if already added (shouldn't happen but just in case)
+            if normalized_url.lower() in seen_urls:
+                continue
             
             # Convert normalized URL (github.com/owner/repo) to full URL and owner/repo
-            # normalized_url format: github.com/owner/repo
             parts = normalized_url.replace("github.com/", "").split("/")
             if len(parts) != 2:
                 continue  # Invalid format
@@ -1265,10 +1504,16 @@ def parse_csv_file(csv_path: str) -> List[Dict[str, str]]:
                 "owner_repo": owner_repo,
                 "repo_url": full_url,
                 "normalized_url": normalized_url,
-                "ecosystems": ecosystems_str
+                "ecosystems": "multirepo",  # Mark as multirepo
+                "ecosystem_count": 0,
+                "package_details": {},
+                "source": "multirepo"
             })
+            seen_urls.add(normalized_url.lower())
+        
+        print(f"  Added {len(multirepo_urls)} multirepo packages")
 
-    return packages
+    return packages, metadata
 
 
 # ============================================================================
@@ -1280,7 +1525,7 @@ def process_single_package(package: Dict, miner: GitHubMetricsMiner) -> Optional
     Process a single package to get metrics.
     
     Args:
-        package: Dictionary with 'owner_repo', 'repo_url', and 'ecosystems'
+        package: Dictionary with 'owner_repo', 'repo_url', 'ecosystems', and 'source'
         miner: GitHubMetricsMiner instance
         
     Returns:
@@ -1289,6 +1534,7 @@ def process_single_package(package: Dict, miner: GitHubMetricsMiner) -> Optional
     owner_repo = package["owner_repo"]
     repo_url = package["repo_url"]
     ecosystems = package.get("ecosystems", "")
+    source = package.get("source", "monorepo")  # monorepo or multirepo
     
     # Parse GitHub URL
     parsed = miner.parse_github_url(repo_url)
@@ -1305,11 +1551,12 @@ def process_single_package(package: Dict, miner: GitHubMetricsMiner) -> Optional
             "owner_repo": owner_repo,
             "repo_url": repo_url,
             "ecosystems": ecosystems,
+            "source": source,
             **metrics
         }
     
     # Should not reach here, but just in case
-    return {"owner_repo": owner_repo, "repo_url": repo_url, "ecosystems": ecosystems, "error": "UNKNOWN", "error_detail": "No metrics returned"}
+    return {"owner_repo": owner_repo, "repo_url": repo_url, "ecosystems": ecosystems, "source": source, "error": "UNKNOWN", "error_detail": "No metrics returned"}
 
 
 def process_packages_parallel(
@@ -1341,7 +1588,7 @@ def process_packages_parallel(
 
     if not packages_to_process:
         safe_print(f"All packages already processed")
-        return processed_packages
+        return processed_packages, {}
 
     safe_print(f"Packages to process: {len(packages_to_process)}")
     safe_print(f"Using {max_workers} parallel workers\n")
@@ -1463,6 +1710,90 @@ def count_successful_packages(processed_packages: Dict) -> int:
     return len([v for v in processed_packages.values() if v and "error" not in v])
 
 
+def generate_stats_for_source(
+    processed_packages: Dict, 
+    all_packages: List[Dict], 
+    source_filter: str = None
+) -> Dict:
+    """
+    Generate summary statistics for a specific source type (monorepo/multirepo).
+    
+    Args:
+        processed_packages: Dictionary of processed results (keyed by "owner_repo|repo_url")
+        all_packages: List of all input packages with 'source' field
+        source_filter: Filter by source type ("monorepo", "multirepo", or None for all)
+        
+    Returns:
+        Dictionary with summary statistics for the filtered packages
+    """
+    # Build mapping from owner_repo|repo_url to source type
+    pkg_key_to_source = {}
+    for pkg in all_packages:
+        pkg_key = f"{pkg['owner_repo']}|{pkg['repo_url']}"
+        pkg_key_to_source[pkg_key] = pkg.get("source", "monorepo")
+    
+    # Filter processed_packages by source type
+    if source_filter:
+        filtered_packages = {
+            k: v for k, v in processed_packages.items() 
+            if pkg_key_to_source.get(k) == source_filter
+        }
+    else:
+        filtered_packages = processed_packages
+    
+    total = len(filtered_packages)
+    success = len([v for v in filtered_packages.values() if v and "error" not in v])
+    
+    # Count errors, forked, archived
+    computed_error_stats = {}
+    forked_count = 0
+    archived_count = 0
+    forked_and_archived_count = 0
+    excluded_keys = set()
+    
+    for pkg_key, result in filtered_packages.items():
+        if result:
+            is_fork = result.get("is_fork", False)
+            is_archived = result.get("is_archived", False)
+            has_error = "error" in result
+            
+            if has_error:
+                error_type = result.get("error", "UNKNOWN")
+                if error_type not in computed_error_stats:
+                    computed_error_stats[error_type] = 0
+                computed_error_stats[error_type] += 1
+                excluded_keys.add(pkg_key)
+            else:
+                if is_fork:
+                    forked_count += 1
+                    excluded_keys.add(pkg_key)
+                if is_archived:
+                    archived_count += 1
+                    excluded_keys.add(pkg_key)
+                if is_fork and is_archived:
+                    forked_and_archived_count += 1
+    
+    total_errors = sum(computed_error_stats.values())
+    excluded_count = len(excluded_keys)
+    
+    return {
+        "total": total,
+        "success": success,
+        "success_rate": (success / total * 100) if total > 0 else 0,
+        "total_errors": total_errors,
+        "error_rate": (total_errors / total * 100) if total > 0 else 0,
+        "error_breakdown": computed_error_stats,
+        "forked_count": forked_count,
+        "forked_rate": (forked_count / total * 100) if total > 0 else 0,
+        "archived_count": archived_count,
+        "archived_rate": (archived_count / total * 100) if total > 0 else 0,
+        "forked_and_archived_count": forked_and_archived_count,
+        "forked_and_archived_rate": (forked_and_archived_count / total * 100) if total > 0 else 0,
+        "excluded_count": excluded_count,
+        "excluded_rate": (excluded_count / total * 100) if total > 0 else 0,
+    }
+
+
 def generate_summary_stats(processed_packages: Dict, error_stats: Dict = None) -> Dict:
     """
     Generate summary statistics for the mining process.
@@ -1481,20 +1812,31 @@ def generate_summary_stats(processed_packages: Dict, error_stats: Dict = None) -
     computed_error_stats = {}
     forked_count = 0
     archived_count = 0
+    forked_and_archived_count = 0
+    excluded_keys = set()  # Track unique excluded packages
     
     for pkg_key, result in processed_packages.items():
         if result:
-            if "error" in result:
+            is_fork = result.get("is_fork", False)
+            is_archived = result.get("is_archived", False)
+            has_error = "error" in result
+            
+            if has_error:
                 error_type = result.get("error", "UNKNOWN")
                 if error_type not in computed_error_stats:
                     computed_error_stats[error_type] = 0
                 computed_error_stats[error_type] += 1
+                excluded_keys.add(pkg_key)
             else:
                 # Count forked and archived repos (only for successfully mined packages)
-                if result.get("is_fork", False):
+                if is_fork:
                     forked_count += 1
-                if result.get("is_archived", False):
+                    excluded_keys.add(pkg_key)
+                if is_archived:
                     archived_count += 1
+                    excluded_keys.add(pkg_key)
+                if is_fork and is_archived:
+                    forked_and_archived_count += 1
     
     # Use computed stats, merge with provided stats if any
     if error_stats:
@@ -1504,8 +1846,8 @@ def generate_summary_stats(processed_packages: Dict, error_stats: Dict = None) -
     
     total_errors = sum(computed_error_stats.values())
     
-    # Combined count: forked + archived + errors (for exclusion analysis)
-    excluded_count = forked_count + archived_count + total_errors
+    # Unique excluded count (no duplicates for packages that are both forked and archived)
+    excluded_count = len(excluded_keys)
     
     return {
         "total": total,
@@ -1518,6 +1860,8 @@ def generate_summary_stats(processed_packages: Dict, error_stats: Dict = None) -
         "forked_rate": (forked_count / total * 100) if total > 0 else 0,
         "archived_count": archived_count,
         "archived_rate": (archived_count / total * 100) if total > 0 else 0,
+        "forked_and_archived_count": forked_and_archived_count,
+        "forked_and_archived_rate": (forked_and_archived_count / total * 100) if total > 0 else 0,
         "excluded_count": excluded_count,
         "excluded_rate": (excluded_count / total * 100) if total > 0 else 0,
     }
@@ -1664,72 +2008,82 @@ def retry_failed_packages(
     return processed_packages, all_error_stats, total_retried
 
 
-def write_summary_file(output_dir: Path, stats: Dict, all_packages: List[Dict]):
+def write_summary_file(output_dir: Path, stats: Dict, all_packages: List[Dict], processed_packages: Dict = None):
     """
     Write summary.txt file with statistics.
     
     Args:
         output_dir: Output directory path
-        stats: Summary statistics dictionary
-        all_packages: List of all packages
+        stats: Summary statistics dictionary (combined)
+        all_packages: List of all packages with 'source' field
+        processed_packages: Dictionary of processed results (for per-source stats)
     """
     summary_path = output_dir / "summary.txt"
+    
+    # Generate per-source statistics if processed_packages is provided
+    monorepo_stats = None
+    multirepo_stats = None
+    if processed_packages and all_packages:
+        monorepo_stats = generate_stats_for_source(processed_packages, all_packages, "monorepo")
+        multirepo_stats = generate_stats_for_source(processed_packages, all_packages, "multirepo")
+    
+    def write_stats_section(f, section_title: str, section_stats: Dict, show_source_breakdown: bool = False):
+        """Helper function to write a statistics section."""
+        f.write(f"{section_title}\n")
+        f.write("-" * 80 + "\n")
+        f.write(f"Total Input Repositories: {section_stats['total']:,}\n")
+        f.write(f"Successfully Mined: {section_stats['success']:,} ({section_stats['success_rate']:.2f}%)\n")
+        f.write(f"Errors: {section_stats['total_errors']:,} ({section_stats['error_rate']:.2f}%)\n\n")
+        
+        # Repository status
+        f.write(f"Repository Status:\n")
+        f.write(f"  Forked: {section_stats.get('forked_count', 0):,} ({section_stats.get('forked_rate', 0):.2f}%)\n")
+        f.write(f"  Archived: {section_stats.get('archived_count', 0):,} ({section_stats.get('archived_rate', 0):.2f}%)\n")
+        f.write(f"  Forked AND Archived: {section_stats.get('forked_and_archived_count', 0):,} ({section_stats.get('forked_and_archived_rate', 0):.2f}%)\n")
+        f.write(f"  Excluded (Forked | Archived | Errors): {section_stats.get('excluded_count', 0):,} ({section_stats.get('excluded_rate', 0):.2f}%)\n")
+        
+        # Source breakdown (only for combined stats)
+        if show_source_breakdown and 'cache_hits' in section_stats:
+            f.write(f"\nData Source:\n")
+            cache_hits = section_stats.get('cache_hits', 0)
+            api_calls = section_stats.get('api_calls', 0)
+            total_retried = section_stats.get('total_retried', 0)
+            total = section_stats['total']
+            f.write(f"  From Cache: {cache_hits:,} ({cache_hits / total * 100:.2f}%)\n" if total > 0 else f"  From Cache: {cache_hits:,}\n")
+            f.write(f"  From API: {api_calls:,} ({api_calls / total * 100:.2f}%)\n" if total > 0 else f"  From API: {api_calls:,}\n")
+            if total_retried > 0:
+                f.write(f"  Retried: {total_retried:,}\n")
+        
+        # Error breakdown
+        if section_stats.get('error_breakdown'):
+            f.write(f"\nError Breakdown:\n")
+            sorted_errors = sorted(section_stats['error_breakdown'].items(), key=lambda x: x[1], reverse=True)
+            for error_type, count in sorted_errors:
+                percentage = (count / section_stats['total'] * 100) if section_stats['total'] > 0 else 0
+                f.write(f"  {error_type}: {count:,} ({percentage:.2f}%)\n")
+        
+        f.write("\n")
     
     with open(summary_path, "w", encoding="utf-8") as f:
         f.write("=" * 80 + "\n")
         f.write("GITHUB METRICS MINING SUMMARY\n")
         f.write("=" * 80 + "\n\n")
         
-        f.write("OVERALL STATISTICS\n")
-        f.write("=" * 80 + "\n")
-        f.write(f"Total Input Repositories: {stats['total']:,}\n")
-        f.write(f"Successfully Mined: {stats['success']:,} ({stats['success_rate']:.2f}%)\n")
-        f.write(f"Errors: {stats['total_errors']:,} ({stats['error_rate']:.2f}%)\n\n")
-        
-        # Repository status breakdown
-        f.write("REPOSITORY STATUS\n")
-        f.write("=" * 80 + "\n")
-        f.write(f"Forked Repositories: {stats.get('forked_count', 0):,} ({stats.get('forked_rate', 0):.2f}%)\n")
-        f.write(f"Archived Repositories: {stats.get('archived_count', 0):,} ({stats.get('archived_rate', 0):.2f}%)\n")
-        f.write(f"Forked + Archived + Errors: {stats.get('excluded_count', 0):,} ({stats.get('excluded_rate', 0):.2f}%)\n")
-        f.write(f"  → These may need to be excluded from analysis\n\n")
-        
-        # Cache statistics
-        if 'cache_hits' in stats:
-            f.write("SOURCE BREAKDOWN\n")
+        # Section 1: Monorepo Statistics
+        if monorepo_stats and monorepo_stats['total'] > 0:
             f.write("=" * 80 + "\n")
-            cache_hits = stats.get('cache_hits', 0)
-            api_calls = stats.get('api_calls', 0)
-            total_retried = stats.get('total_retried', 0)
-            total = stats['total']
-            f.write(f"From Cache: {cache_hits:,} ({cache_hits / total * 100:.2f}%)\n" if total > 0 else f"From Cache: {cache_hits:,}\n")
-            f.write(f"From API: {api_calls:,} ({api_calls / total * 100:.2f}%)\n" if total > 0 else f"From API: {api_calls:,}\n")
-            if total_retried > 0:
-                f.write(f"Retried: {total_retried:,}\n")
-            f.write("\n")
+            write_stats_section(f, "MONOREPO PACKAGES (cross-ecosystem packages in single repository)", monorepo_stats)
         
-        if stats['error_breakdown']:
-            f.write("ERROR BREAKDOWN\n")
+        # Section 2: Multirepo Statistics
+        if multirepo_stats and multirepo_stats['total'] > 0:
             f.write("=" * 80 + "\n")
-            
-            # Sort errors by count descending
-            sorted_errors = sorted(stats['error_breakdown'].items(), key=lambda x: x[1], reverse=True)
-            
-            for error_type, count in sorted_errors:
-                percentage = (count / stats['total'] * 100) if stats['total'] > 0 else 0
-                f.write(f"{error_type}: {count:,} ({percentage:.2f}%)\n")
-                
-                # Add explanation for common error types
-                if error_type == "HTTP_404":
-                    f.write("  → Repository not found (deleted or made private)\n")
-                elif error_type == "HTTP_403":
-                    f.write("  → Access forbidden (private repository or rate limit)\n")
-                elif error_type == "API_REQUEST_FAILED":
-                    f.write("  → Network or API connection issues\n")
-                elif error_type == "EXCEPTION":
-                    f.write("  → Unexpected exception during processing\n")
-                f.write("\n")
+            write_stats_section(f, "MULTIREPO PACKAGES (language-specific repositories like project-js, project-py)", multirepo_stats)
         
+        # Section 3: Combined Statistics
+        f.write("=" * 80 + "\n")
+        write_stats_section(f, "COMBINED (ALL PACKAGES)", stats, show_source_breakdown=True)
+        
+        # Footer
         f.write("=" * 80 + "\n")
         f.write(f"Summary generated: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n")
         f.write("=" * 80 + "\n")
@@ -1744,12 +2098,17 @@ def write_summary_file(output_dir: Path, stats: Dict, all_packages: List[Dict]):
 def main():
     """Main entry point."""
     parser = argparse.ArgumentParser(
-        description="Mine GitHub metrics from Common-Package-Filter CSV results (with parallel processing)"
+        description="Mine GitHub metrics from Common-Package-Filter JSON results (with parallel processing)"
     )
     parser.add_argument(
         "--input-dir",
         default=DEFAULT_INPUT_DIR,
-        help=f"Directory containing CSV input files (default: {DEFAULT_INPUT_DIR})",
+        help=f"Directory containing input JSON file (default: {DEFAULT_INPUT_DIR})",
+    )
+    parser.add_argument(
+        "--input-file",
+        default=DEFAULT_INPUT_FILE,
+        help=f"Input JSON filename (default: {DEFAULT_INPUT_FILE})",
     )
     parser.add_argument(
         "--output-dir",
@@ -1765,11 +2124,6 @@ def main():
         "--token",
         nargs="+",
         help="GitHub personal access token(s) (or set GITHUB_TOKEN env var)",
-    )
-    parser.add_argument(
-        "--files",
-        nargs="+",
-        help="Specific CSV files to process (default: all CSV files in input dir)",
     )
     parser.add_argument(
         "--workers",
@@ -1903,145 +2257,69 @@ def main():
     # Initialize miner
     miner = GitHubMetricsMiner(token_manager, logger)
 
-    # Get input directory
+    # Get input directory and file
     input_dir = (script_dir / args.input_dir).resolve()
-    print(f"Input directory: {input_dir}")
+    input_path = input_dir / args.input_file
+    print(f"Input file: {input_path}")
     
     # Output file path
     output_path = output_dir / args.output_file
     print(f"Output file: {output_path}")
 
-    # Get CSV files to process
-    csv_files = []
-    if args.files:
-        # If specific files provided
-        for f in args.files:
-            file_path = input_dir / f
-            if file_path.is_file():
-                csv_files.append(file_path)
-            else:
-                # Try searching in subdirectories
-                for subdir in input_dir.iterdir():
-                    if subdir.is_dir():
-                        possible_path = subdir / f
-                        if possible_path.is_file():
-                            csv_files.append(possible_path)
-                            break
-    else:
-        # Get all CSV files from subdirectories
-        ecosystem_dirs = [
-            d
-            for d in input_dir.iterdir()
-            if d.is_dir() and d.name.endswith("_ecosystems")
-        ]
-
-        if ecosystem_dirs:
-            # Structure with ecosystem folders
-            for ecosystem_dir in sorted(ecosystem_dirs):
-                csv_files.extend(list(ecosystem_dir.glob("*.csv")))
-        else:
-            # Fallback: CSV files directly in input_dir
-            csv_files = list(input_dir.glob("*.csv"))
-
-    csv_files = [f for f in csv_files if f.is_file()]
-
-    if not csv_files:
-        print(f"\n✗ No CSV files found in {input_dir}")
+    # Check if input file exists
+    if not input_path.exists():
+        print(f"\n✗ Input file not found: {input_path}")
         return
 
-    print(f"\nFound {len(csv_files)} CSV file(s) to process:")
+    # Initialize processed_packages
+    processed_packages = {}
 
-    # Group by ecosystem count for display
-    files_by_count = {}
-    for f in csv_files:
-        # Determine ecosystem count from parent folder name
-        parent = f.parent.name
-        if parent.endswith("_ecosystems"):
-            count = int(parent.split("_")[0])
-        else:
-            # Estimate from filename
-            count = len(f.stem.split("_"))
-        
-        if count not in files_by_count:
-            files_by_count[count] = []
-        files_by_count[count].append(f)
-
-    for count in sorted(files_by_count.keys()):
-        print(
-            f"\n  {count}-ecosystem combinations ({len(files_by_count[count])} files):"
-        )
-        for f in sorted(files_by_count[count])[:5]:  # Show first 5
-            print(f"    • {f.name}")
-        if len(files_by_count[count]) > 5:
-            print(f"    ... and {len(files_by_count[count]) - 5} more")
-
-    # Load progress if exists
-    output_path = output_dir / args.output_file
-    processed_packages, _ = load_progress(output_path)
-    if processed_packages:
-        successful = count_successful_packages(processed_packages)
-        safe_print(f"\nResuming from previous progress: {successful}/{len(processed_packages)} packages successfully processed")
-
-    # Collect all packages from all files
+    # Parse input JSON file
     safe_print(f"\n{'=' * 80}")
-    safe_print("Parsing input files...")
+    safe_print("Parsing input JSON file...")
     safe_print(f"{'=' * 80}")
     
-    all_packages = []
-    files_by_count_stats = {}
+    try:
+        all_packages, input_metadata = parse_json_input(str(input_path), include_multirepo=True)
+    except Exception as e:
+        safe_print(f"\n✗ Error parsing input file: {e}")
+        return
     
-    for csv_file in tqdm(csv_files, desc="Parsing files", unit="file"):
-        try:
-            packages = parse_csv_file(str(csv_file))
-            all_packages.extend(packages)
-            
-            # Track stats by ecosystem count
-            parent = csv_file.parent.name
-            if parent.endswith("_ecosystems"):
-                count = int(parent.split("_")[0])
-            else:
-                count = len(csv_file.stem.split("_"))
-            
-            if count not in files_by_count_stats:
-                files_by_count_stats[count] = {"files": 0, "packages": 0}
-            files_by_count_stats[count]["files"] += 1
-            files_by_count_stats[count]["packages"] += len(packages)
-            
-        except Exception as e:
-            safe_print(f"\n✗ Error parsing {csv_file.name}: {e}")
-            continue
-
-    # Remove duplicates (same owner/repo)
-    unique_packages = {}
+    # Keep a reference to original all_packages for summary generation
+    original_all_packages = all_packages.copy()
+    
+    # Count monorepo vs multirepo packages
+    monorepo_count = sum(1 for pkg in all_packages if pkg.get("source") == "monorepo")
+    multirepo_count = sum(1 for pkg in all_packages if pkg.get("source") == "multirepo")
+    
+    safe_print(f"\nTotal repositories from input: {len(all_packages)}")
+    safe_print(f"  Monorepo cross-ecosystem packages: {monorepo_count}")
+    safe_print(f"  Multirepo packages: {multirepo_count}")
+    
+    # Display stats by ecosystem count (only for monorepo packages)
+    packages_by_count = {}
     for pkg in all_packages:
-        key = pkg["owner_repo"]
-        if key not in unique_packages:
-            unique_packages[key] = pkg
+        if pkg.get("source") == "monorepo":
+            count = pkg.get("ecosystem_count", 2)
+            if count not in packages_by_count:
+                packages_by_count[count] = 0
+            packages_by_count[count] += 1
     
-    all_packages = list(unique_packages.values())
+    safe_print(f"\nMonorepo packages by ecosystem count:")
+    for count in sorted(packages_by_count.keys()):
+        safe_print(f"  {count}-ecosystems: {packages_by_count[count]} packages")
     
-    safe_print(f"\nTotal unique repositories: {len(all_packages)}")
-    safe_print(f"Files parsed: {len(csv_files)}")
-    
-    # Display stats by ecosystem count
-    safe_print(f"\nPackages by ecosystem count:")
-    for count in sorted(files_by_count_stats.keys()):
-        stats = files_by_count_stats[count]
-        safe_print(f"  {count}-ecosystems: {stats['packages']} packages from {stats['files']} files")
-
     # ========================================================================
-    # CACHE LOADING AND TRANSFER
+    # STEP 1: LOAD CACHE AND CHECK STATUS
     # ========================================================================
+    safe_print(f"\n{'=' * 80}")
+    safe_print("Step 1: Loading cache...")
+    safe_print(f"{'=' * 80}")
+    
     cache = {}
     cache_index = {}
-    cache_hits = 0
-    remaining_packages = all_packages
     
     if not args.no_cache:
-        safe_print(f"\n{'=' * 80}")
-        safe_print("Loading and indexing cache...")
-        safe_print(f"{'=' * 80}")
-        
         # Resolve cache path
         cache_dir = (script_dir / args.cache_dir).resolve()
         cache_path = cache_dir / args.cache_file
@@ -2058,62 +2336,109 @@ def main():
             cache_index = build_cache_index(cache)
             safe_print(f"  Index contains {len(cache_index)} lookup keys")
             
-            # Transfer cached packages
-            safe_print(f"\n{'=' * 80}")
-            safe_print("Transferring cached packages...")
-            safe_print(f"{'=' * 80}")
+            # Count how many input packages are in cache
+            in_cache = 0
+            not_in_cache = 0
+            for pkg in all_packages:
+                pkg_key = f"{pkg['owner_repo']}|{pkg['repo_url']}"
+                if lookup_in_cache(pkg, cache, cache_index):
+                    in_cache += 1
+                else:
+                    not_in_cache += 1
             
-            processed_packages, remaining_packages, cache_hits = transfer_from_cache(
-                all_packages, cache, cache_index, processed_packages
-            )
-            
-            safe_print(f"\n✓ Cache lookup complete:")
-            safe_print(f"  Total packages to process: {len(all_packages)}")
-            safe_print(f"  Found in cache: {cache_hits} ({cache_hits / len(all_packages) * 100:.2f}%)")
-            safe_print(f"  Remaining to mine via API: {len(remaining_packages)} ({len(remaining_packages) / len(all_packages) * 100:.2f}%)")
-            
-            # Save progress after cache transfer
-            if cache_hits > 0:
-                save_progress(output_path, processed_packages, cache_hits - 1)
-                safe_print(f"  Progress saved after cache transfer")
+            safe_print(f"\n✓ Cache status:")
+            safe_print(f"  Total input packages: {len(all_packages)}")
+            safe_print(f"  Found in cache: {in_cache} ({in_cache / len(all_packages) * 100:.2f}%)")
+            safe_print(f"  Not in cache (need API): {not_in_cache} ({not_in_cache / len(all_packages) * 100:.2f}%)")
         else:
-            safe_print("\nNo valid cache found, will mine all packages via API")
+            safe_print("\n⚠ No valid cache found")
     else:
-        safe_print(f"\n⚠ Cache disabled (--no-cache flag), will mine all packages via API")
+        safe_print(f"\n⚠ Cache disabled (--no-cache flag)")
 
-    # Process remaining packages via API
+    # ========================================================================
+    # STEP 2: TRANSFER FROM CACHE AND SAVE
+    # ========================================================================
+    safe_print(f"\n{'=' * 80}")
+    safe_print("Step 2: Transferring from cache...")
+    safe_print(f"{'=' * 80}")
+    
+    cache_hits = 0
+    remaining_packages = all_packages
+    
+    if cache and cache_index:
+        processed_packages, remaining_packages, cache_hits = transfer_from_cache(
+            all_packages, cache, cache_index, processed_packages
+        )
+        
+        safe_print(f"\n✓ Cache transfer complete:")
+        safe_print(f"  Transferred from cache: {cache_hits}")
+        safe_print(f"  Remaining to mine via API: {len(remaining_packages)}")
+        
+        # Count remaining by source type
+        remaining_monorepo = sum(1 for pkg in remaining_packages if pkg.get("source") == "monorepo")
+        remaining_multirepo = sum(1 for pkg in remaining_packages if pkg.get("source") == "multirepo")
+        safe_print(f"    - Monorepo: {remaining_monorepo}")
+        safe_print(f"    - Multirepo: {remaining_multirepo}")
+        
+        # Save immediately after cache transfer
+        if cache_hits > 0:
+            save_progress(output_path, processed_packages, cache_hits - 1)
+            safe_print(f"\n✓ Progress saved to: {output_path}")
+            safe_print(f"  Saved {len(processed_packages)} packages")
+    else:
+        safe_print("\n⚠ No cache available, skipping transfer step")
+    
+    # Check if all done
+    if len(remaining_packages) == 0:
+        safe_print(f"\n✓ All packages found in cache! No API mining needed.")
+        # Generate summary
+        summary_stats = generate_summary_stats(processed_packages, {})
+        summary_stats['cache_hits'] = cache_hits
+        summary_stats['api_calls'] = 0
+        summary_stats['total_retried'] = 0
+        write_summary_file(output_dir, summary_stats, original_all_packages, processed_packages)
+        safe_print(f"\n{'=' * 80}")
+        safe_print("Mining completed")
+        safe_print(f"{'=' * 80}")
+        return
+
+    # ========================================================================
+    # STEP 3: MINE REMAINING PACKAGES VIA API
+    # ========================================================================
+    safe_print(f"\n{'=' * 80}")
+    safe_print("Step 3: Mining remaining packages via GitHub API...")
+    safe_print(f"{'=' * 80}\n")
+    
     error_stats = {}
     
-    if remaining_packages:
+    try:
+        processed_packages, error_stats = process_packages_parallel(
+            remaining_packages,
+            miner,
+            processed_packages,
+            output_path,
+            max_workers=args.workers,
+        )
+        
+    except KeyboardInterrupt:
+        print("\n\n⚠ Interrupted by user.")
+        print("Saving progress before exit...")
         try:
-            safe_print(f"\n{'=' * 80}")
-            safe_print("Mining GitHub metrics via API...")
-            safe_print(f"{'=' * 80}\n")
-            
-            processed_packages, error_stats = process_packages_parallel(
-                remaining_packages,
-                miner,
-                processed_packages,
-                output_path,
-                max_workers=args.workers,
-            )
-            
-        except KeyboardInterrupt:
-            print("\n\n⚠ Interrupted by user. Progress has been saved.")
-            print("Run the script again to resume from checkpoint.")
-            return
-        except Exception as e:
-            safe_print(f"\n✗ Error during processing: {e}")
-            import traceback
-            traceback.print_exc()
-            return
-    else:
-        safe_print(f"\n✓ All packages found in cache, no API calls needed!")
-        # Save final state
-        save_progress(output_path, processed_packages, len(all_packages) - 1)
+            save_progress(output_path, processed_packages, len(processed_packages) - 1)
+            print(f"✓ Progress saved to {output_path}")
+            print(f"  Total packages saved: {len(processed_packages)}")
+        except Exception as save_error:
+            print(f"✗ Failed to save progress: {save_error}")
+        print("Run the script again to resume from checkpoint.")
+        return
+    except Exception as e:
+        safe_print(f"\n✗ Error during processing: {e}")
+        import traceback
+        traceback.print_exc()
+        return
     
     # ========================================================================
-    # RETRY PHASE: Retry packages with errors
+    # STEP 4: RETRY PHASE - Retry packages with errors
     # ========================================================================
     total_retried = 0
     
@@ -2171,8 +2496,8 @@ def main():
     safe_print(f"\n✓ Results saved to {output_path}")
     safe_print(f"  Successfully mined: {successful_count}/{len(all_packages)} repositories")
     
-    # Write summary file
-    write_summary_file(output_dir, summary_stats, all_packages)
+    # Write summary file with original_all_packages for per-source stats
+    write_summary_file(output_dir, summary_stats, original_all_packages, processed_packages)
 
     # Summary
     print(f"\n{'=' * 80}")
