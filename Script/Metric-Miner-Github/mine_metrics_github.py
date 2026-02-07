@@ -482,10 +482,39 @@ def transfer_from_cache(
         cached_result = lookup_in_cache(pkg, cache, cache_index)
         
         if cached_result:
-            # Update ecosystems from current package (may differ from cache)
-            result = cached_result.copy()
-            result['ecosystems'] = pkg.get('ecosystems', cached_result.get('ecosystems', ''))
-            result['from_cache'] = True
+            # Build result with consistent field ordering
+            # DO NOT trust 'ecosystems' and 'source' from cache - always use current package's values
+            # which are determined from cross_ecosystem_packages.json
+            result = {
+                'owner_repo': pkg['owner_repo'],
+                'repo_url': pkg['repo_url'],
+                'ecosystems': pkg.get('ecosystems', cached_result.get('ecosystems', '')),
+                'stars': cached_result.get('stars', 0),
+                'forks': cached_result.get('forks', 0),
+                'is_fork': cached_result.get('is_fork', False),
+                'is_archived': cached_result.get('is_archived', False),
+                'commits': cached_result.get('commits', 0),
+                'active_pull_requests': cached_result.get('active_pull_requests', 0),
+                'closed_pull_requests': cached_result.get('closed_pull_requests', 0),
+                'all_pull_requests': cached_result.get('all_pull_requests', 0),
+                'contributors': cached_result.get('contributors', 0),
+                'contributors_unique_merged': cached_result.get('contributors_unique_merged'),
+                'active_issues': cached_result.get('active_issues', 0),
+                'closed_issues': cached_result.get('closed_issues', 0),
+                'all_issues': cached_result.get('all_issues', 0),
+                'dependencies': cached_result.get('dependencies', 0),
+                'dependents': cached_result.get('dependents', 0),
+                'top_language': cached_result.get('top_language', ''),
+                'language_proportions': cached_result.get('language_proportions', ''),
+                'source': pkg.get('source', 'monorepo'),  # Always use source from input, not cache
+                'from_cache': True
+            }
+            # Include error fields if present in cache
+            if 'error' in cached_result:
+                result['error'] = cached_result['error']
+            if 'error_detail' in cached_result:
+                result['error_detail'] = cached_result['error_detail']
+            
             processed_packages[pkg_key] = result
             cache_hits += 1
         else:
@@ -560,10 +589,6 @@ class GitHubMetricsMiner:
               totalCount
             }
             closedIssues: issues(states: CLOSED) {
-              totalCount
-            }
-            
-            mentionableUsers {
               totalCount
             }
             
@@ -644,8 +669,8 @@ class GitHubMetricsMiner:
             open_issues = repo_data.get('openIssues', {}).get('totalCount', 0)
             closed_issues = repo_data.get('closedIssues', {}).get('totalCount', 0)
             
-            # Contributors (mentionableUsers is an approximation)
-            contributors = repo_data.get('mentionableUsers', {}).get('totalCount', 0)
+            # Contributors - use REST API
+            contributors = self._get_contributors_count(owner, repo)
             
             # Languages
             languages = {}
@@ -1710,90 +1735,6 @@ def count_successful_packages(processed_packages: Dict) -> int:
     return len([v for v in processed_packages.values() if v and "error" not in v])
 
 
-def generate_stats_for_source(
-    processed_packages: Dict, 
-    all_packages: List[Dict], 
-    source_filter: str = None
-) -> Dict:
-    """
-    Generate summary statistics for a specific source type (monorepo/multirepo).
-    
-    Args:
-        processed_packages: Dictionary of processed results (keyed by "owner_repo|repo_url")
-        all_packages: List of all input packages with 'source' field
-        source_filter: Filter by source type ("monorepo", "multirepo", or None for all)
-        
-    Returns:
-        Dictionary with summary statistics for the filtered packages
-    """
-    # Build mapping from owner_repo|repo_url to source type
-    pkg_key_to_source = {}
-    for pkg in all_packages:
-        pkg_key = f"{pkg['owner_repo']}|{pkg['repo_url']}"
-        pkg_key_to_source[pkg_key] = pkg.get("source", "monorepo")
-    
-    # Filter processed_packages by source type
-    if source_filter:
-        filtered_packages = {
-            k: v for k, v in processed_packages.items() 
-            if pkg_key_to_source.get(k) == source_filter
-        }
-    else:
-        filtered_packages = processed_packages
-    
-    total = len(filtered_packages)
-    success = len([v for v in filtered_packages.values() if v and "error" not in v])
-    
-    # Count errors, forked, archived
-    computed_error_stats = {}
-    forked_count = 0
-    archived_count = 0
-    forked_and_archived_count = 0
-    excluded_keys = set()
-    
-    for pkg_key, result in filtered_packages.items():
-        if result:
-            is_fork = result.get("is_fork", False)
-            is_archived = result.get("is_archived", False)
-            has_error = "error" in result
-            
-            if has_error:
-                error_type = result.get("error", "UNKNOWN")
-                if error_type not in computed_error_stats:
-                    computed_error_stats[error_type] = 0
-                computed_error_stats[error_type] += 1
-                excluded_keys.add(pkg_key)
-            else:
-                if is_fork:
-                    forked_count += 1
-                    excluded_keys.add(pkg_key)
-                if is_archived:
-                    archived_count += 1
-                    excluded_keys.add(pkg_key)
-                if is_fork and is_archived:
-                    forked_and_archived_count += 1
-    
-    total_errors = sum(computed_error_stats.values())
-    excluded_count = len(excluded_keys)
-    
-    return {
-        "total": total,
-        "success": success,
-        "success_rate": (success / total * 100) if total > 0 else 0,
-        "total_errors": total_errors,
-        "error_rate": (total_errors / total * 100) if total > 0 else 0,
-        "error_breakdown": computed_error_stats,
-        "forked_count": forked_count,
-        "forked_rate": (forked_count / total * 100) if total > 0 else 0,
-        "archived_count": archived_count,
-        "archived_rate": (archived_count / total * 100) if total > 0 else 0,
-        "forked_and_archived_count": forked_and_archived_count,
-        "forked_and_archived_rate": (forked_and_archived_count / total * 100) if total > 0 else 0,
-        "excluded_count": excluded_count,
-        "excluded_rate": (excluded_count / total * 100) if total > 0 else 0,
-    }
-
-
 def generate_summary_stats(processed_packages: Dict, error_stats: Dict = None) -> Dict:
     """
     Generate summary statistics for the mining process.
@@ -2008,89 +1949,6 @@ def retry_failed_packages(
     return processed_packages, all_error_stats, total_retried
 
 
-def write_summary_file(output_dir: Path, stats: Dict, all_packages: List[Dict], processed_packages: Dict = None):
-    """
-    Write summary.txt file with statistics.
-    
-    Args:
-        output_dir: Output directory path
-        stats: Summary statistics dictionary (combined)
-        all_packages: List of all packages with 'source' field
-        processed_packages: Dictionary of processed results (for per-source stats)
-    """
-    summary_path = output_dir / "summary.txt"
-    
-    # Generate per-source statistics if processed_packages is provided
-    monorepo_stats = None
-    multirepo_stats = None
-    if processed_packages and all_packages:
-        monorepo_stats = generate_stats_for_source(processed_packages, all_packages, "monorepo")
-        multirepo_stats = generate_stats_for_source(processed_packages, all_packages, "multirepo")
-    
-    def write_stats_section(f, section_title: str, section_stats: Dict, show_source_breakdown: bool = False):
-        """Helper function to write a statistics section."""
-        f.write(f"{section_title}\n")
-        f.write("-" * 80 + "\n")
-        f.write(f"Total Input Repositories: {section_stats['total']:,}\n")
-        f.write(f"Successfully Mined: {section_stats['success']:,} ({section_stats['success_rate']:.2f}%)\n")
-        f.write(f"Errors: {section_stats['total_errors']:,} ({section_stats['error_rate']:.2f}%)\n\n")
-        
-        # Repository status
-        f.write(f"Repository Status:\n")
-        f.write(f"  Forked: {section_stats.get('forked_count', 0):,} ({section_stats.get('forked_rate', 0):.2f}%)\n")
-        f.write(f"  Archived: {section_stats.get('archived_count', 0):,} ({section_stats.get('archived_rate', 0):.2f}%)\n")
-        f.write(f"  Forked AND Archived: {section_stats.get('forked_and_archived_count', 0):,} ({section_stats.get('forked_and_archived_rate', 0):.2f}%)\n")
-        f.write(f"  Excluded (Forked | Archived | Errors): {section_stats.get('excluded_count', 0):,} ({section_stats.get('excluded_rate', 0):.2f}%)\n")
-        
-        # Source breakdown (only for combined stats)
-        if show_source_breakdown and 'cache_hits' in section_stats:
-            f.write(f"\nData Source:\n")
-            cache_hits = section_stats.get('cache_hits', 0)
-            api_calls = section_stats.get('api_calls', 0)
-            total_retried = section_stats.get('total_retried', 0)
-            total = section_stats['total']
-            f.write(f"  From Cache: {cache_hits:,} ({cache_hits / total * 100:.2f}%)\n" if total > 0 else f"  From Cache: {cache_hits:,}\n")
-            f.write(f"  From API: {api_calls:,} ({api_calls / total * 100:.2f}%)\n" if total > 0 else f"  From API: {api_calls:,}\n")
-            if total_retried > 0:
-                f.write(f"  Retried: {total_retried:,}\n")
-        
-        # Error breakdown
-        if section_stats.get('error_breakdown'):
-            f.write(f"\nError Breakdown:\n")
-            sorted_errors = sorted(section_stats['error_breakdown'].items(), key=lambda x: x[1], reverse=True)
-            for error_type, count in sorted_errors:
-                percentage = (count / section_stats['total'] * 100) if section_stats['total'] > 0 else 0
-                f.write(f"  {error_type}: {count:,} ({percentage:.2f}%)\n")
-        
-        f.write("\n")
-    
-    with open(summary_path, "w", encoding="utf-8") as f:
-        f.write("=" * 80 + "\n")
-        f.write("GITHUB METRICS MINING SUMMARY\n")
-        f.write("=" * 80 + "\n\n")
-        
-        # Section 1: Monorepo Statistics
-        if monorepo_stats and monorepo_stats['total'] > 0:
-            f.write("=" * 80 + "\n")
-            write_stats_section(f, "MONOREPO PACKAGES (cross-ecosystem packages in single repository)", monorepo_stats)
-        
-        # Section 2: Multirepo Statistics
-        if multirepo_stats and multirepo_stats['total'] > 0:
-            f.write("=" * 80 + "\n")
-            write_stats_section(f, "MULTIREPO PACKAGES (language-specific repositories like project-js, project-py)", multirepo_stats)
-        
-        # Section 3: Combined Statistics
-        f.write("=" * 80 + "\n")
-        write_stats_section(f, "COMBINED (ALL PACKAGES)", stats, show_source_breakdown=True)
-        
-        # Footer
-        f.write("=" * 80 + "\n")
-        f.write(f"Summary generated: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n")
-        f.write("=" * 80 + "\n")
-    
-    safe_print(f"✓ Summary saved to {summary_path}")
-
-
 # ============================================================================
 # MAIN ENTRY POINT
 # ============================================================================
@@ -2285,9 +2143,6 @@ def main():
         safe_print(f"\n✗ Error parsing input file: {e}")
         return
     
-    # Keep a reference to original all_packages for summary generation
-    original_all_packages = all_packages.copy()
-    
     # Count monorepo vs multirepo packages
     monorepo_count = sum(1 for pkg in all_packages if pkg.get("source") == "monorepo")
     multirepo_count = sum(1 for pkg in all_packages if pkg.get("source") == "multirepo")
@@ -2391,12 +2246,6 @@ def main():
     # Check if all done
     if len(remaining_packages) == 0:
         safe_print(f"\n✓ All packages found in cache! No API mining needed.")
-        # Generate summary
-        summary_stats = generate_summary_stats(processed_packages, {})
-        summary_stats['cache_hits'] = cache_hits
-        summary_stats['api_calls'] = 0
-        summary_stats['total_retried'] = 0
-        write_summary_file(output_dir, summary_stats, original_all_packages, processed_packages)
         safe_print(f"\n{'=' * 80}")
         safe_print("Mining completed")
         safe_print(f"{'=' * 80}")
@@ -2495,16 +2344,12 @@ def main():
     
     safe_print(f"\n✓ Results saved to {output_path}")
     safe_print(f"  Successfully mined: {successful_count}/{len(all_packages)} repositories")
-    
-    # Write summary file with original_all_packages for per-source stats
-    write_summary_file(output_dir, summary_stats, original_all_packages, processed_packages)
 
     # Summary
     print(f"\n{'=' * 80}")
     print("Processing Complete!")
     print(f"{'=' * 80}")
     print(f"Output file: {output_path}")
-    print(f"Summary file: {output_dir / 'summary.txt'}")
     print(f"\nTotal repositories processed: {len(all_packages)}")
     print(f"  From cache: {cache_hits} ({cache_hits / len(all_packages) * 100:.2f}%)" if len(all_packages) > 0 else "  From cache: 0")
     print(f"  From API: {len(remaining_packages)} ({len(remaining_packages) / len(all_packages) * 100:.2f}%)" if len(all_packages) > 0 else "  From API: 0")
